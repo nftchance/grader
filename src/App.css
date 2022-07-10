@@ -1,38 +1,206 @@
-.App {
-  text-align: center;
+* {
+  box-sizing: border-box;
+  margin: 0;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+html, body {
+  background: rgba(0,0,0);
+  overflow-x: hidden;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+h1,h2,h3,h4,h5 {
+  color: #ffffff;
+  font-weight: 900;
+  text-transform: uppercase;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+p, span {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+p, a, span {
+  font-weight: 300;
+}
+
+a, label {
+  color: #fff;
+  font-weight: 900;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+a:hover,
+a:focus,
+a:active {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+::-webkit-scrollbar {
+    height: 4px;
+    width: 4px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #000;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.65);
+    border-radius: 2px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: white;
+}
+
+.navbar { 
+  margin-top: 20px;
+}
+
+.navbar img,
+.footer img { 
+  height: 30px;
+}
+
+.container {
+  margin-inline: 90px;
+}
+
+.tool {
+  display: grid;
+  grid-template: 'cube cube cube input score'
+                 'cube cube cube input code';
+  gap: 30px;
+  margin-bottom: 240px;
+  margin-top: 60px;
+  min-height: 650px;
+}
+
+.step {
+  background: #000;
+  border: 1px solid #fff; 
+  padding: 30px;
+}
+
+.cube {
+  grid-area: cube;
+  min-width: 500px;
+}
+
+.input {
+  grid-area: input;
+  width: 500px;
+}
+
+.score {
+  grid-area: score;
+}
+
+.code {
+  grid-area: code;
+}
+
+h1 {
+  margin-top: 80px;
+  margin-bottom: 20px;
+  font-size: 64px;
+}
+
+h2 {
+  margin-bottom: 20px;
+  font-size: 48px;
+}
+
+h3 {
+  margin-bottom: 20px;
+  font-size: 36px;
+}
+
+.lead {
+  font-size: 24px;
+  max-width: 850px;
+}
+
+.grey {
+  display: grid;
+  grid-template-columns: 3fr 6fr;
+  min-height: 750px;
+}
+
+.grey .step {
+  height: fit-content;
+  margin-top: 80px;
+  z-index: 1;
+  position: relative;
+}
+
+.grey .step p:nth-child(3) {
+  margin-top: 20px;
+}
+
+.grey .goo {
+  position: relative;
+}
+
+.grey .goo .step {
+  position: absolute; 
+  right: 0;
+  top: 0%;
+  bottom: 50%;
+  left: -30%;
+  height: 100%;
+  margin-top: 0px;
+  z-index: 0;
+}
+
+.footer {
+  display: grid;
+  grid-template-columns: 6fr 6fr;
+  margin-bottom: 20px;
+  margin-top: 120px;
+}
+
+.footer p {
+  text-align: right;
+}
+
+.colors {
+  max-height: 200px;
+  overflow-y: scroll;
+}
+
+input {
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.option-toggle {
+  border: 1px solid #ffffff;
+  color: white;
+  border-radius: 20px;
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr 1fr;
+  cursor: pointer;
+  padding: 5px 15px;
+  user-select: none;
+  margin-top: 10px;
+  margin-bottom: 20px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.option-toggle > div { 
+  padding: 5px 15px;
+}
+
+.option-toggle > div:nth-child(2) {
+  text-align: right;
+}
+
+.option-toggle > .active {
+  border: 1px solid #fff;
+  border-radius: 10px;
+  color: #fff;
+  border-radius: 14px;
 }
