@@ -183,13 +183,14 @@ function App() {
 							</div>
 
 							<div className="points">
-							<RedditTextField
-								label="Reddit"
-								defaultValue={points}
-								id="reddit-input"
-								variant="filled"
-								style={{ marginTop: 11 }}
-							/>
+								<RedditTextField
+									label="Points"
+									defaultValue={points}
+									id="points-of-separation"
+									variant="filled"
+									style={{ marginTop: 11 }}
+								/>
+
 								{/* <TextField
 									// defaultValue={`${color.color}`}
 									label={`Points`}
