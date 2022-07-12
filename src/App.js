@@ -10,6 +10,8 @@ import { fab } from '@fortawesome/free-brands-svg-icons'
 import { alpha, styled } from '@mui/material/styles';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
+import chroma from "chroma-js"
+
 import Cube from "./Cube";
 
 import './App.css';
@@ -66,9 +68,12 @@ function App() {
 		'LAB',
 	];
 
+	const pointsColorsFactor = 3;
+
+	const [activeGradient, setActiveGradient] = useState(defaultGradient);
 	const [colorMode, setColorMode] = useState(colorsModes[0])
 	const [colors, setColors] = useState(defaultGradient);
-	const [points, setPoints] = useState(0) // points of seperation
+	const [points, setPoints] = useState(colors.length * pointsColorsFactor)
 
 	const [gradientColorMode, setGradientColorMode] = useState(colorsModes[0])
 
@@ -77,17 +82,27 @@ function App() {
 
 	const [code, setCode] = useState(null);
 
-	const stringGradient = () => {
-		const colorStrings = colors.map(color => {
-			return `${color.color}`
-		});
+	const chromaGradient = (gradientColors) => { 
+		return chroma.scale(gradientColors).mode(gradientColorMode.toLowerCase()).colors(points)
+	}
+	
+	const stringGradient = (gradientColors) => {
+		try {
+			const chromaColors = chromaGradient(
+				gradientColors.map((color, colordx) => (color.color))
+			);
+			
+			const chromaGradientString = `
+				linear-gradient(
+					90deg,
+					${chromaColors} 
+				)
+			`;
 
-		return `
-			linear-gradient(
-				90deg,
-				${colorStrings} 
-			)
-		`;
+			setActiveGradient(chromaGradientString)
+		} catch(e) {
+			console.log('Failed to update:', e)
+		}		
 	}
 
 	const handleColorAddition = (e) => {
@@ -112,9 +127,11 @@ function App() {
 		})
 
 		setColors(_colors)
-
-		// TODO: Grade the gradient
 	}
+
+	useEffect(() => { 
+		stringGradient(colors)
+	}, [colors, gradientColorMode, points])
 
 	useEffect(() => {
 		if (score > best) setBest(score);
@@ -168,7 +185,7 @@ function App() {
 							<div className="points">
 							<RedditTextField
 								label="Reddit"
-								defaultValue="react-reddit"
+								defaultValue={points}
 								id="reddit-input"
 								variant="filled"
 								style={{ marginTop: 11 }}
@@ -287,7 +304,7 @@ function App() {
 						<div
 							className="step gradient"
 							style={{
-								background: stringGradient()
+								background: activeGradient
 							}}
 						>
 
