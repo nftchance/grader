@@ -4,7 +4,7 @@ const ColorspaceColor = (props) => {
     const { colors, handleColorChange } = props;
 
     return (
-        <div>
+        <>
             {colors.map((color, idx) => (
                 <ColorspaceTextField
                     key={`color:${idx}`}
@@ -17,7 +17,7 @@ const ColorspaceColor = (props) => {
                     }}
                 />
             ))}
-        </div>
+        </>
     )
 }
 
