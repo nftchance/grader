@@ -167,7 +167,7 @@ function App() {
 						/>
 
 						<ColorspaceTextField
-							label="Points"
+							label="Domain Points"
 							defaultValue={points}
 							aria-label="color scale points of separation"
 							id="points-of-separation"
