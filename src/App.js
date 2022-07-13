@@ -70,6 +70,27 @@ function App() {
 
 	const [code, setCode] = useState(null);
 
+	const randomColor = () => {
+		return chroma(`rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)})`).hex();
+	}
+
+	function fixedEncodeURIComponent(str) {
+		return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
+			return '%' + c.charCodeAt(0).toString(16);
+		});
+	}
+
+	const saveURL = () => {
+		const urlColors = colors.map(color => color.color).join("&cs=")
+		const urlDomains = colors.map(color => color.domain).join("&ds=")
+
+		return fixedEncodeURIComponent(`${window.location.href.split("?")[0]}?cm=${colorMode}&gcm=${gradientColorMode}&cs=${urlColors}&ds=${urlDomains}&d=${degree}`)
+	}
+
+	const shareMessage = () => { 
+		return `Check out this beautiful gradient made with @trycolorspace:%0A%0A${saveURL()}`
+	}
+
 	const handleColorModeChange = (event, newColorMode) => {
 		if (newColorMode !== null) {
 			setColorMode(newColorMode);
@@ -137,8 +158,20 @@ function App() {
 		setColors(domainedColors)
 	}
 
-	const saveURL = () => {
-		return encodeURI(`${window.location.href.split("?")[0]}?cube-color-mode=${colorMode}&gradient-color-mode=${gradientColorMode}&colors=${colors.map(color => color.color)}&domains=${colors.map(color => color.domain)}`)
+	const handleSave = () => {
+		console.log(saveURL())
+	}
+
+	const handleShuffle = () => {
+		const shuffledColors = chroma.scale([
+			randomColor(),
+			randomColor(),
+		]).colors(colors.length);
+
+		setColors(colors.map((color, i) => ({
+			...color,
+			color: shuffledColors[i]
+		})))
 	}
 
 	useEffect(() => {
@@ -215,17 +248,11 @@ function App() {
 							INPUT
 							<span style={{ marginLeft: "auto" }}>
 								<Button
-									onClick={() => {
-										console.log(saveURL())
-									}}
+									onClick={handleSave}
 								>
 									<img src={save} className="fa" alt="save icon" />
 								</Button>
-								<Button
-									onClick={() => {
-										console.log('shuffle baby')
-									}}
-								>
+								<Button onClick={handleShuffle}>
 									<img src={shuffle} className="fa" alt="shuffle icon" />
 								</Button>
 							</span>
@@ -299,13 +326,9 @@ function App() {
 						<h3>
 							SCORE
 							<span style={{ float: "right" }}>
-								<Button
-									onClick={() => { 
-										console.log('Sharing to twitter mfer!')
-									}}
-								>
+								<a target="_blank" rel="noreferrer" href={`https://twitter.com/intent/tweet?text=${shareMessage()}`}>
 									<img src={twitter} className="fa" alt="twitter icon" />
-								</Button>
+								</a>
 							</span>
 						</h3>
 
