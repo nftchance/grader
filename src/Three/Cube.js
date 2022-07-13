@@ -155,7 +155,7 @@ const Cube = (props) => {
             <ambientLight />
             <pointLight intensity={1} position={[10, 10, 10]} />
 
-            <fog attach="fog" args={['black', 1, 75]} />
+            <fog attach="fog" args={['black', 1, 150]} />
 
             <Suspense fallback={null}>
                 <Floor />

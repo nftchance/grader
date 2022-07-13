@@ -34,7 +34,7 @@
 
 .cube {
     grid-area: cube;
-    min-width: 1200px;
+    min-width: 500px;
     padding: 0px;
 }
 
