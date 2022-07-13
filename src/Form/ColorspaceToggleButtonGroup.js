@@ -8,31 +8,30 @@ const ColorspaceToggleButtonGroup = styled((props) => {
 
     return <ToggleButtonGroup
         {...props}
-        sx={{
-            width: "100%"
-        }}
     >
         {values.map(value => (
             <ToggleButton
                 key={`toggle-button-${value}`}
                 value={value}
                 aria-label={value}
-                sx={{
-                    width: "100%",
-                    margin: 0
-                }}
             >
                 {value}
             </ToggleButton>
         ))}
     </ToggleButtonGroup>
 })(({ theme }) => ({
+    '&': { 
+        width: "100%",
+    },
     '& .MuiToggleButtonGroup-grouped': {
         marginTop: 10,
-        // background: 'red',
-        // border: `1px solid ${theme.palette.primary.main}`,
+        border: `1px solid ${theme.palette.primary.main}`,
         borderColor: "#fff",
         color: theme.palette.primary.main,
+        transition: theme.transitions.create([
+			'color',
+			'background-color',
+		]),
         '&.Mui-disabled': {
             border: 0,
         },
@@ -41,33 +40,21 @@ const ColorspaceToggleButtonGroup = styled((props) => {
         },
         '&:first-of-type': {
             borderRadius: theme.shape.borderRadius,
-        },
+        }
     },
-    // .MuiButton-label { /* … */ }
-    // .MuiButton-outlined { /* … */ }
-    // .MuiButton-outlined.Mui-disabled { /* … */ }
-    // .MuiButton-outlinedPrimary: { /* … */ }
-    // .MuiButton-outlinedPrimary:hover { /* … */ }
-    // '& .MuiFilledInput-root': {
-    //     border: `1px solid ${theme.palette.primary.main}`,
-    //     overflow: 'hidden',
-    //     borderRadius: 0,
-    //     color: theme.palette.primary.main,
-    //     backgroundColor: '#000',
-    //     transition: theme.transitions.create([
-    //         'border-color',
-    //         'background-color',
-    //         'box-shadow',
-    //     ]),
-    //     '&:hover': {
-    //         backgroundColor: 'transparent',
-    //     },
-    //     '&.Mui-focused': {
-    //         backgroundColor: 'transparent',
-    //         boxShadow: `${alpha(theme.palette.primary.main, 0.25)} 0 0 0 2px`,
-    //         borderColor: theme.palette.primary.main,
-    //     }
-    // },
+    '& > button': { 
+        fontWeight: 900,
+        margin: 0,
+        width: "100%",
+        "&:hover": {
+            color: "rgba(255, 255, 255)",
+            backgroundColor: "rgba(255, 255, 255, .05)"
+        },
+        "&.Mui-selected, &.Mui-selected:hover": {
+            color: "rgba(0, 0, 0)",
+            backgroundColor: "rgba(255, 255, 255)"
+        }
+    }
 }));
 
 export default ColorspaceToggleButtonGroup;

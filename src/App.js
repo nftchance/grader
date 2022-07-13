@@ -87,32 +87,36 @@ function App() {
 		}
 	}
 
-	const handleColorMode = (event, newColorMode) => {
+	const handleColorModeChange = (event, newColorMode) => {
 		if (newColorMode !== null) {
 			setColorMode(newColorMode);
 		}
 	};
 
-	const handleColorAddition = (e) => {
-		e.preventDefault();
+	const handlePointsChange = (event) => { 
+		setPoints(event.target.value)
+	}
+
+	const handleColorAddition = (event) => {
+		event.preventDefault();
 		setColors([
 			...colors,
 			{ color: '#000000', visible: true }
 		])
 	}
 
-	const handleColorClear = (e) => {
-		e.preventDefault();
+	const handleColorClear = (event) => {
+		event.preventDefault();
 		setColors(defaultGradient)
 	}
 
 	const handleColorChange = (e, colorId) => {
-		const _colors = colors.map((color, idx) => {
-			return idx != colorId ? color : {
+		const _colors = colors.map((color, idx) => (
+			idx != colorId ? color : {
 				color: e.target.value,
 				visible: color.visible
 			}
-		})
+		))
 
 		setColors(_colors)
 	}
@@ -129,12 +133,9 @@ function App() {
 		<ThemeProvider theme={theme}>
 			<div className="container">
 				<div className="navbar">
-					<a href="/">
-						<img src={logo} />
-					</a>
+					<a href="/"><img src={logo} /></a>
 
-					<div className={`theme-controls ${theme}`}>
-					</div>
+					<div className={`theme-controls ${theme}`} />
 				</div>
 
 				<h1>BUILD THE PERFECT GRADIENT. WITH EASE.</h1>
@@ -158,10 +159,11 @@ function App() {
 
 						<label>CUBE COLOR MODE</label>
 						<ColorspaceToggleButtonGroup
+							value={colorMode}
 							values={cubeColorModes}
 							exclusive
 							aria-label="cube color mode"
-							onChange={handleColorMode}
+							onChange={handleColorModeChange}
 						/>
 
 						<ColorspaceTextField
@@ -169,6 +171,8 @@ function App() {
 							defaultValue={points}
 							aria-label="color scale points of separation"
 							id="points-of-separation"
+							type="number"
+							onChange={handlePointsChange}
 						/>
 
 						{colors.map((color, idx) => (
@@ -187,14 +191,10 @@ function App() {
 							marginTop: 10
 						}}>
 							<a href="#" onClick={handleColorAddition}>Add Color</a>
-							<a
-								href="#"
-								onClick={handleColorClear}
-								style={{
-									float: "right",
-									color: "red"
-								}}
-							>
+							<a href="#" onClick={handleColorClear} style={{
+								float: "right",
+								color: "red"
+							}}>
 								Clear
 							</a>
 						</div>
@@ -221,31 +221,24 @@ function App() {
 					{/* Formatted Code Output of Active Gradient */}
 					<div className="step code">
 						<h3>CODE</h3>
-						<code>
-							{code}
-						</code>
+						<code>{code}</code>
 					</div>
 
-					{/* 2D Gradient Color Scale Mode Controls */}
+					{/* Gradient Color Mode Control */}
 					<div className="color-mode">
-						{colorsModes.map(((colorModeOption, idx) => (
-							<div
-								key={`gradientColorMode:${idx}`}
-								className={gradientColorMode === colorModeOption ? 'step active' : 'step'}
-								onClick={() => { setGradientColorMode(colorModeOption) }}
-							>
-								{colorModeOption}
-							</div>
-						)))}
+						<ColorspaceToggleButtonGroup
+							value={gradientColorMode}
+							values={colorsModes}
+							exclusive
+							aria-label="gradient color scale mode"
+							onChange={(event) => { setGradientColorMode(event.target.value) }}
+						/>
 					</div>
 
 					{/* 2D Gradient Visualization */}
-					<div
-						className="step gradient"
-						style={{
-							background: activeGradient
-						}}
-					></div>
+					<div className="step gradient" style={{
+						background: activeGradient
+					}} />
 				</div>
 
 				<div className="grey">

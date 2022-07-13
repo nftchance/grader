@@ -5,20 +5,18 @@ import { alpha, styled } from '@mui/material/styles';
 const ColorspaceTextField = styled((props) => (
 	<TextField 
 		InputProps={{ disableUnderline: true }}
-		{...props}
 		variant="filled"
-		style={{ 
-			marginTop: 10,
-			width: "100%"
-		}} 
-		sx={{
-			"& .MuiInputLabel-root": { color: 'white' },
-			"& .MuiOutlinedInput-root": {
-				"& > fieldset": { borderColor: "white" },
-			}
-		}}
+		{...props}
 	/>
 ))(({ theme }) => ({
+	'&': { 
+		marginTop: 10,
+		width: "100%",
+		"& .MuiInputLabel-root": { color: 'white' },
+		"& .MuiOutlinedInput-root": {
+			"& > fieldset": { borderColor: "white" },
+		}
+	},
 	'& .MuiFilledInput-root': {
 		border: `1px solid ${theme.palette.primary.main}`,
 		overflow: 'hidden',
