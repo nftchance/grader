@@ -104,7 +104,7 @@ function App() {
 		] 
 
 		// if the default points value is being used, continue using it
-		if(points == (colorAddedColors.length - 1) * pointsColorsFactor)
+		if(points === (colorAddedColors.length - 1) * pointsColorsFactor)
 			setPoints(colorAddedColors.length * pointsColorsFactor)
 
 		setColors(colorAddedColors)
