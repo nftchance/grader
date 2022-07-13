@@ -236,7 +236,7 @@ function App() {
 							type="number"
 							inputProps={{ 
 									inputMode: 'numeric', 
-									pattern: '/^-?\d+(?:\.\d+)?$/g',
+									pattern: '/^-?d+(?:.d+)?$/g',
 									min: colors.length,
 									max: colors.length * 10
 							}}
