@@ -8,8 +8,6 @@ import { fab } from '@fortawesome/free-brands-svg-icons'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import CodeTheme from "./Code/ColorspaceCodeTheme";
 
-// import { dracula as dark } from 'react-syntax-highlighter/dist/esm/styles/prism/'
-// export { default as oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism/one-dark';
 import chroma from "chroma-js"
 
 import logo from "./images/logo.png"
@@ -261,28 +259,6 @@ function App() {
 								/>
 							</pre>
 						</>
-						{/* <ReactMarkdown
-							children={code}
-							components={{
-								code({ node, inline, className, children, ...props }) {
-									const match = /language-(\w+)/.exec(className || '')
-									return !inline && match ? (
-										<SyntaxHighlighter
-											children={String(children).replace(/\n$/, '')}
-											style={dark}
-											language={match[1]}
-											PreTag="div"
-											{...props}
-										/>
-									) : (
-										<code className={className} {...props}>
-											{children}
-										</code>
-									)
-								}
-							}}
-						/> */}
-						{/* <pre dangerouslySetInnerHTML={{ __html: code }}></pre> */}
 					</div>
 
 					{/* Gradient Color Mode Control */}
