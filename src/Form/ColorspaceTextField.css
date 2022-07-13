@@ -1,0 +1,5 @@
+.color-picker:hover,
+.color-picker:focus,
+.color-picker:active {
+    cursor: pointer;
+}

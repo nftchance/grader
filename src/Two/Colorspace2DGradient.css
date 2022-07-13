@@ -1,0 +1,49 @@
+.rc-slider { 
+    background: transparent !important;
+}
+
+.rc-slider-rail,
+.rc-slider-track {
+    background-color: transparent !important;
+}
+
+.rc-slider-handle { 
+    position: absolute;
+    width: 5px;
+    height: 125px !important;
+    margin-top: -35px !important;
+    background-color: transparent !important;
+    border: solid 2px transparent !important;
+    border-radius: 0px !important;
+    cursor: pointer;
+    cursor: grab;
+    opacity: 0.8;
+    touch-action: pan-x;
+    box-shadow: none !important;
+}
+
+.gradient {
+    position: relative;
+    grid-column: 1 / span 4;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+
+.gradient-slider {
+    position: absolute;
+    top: 0;
+    bottom: -30px;
+    background: #fff;
+    width: 1px;
+    left: 0;
+}
+
+.gradient-slider .handle {
+    height: 15px;
+    width: 15px;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    position: absolute; 
+    bottom: -15px;
+    left: -7px;
+}

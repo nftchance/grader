@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { Button } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons'
@@ -8,16 +9,20 @@ import { fab } from '@fortawesome/free-brands-svg-icons'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import CodeTheme from "./Code/ColorspaceCodeTheme";
 
+
 import chroma from "chroma-js"
 
 import logo from "./images/logo.png"
 
 import Cube from "./Three/Cube";
+import Colorspace2DGradient from './Two/Colorspace2DGradient';
 import ColorspaceTextField from './Form/ColorspaceTextField';
 import ColorspaceToggleButtonGroup from './Form/ColorspaceToggleButtonGroup';
+import ColorspaceColor from './Form/ColorspaceColor';
+
+import 'rc-slider/assets/index.css';
 
 import './App.css';
-import { Button } from '@mui/material';
 
 library.add(fab)
 
@@ -37,8 +42,8 @@ const theme = createTheme({
 
 function App() {
 	const defaultGradient = [
-		{ color: '#ffffff', visible: true },
-		{ color: '#000000', visible: true }
+		{ color: '#ffffff', domain: 0, visible: true },
+		{ color: '#000000', domain: 1, visible: true }
 	];
 
 	const cubeColorModes = [
@@ -81,9 +86,22 @@ function App() {
 
 	const handleColorAddition = (event) => {
 		event.preventDefault();
+
+		let overlapColors = [colors[0]]
+		const joiningColors = [...colors.slice(1, colors.length - 1)]
+		if (joiningColors)
+			overlapColors = overlapColors.concat(joiningColors)
+
+		console.log("DOMAIN TO SET", (1 + colors[colors.length - 2].domain) / 2)
+
 		setColors([
-			...colors,
-			{ color: '#000000', visible: true }
+			...overlapColors,
+			{
+				color: '#000000',
+				domain: (1 + colors[colors.length - 2].domain) / 2,
+				visible: true
+			},
+			colors[colors.length - 1]
 		])
 	}
 
@@ -96,6 +114,7 @@ function App() {
 		const _colors = colors.map((color, idx) => (
 			idx !== colorId ? color : {
 				color: e.target.value,
+				domain: color.domain,
 				visible: color.visible
 			}
 		))
@@ -103,10 +122,31 @@ function App() {
 		setColors(_colors)
 	}
 
+	const handleDomainChange = (domains) => {
+		// dont allow users to move the solo base anchors
+		if (domains.length === 2) return
+
+		// loop through all domains
+		const domainedColors = colors.map((color, i) => {
+			return {
+				...color,
+				domain: domains[i] / 100,
+			}
+		})
+
+		setColors(domainedColors)
+	}
+
 	useEffect(() => {
 		// scales it in certain mode
-		const chromaGradient = (gradientColors) => {
-			return chroma.scale(gradientColors).mode(gradientColorMode.toLowerCase()).colors(points)
+		const chromaGradient = (gradientColors, gradientDomains) => {
+			console.log(gradientColors, gradientDomains)
+
+			return chroma
+				.scale(gradientColors)
+				.domain(gradientDomains)
+				.mode(gradientColorMode.toLowerCase())
+				.colors(points)
 		}
 
 		const chromaGradientCode = (colors) => {
@@ -116,10 +156,9 @@ function App() {
 		const chromaStringGradient = (gradientColors) => {
 			try {
 				const chromaColors = chromaGradient(
-					gradientColors.map(color => color.color)
+					gradientColors.map(color => color.color),
+					gradientColors.map(color => color.domain)
 				);
-
-				console.log('chromaColors', chromaColors)
 
 				const chromaGradientString = `linear-gradient(\n\t90deg,
 						${chromaColors} 
@@ -194,25 +233,18 @@ function App() {
 						/>
 
 						<ColorspaceTextField
-							label="Gradient Degree"
-							defaultValue={points}
+							label="Angle"
+							defaultValue={degree}
 							aria-label="angle of rotation on gradient"
 							id="degree"
 							type="number"
 							onChange={(event) => { setDegree(event.target.value); }}
 						/>
 
-						{colors.map((color, idx) => (
-							<ColorspaceTextField
-								key={`color:${idx}`}
-								label={`Color #${idx + 1}`}
-								defaultValue={`${color.color}`}
-								id={`color-${idx}`}
-								onChange={(e) => {
-									handleColorChange(e, idx)
-								}}
-							/>
-						))}
+						<ColorspaceColor
+							colors={colors}
+							handleColorChange={handleColorChange}
+						/>
 
 						<div style={{
 							marginTop: 10
@@ -280,9 +312,11 @@ function App() {
 					</div>
 
 					{/* 2D Gradient Visualization */}
-					<div className="step gradient" style={{
-						background: activeGradient
-					}} />
+					<Colorspace2DGradient
+						colors={colors}
+						gradient={activeGradient}
+						onChange={handleDomainChange}
+					/>
 				</div>
 
 				<div className="grey">
