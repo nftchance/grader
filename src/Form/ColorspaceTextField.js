@@ -24,6 +24,7 @@ const ColorspaceTextField = styled((props) => {
 
 	return (
 		<Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+			{/* Standard styled input for Colorspace */}
 			<TextField
 				InputProps={{ disableUnderline: true }}
 				variant="filled"
