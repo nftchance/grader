@@ -1,15 +1,32 @@
+import { Box } from '@mui/material';
 import TextField from '@mui/material/TextField';
 
 import { alpha, styled } from '@mui/material/styles';
 
-const ColorspaceTextField = styled((props) => (
-	<TextField 
-		InputProps={{ disableUnderline: true }}
-		variant="filled"
-		{...props}
-	/>
-))(({ theme }) => ({
-	'&': { 
+import "./ColorspaceTextField.css";
+
+const ColorspaceTextField = styled((props) => {
+	const { colorspaceColor } = props;
+
+	return (
+		<Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+			<TextField
+				InputProps={{ disableUnderline: true }}
+				variant="filled"
+				{...props}
+			/>
+
+			{colorspaceColor && <div className="color-picker" style={{
+				background: `${colorspaceColor.color}`,
+				border: '1px solid #fff',
+				borderLeft: 'none',
+				height: 58,
+				width: 58,
+			}} />}
+		</Box>
+	)
+})(({ theme }) => ({
+	'&': {
 		marginTop: 10,
 		width: "100%",
 		"& .MuiInputLabel-root": { color: 'white' },

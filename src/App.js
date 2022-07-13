@@ -15,6 +15,7 @@ import logo from "./images/logo.png"
 import Cube from "./Three/Cube";
 import ColorspaceTextField from './Form/ColorspaceTextField';
 import ColorspaceToggleButtonGroup from './Form/ColorspaceToggleButtonGroup';
+import ColorspaceColor from './Form/ColorspaceColor';
 
 import './App.css';
 import { Button } from '@mui/material';
@@ -37,8 +38,8 @@ const theme = createTheme({
 
 function App() {
 	const defaultGradient = [
-		{ color: '#ffffff', visible: true },
-		{ color: '#000000', visible: true }
+		{ color: '#ffffff', domain: 0, visible: true },
+		{ color: '#000000', domain: 1, visible: true }
 	];
 
 	const cubeColorModes = [
@@ -83,7 +84,11 @@ function App() {
 		event.preventDefault();
 		setColors([
 			...colors,
-			{ color: '#000000', visible: true }
+			{ 
+				color: '#000000',
+				domain: 0, 
+				visible: true 
+			}
 		])
 	}
 
@@ -105,8 +110,12 @@ function App() {
 
 	useEffect(() => {
 		// scales it in certain mode
-		const chromaGradient = (gradientColors) => {
-			return chroma.scale(gradientColors).mode(gradientColorMode.toLowerCase()).colors(points)
+		const chromaGradient = (gradientColors, gradientDomains) => {
+			return chroma
+				.scale(gradientColors)
+				.domain(gradientDomains)
+				.mode(gradientColorMode.toLowerCase())
+				.colors(points)
 		}
 
 		const chromaGradientCode = (colors) => {
@@ -114,12 +123,13 @@ function App() {
 		}
 
 		const chromaStringGradient = (gradientColors) => {
+			console.log(gradientColors)
+
 			try {
 				const chromaColors = chromaGradient(
-					gradientColors.map(color => color.color)
+					gradientColors.map(color => color.color),
+					gradientColors.map((color, idx) => idx / gradientColors.length)
 				);
-
-				console.log('chromaColors', chromaColors)
 
 				const chromaGradientString = `linear-gradient(\n\t90deg,
 						${chromaColors} 
@@ -202,17 +212,10 @@ function App() {
 							onChange={(event) => { setDegree(event.target.value); }}
 						/>
 
-						{colors.map((color, idx) => (
-							<ColorspaceTextField
-								key={`color:${idx}`}
-								label={`Color #${idx + 1}`}
-								defaultValue={`${color.color}`}
-								id={`color-${idx}`}
-								onChange={(e) => {
-									handleColorChange(e, idx)
-								}}
-							/>
-						))}
+						<ColorspaceColor 
+							colors={colors}
+							handleColorChange={handleColorChange}
+						/>
 
 						<div style={{
 							marginTop: 10
