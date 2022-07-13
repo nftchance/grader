@@ -247,6 +247,12 @@ function App() {
 							aria-label="angle of rotation on gradient"
 							id="degree"
 							type="number"
+							inputProps={{
+								inputMode: 'numeric',
+								pattern: '/^-?d+(?:.d+)?$/g',
+								min: colors.length,
+								max: colors.length * 10
+							}}
 							onChange={(event) => { setDegree(event.target.value); }}
 						/>
 
