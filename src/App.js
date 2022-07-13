@@ -110,7 +110,7 @@ function App() {
 		}
 
 		const chromaGradientCode = (colors) => {
-			return `background: linear-gradient(\n\t${degree}deg,${colors.map(color => `\n\t${chroma(color).css(gradientColorMode === "RGB" ? 'rgb' : 'hsl')}`)}\n)`;
+			return `background: linear-gradient(\n\t${degree}deg,${colors.map(color => `\n\t${chroma(color).css('hsl')}`)}\n)`;
 		}
 
 		const chromaStringGradient = (gradientColors) => {
