@@ -127,7 +127,7 @@ function App() {
 				`;
 
 				setActiveGradient(chromaGradientString)
-
+				setScore(75);
 				setCode(chromaGradientCode(chromaColors))
 			} catch (e) {
 				console.log('Failed to update:', e)
@@ -139,7 +139,8 @@ function App() {
 		activeGradient,
 		colors,
 		gradientColorMode,
-		points
+		points,
+		degree
 	])
 
 	useEffect(() => {
@@ -190,6 +191,15 @@ function App() {
 							id="points-of-separation"
 							type="number"
 							onChange={handlePointsChange}
+						/>
+
+						<ColorspaceTextField
+							label="Gradient Degree"
+							defaultValue={points}
+							aria-label="angle of rotation on gradient"
+							id="degree"
+							type="number"
+							onChange={(event) => { setDegree(event.target.value); }}
 						/>
 
 						{colors.map((color, idx) => (
