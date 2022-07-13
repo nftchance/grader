@@ -124,7 +124,7 @@ function App() {
 
 	const handleDomainChange = (domains) => {
 		// dont allow users to move the solo base anchors
-		if (domains.length == 2) return
+		if (domains.length === 2) return
 
 		// loop through all domains
 		const domainedColors = colors.map((color, i) => {
