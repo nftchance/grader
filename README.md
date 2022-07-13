@@ -1,3 +1,5 @@
+![Colorspace](src/images/demo/colorspace.png)
+
 For the last few hundred years brands have been primarily consumed through real-world interaction. In 2022, that has shifted to a world where many brands never reach beyond a screen. This has led to an entire era of design in which brand colors are being determined and used entirely incorrectly.
 
 In the same way that we do not mimic the methods used to create newspapers for digital content, a designer can get a massive helping by utilizing a colorspace that is defined around the thought of digital consumption.

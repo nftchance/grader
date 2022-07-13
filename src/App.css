@@ -14,7 +14,7 @@
 .tool {
     display: grid;
     grid-template: 'cube cube input score'
-        'cube cube input code';
+                    'cube cube input code';
     gap: 30px;
     margin-bottom: 240px;
     margin-top: 60px;
@@ -34,7 +34,7 @@
 
 .cube {
     grid-area: cube;
-    min-width: 500px;
+    min-width: 1200px;
     padding: 0px;
 }
 
