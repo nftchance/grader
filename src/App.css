@@ -27,8 +27,9 @@
     padding: 30px;
 }
 
+.fa,
 .step .svg-inline--fa {
-    font-size: 18px;
+    height: 18px;
     margin-block: auto;
 }
 

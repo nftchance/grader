@@ -2,29 +2,25 @@ import { useEffect, useState } from 'react';
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Button } from '@mui/material';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { fab } from '@fortawesome/free-brands-svg-icons'
 
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
-import CodeTheme from "./Code/ColorspaceCodeTheme";
-
 
 import chroma from "chroma-js"
-
-import logo from "./images/logo.png"
+import 'rc-slider/assets/index.css';
 
 import Cube from "./Three/Cube";
 import Colorspace2DGradient from './Two/Colorspace2DGradient';
 import ColorspaceTextField from './Form/ColorspaceTextField';
 import ColorspaceToggleButtonGroup from './Form/ColorspaceToggleButtonGroup';
 import ColorspaceColor from './Form/ColorspaceColor';
+import CodeTheme from "./Code/ColorspaceCodeTheme";
 
-import 'rc-slider/assets/index.css';
+import logo from "./images/logo.png"
+import save from "./icons/save.png"
+import shuffle from "./icons/shuffle.png";
+import twitter from "./icons/twitter.png";
 
 import './App.css';
-
-library.add(fab)
 
 const theme = createTheme({
 	palette: {
@@ -208,13 +204,14 @@ function App() {
 					</div>
 
 					<div className="step input">
-						<h3>
+						<h3 style={{
+							display: "flex",
+							alignItems: "center"
+						}}>
 							INPUT
-							<span style={{ float: "right" }}>
-								<i className="fa fa-shuffle"></i>
-								<FontAwesomeIcon icon={['fab', 'twitter']} style={{
-									marginLeft: 15
-								}} />
+							<span style={{ marginLeft: "auto" }}>
+								<img src={save} className="fa" alt="save icon" />
+								<img src={shuffle} className="fa" style={{ marginLeft: 15 }} alt="shuffle icon"/>
 							</span>
 						</h3>
 
@@ -286,7 +283,7 @@ function App() {
 						<h3>
 							SCORE
 							<span style={{ float: "right" }}>
-								<FontAwesomeIcon icon={['fab', 'twitter']} />
+								<img src={twitter} className="fa" alt="twitter icon" />
 							</span>
 						</h3>
 
