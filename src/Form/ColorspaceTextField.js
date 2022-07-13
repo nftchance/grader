@@ -10,7 +10,7 @@ import { alpha, styled } from '@mui/material/styles';
 import "./ColorspaceTextField.css";
 
 const ColorspaceTextField = styled((props) => {
-	const { colorspaceColor, onChange, ...textInputProps} = props;
+	const { colorspaceColor, onChange, ...textInputProps } = props;
 
 	const [displayColorPicker, setDisplayColorPicker] = useState(false);
 
@@ -46,11 +46,13 @@ const ColorspaceTextField = styled((props) => {
 						}}
 					/>
 
+					{/* 'Click anywhere' closer */}
 					{displayColorPicker ?
 						<div style={{
 							position: 'absolute',
 							zIndex: 2,
 						}}>
+							{/* Color preview */}
 							<div style={{
 								position: 'fixed',
 								top: 0,
@@ -58,13 +60,14 @@ const ColorspaceTextField = styled((props) => {
 								left: 0,
 								right: 0
 							}} onClick={handleClose} />
+
+							{/* Color picker */}
 							<ChromePicker
 								triangle='top-right'
 								color={colorspaceColor.color}
-								onChange={(event) => {
-									console.log(event)
-									onChange()
-								}}
+								onChange={(event) => onChange(
+									{ target: { value: event.hex } }
+								)}
 							/>
 						</div> : null
 					}
