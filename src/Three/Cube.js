@@ -12,43 +12,6 @@ const SEGMENTS = 1;
 // TODO: On hover make it have an opacity
 // TODO: On hover show the points of the circle
 
-// const WaveShaderMaterial = shaderMaterial(
-//     // Uniform
-//     { uColor: new THREE.Color(1.0, 0.0, 0.0), uTime: 0, uTexture: null },
-//     // Vertex Shader 
-//     glsl`
-//         precision mediump float;
-
-//         varying vec2 vUv;
-//         uniform float uTime;
-
-//         void main() {
-//             vUv = uv;
-
-//             gl_Position = projectionMatrix * modelViewMatrix * vec4(
-//                 position, 
-//                 1.0 
-//             );
-//         }
-//     `,
-//     // Fragment Shader
-//     glsl`
-//         precision mediump float;
-
-//         uniform vec3 uColor;
-//         uniform float uTime;
-//         uniform sampler2D uTexture;
-
-//         varying vec2 vUv;
-
-//         void main() {
-//             vec3 texture = texture2D(uTexture, vUv).rgb; 
-//             gl_FragColor = vec4(texture, 1.0);
-//         }
-//     `
-// )
-// extend({ WaveShaderMaterial });
-
 const Floor = () => {
     // REPEAT THE TEXTURE A TON OF TIMES
     const floorTexture = useLoader(TextureLoader, 'ground.jpg');
