@@ -65,7 +65,6 @@ function App() {
 	const [colors, setColors] = useState(defaultGradient);
 	const [points, setPoints] = useState(defaultGradient.length * pointsColorsFactor)
 
-	
 	const [colorMode, setColorMode] = useState(cubeColorModes[0])
 	const [gradientColorMode, setGradientColorMode] = useState(colorsModes[0])
 	const [degree, setDegree] = useState(0);
@@ -101,10 +100,10 @@ function App() {
 				visible: true
 			},
 			colors[colors.length - 1]
-		] 
+		]
 
 		// if the default points value is being used, continue using it
-		if(points === (colorAddedColors.length - 1) * pointsColorsFactor)
+		if (points === (colorAddedColors.length - 1) * pointsColorsFactor)
 			setPoints(colorAddedColors.length * pointsColorsFactor)
 
 		setColors(colorAddedColors)
@@ -176,7 +175,7 @@ function App() {
 			}
 		}
 
-		if(!colors.every(color => chroma.valid(color.color))) return
+		if (!colors.every(color => chroma.valid(color.color))) return
 
 		chromaStringGradient(colors)
 	}, [
@@ -234,11 +233,11 @@ function App() {
 							aria-label="color scale points of separation"
 							id="points-of-separation"
 							type="number"
-							inputProps={{ 
-									inputMode: 'numeric', 
-									pattern: '/^-?d+(?:.d+)?$/g',
-									min: colors.length,
-									max: colors.length * 10
+							inputProps={{
+								inputMode: 'numeric',
+								pattern: '/^-?d+(?:.d+)?$/g',
+								min: colors.length,
+								max: colors.length * 10
 							}}
 							onChange={handlePointsChange}
 						/>
