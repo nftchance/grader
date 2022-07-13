@@ -93,8 +93,6 @@ function App() {
 		if (joiningColors)
 			overlapColors = overlapColors.concat(joiningColors)
 
-		console.log("DOMAIN TO SET", (1 + colors[colors.length - 2].domain) / 2)
-
 		const colorAddedColors = [
 			...overlapColors,
 			{
@@ -104,9 +102,11 @@ function App() {
 			},
 			colors[colors.length - 1]
 		] 
+
+		// if the default points value is being used, continue using it
 		if(points == (colorAddedColors.length - 1) * pointsColorsFactor)
 			setPoints(colorAddedColors.length * pointsColorsFactor)
-			
+
 		setColors(colorAddedColors)
 	}
 
