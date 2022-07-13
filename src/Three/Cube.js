@@ -146,7 +146,7 @@ const CubeMesh = (props) => {
 const Cube = (props) => {
     const { colors, colorMode: mode } = props;
 
-    console.log('colors', {colors})
+    console.log(colors)
 
     return (
         <Canvas
