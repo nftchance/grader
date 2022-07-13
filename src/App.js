@@ -63,8 +63,9 @@ function App() {
 
 	const [activeGradient, setActiveGradient] = useState(defaultGradient);
 	const [colors, setColors] = useState(defaultGradient);
-	const [points, setPoints] = useState(colors.length * pointsColorsFactor)
+	const [points, setPoints] = useState(defaultGradient.length * pointsColorsFactor)
 
+	
 	const [colorMode, setColorMode] = useState(cubeColorModes[0])
 	const [gradientColorMode, setGradientColorMode] = useState(colorsModes[0])
 	const [degree, setDegree] = useState(0);
@@ -92,9 +93,7 @@ function App() {
 		if (joiningColors)
 			overlapColors = overlapColors.concat(joiningColors)
 
-		console.log("DOMAIN TO SET", (1 + colors[colors.length - 2].domain) / 2)
-
-		setColors([
+		const colorAddedColors = [
 			...overlapColors,
 			{
 				color: '#000000',
@@ -102,7 +101,13 @@ function App() {
 				visible: true
 			},
 			colors[colors.length - 1]
-		])
+		] 
+
+		// if the default points value is being used, continue using it
+		if(points === (colorAddedColors.length - 1) * pointsColorsFactor)
+			setPoints(colorAddedColors.length * pointsColorsFactor)
+
+		setColors(colorAddedColors)
 	}
 
 	const handleColorClear = (event) => {
@@ -174,6 +179,7 @@ function App() {
 		}
 
 		chromaStringGradient(colors)
+		console.log('points', points)
 	}, [
 		activeGradient,
 		colors,
@@ -225,7 +231,7 @@ function App() {
 
 						<ColorspaceTextField
 							label="Domain Points"
-							defaultValue={points}
+							value={points}
 							aria-label="color scale points of separation"
 							id="points-of-separation"
 							type="number"
