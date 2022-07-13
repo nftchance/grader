@@ -145,8 +145,6 @@ function App() {
 	useEffect(() => {
 		// scales it in certain mode
 		const chromaGradient = (gradientColors, gradientDomains) => {
-			console.log(gradientColors, gradientDomains)
-
 			return chroma
 				.scale(gradientColors)
 				.domain(gradientDomains)
@@ -178,8 +176,9 @@ function App() {
 			}
 		}
 
+		if(!colors.every(color => chroma.valid(color.color))) return
+
 		chromaStringGradient(colors)
-		console.log('points', points)
 	}, [
 		activeGradient,
 		colors,
