@@ -131,7 +131,6 @@ input {
     grid-column: 1 / span 4;
 }
 
-.gradient {
-    width: 100%;
+.gradient-slider {
     grid-column: 1 / span 4;
 }

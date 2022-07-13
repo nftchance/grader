@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { Button } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons'
@@ -8,17 +9,20 @@ import { fab } from '@fortawesome/free-brands-svg-icons'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import CodeTheme from "./Code/ColorspaceCodeTheme";
 
+
 import chroma from "chroma-js"
 
 import logo from "./images/logo.png"
 
 import Cube from "./Three/Cube";
+import Colorspace2DGradient from './Two/Colorspace2DGradient';
 import ColorspaceTextField from './Form/ColorspaceTextField';
 import ColorspaceToggleButtonGroup from './Form/ColorspaceToggleButtonGroup';
 import ColorspaceColor from './Form/ColorspaceColor';
 
+import 'rc-slider/assets/index.css';
+
 import './App.css';
-import { Button } from '@mui/material';
 
 library.add(fab)
 
@@ -82,13 +86,22 @@ function App() {
 
 	const handleColorAddition = (event) => {
 		event.preventDefault();
+
+		let overlapColors = [colors[0]]
+		const joiningColors = [...colors.slice(1, colors.length - 1)]
+		if (joiningColors)
+			overlapColors = overlapColors.concat(joiningColors)
+
+		console.log("DOMAIN TO SET", (1 + colors[colors.length - 2].domain) / 2)
+
 		setColors([
-			...colors,
-			{ 
+			...overlapColors,
+			{
 				color: '#000000',
-				domain: 0, 
-				visible: true 
-			}
+				domain: (1 + colors[colors.length - 2].domain) / 2,
+				visible: true
+			},
+			colors[colors.length - 1]
 		])
 	}
 
@@ -101,6 +114,7 @@ function App() {
 		const _colors = colors.map((color, idx) => (
 			idx !== colorId ? color : {
 				color: e.target.value,
+				domain: color.domain,
 				visible: color.visible
 			}
 		))
@@ -108,9 +122,26 @@ function App() {
 		setColors(_colors)
 	}
 
+	const handleDomainChange = (domains) => {
+		// dont allow users to move the solo base anchors
+		if (domains.length == 2) return
+
+		// loop through all domains
+		const domainedColors = colors.map((color, i) => {
+			return {
+				...color,
+				domain: domains[i] / 100,
+			}
+		})
+
+		setColors(domainedColors)
+	}
+
 	useEffect(() => {
 		// scales it in certain mode
 		const chromaGradient = (gradientColors, gradientDomains) => {
+			console.log(gradientColors, gradientDomains)
+
 			return chroma
 				.scale(gradientColors)
 				.domain(gradientDomains)
@@ -123,12 +154,10 @@ function App() {
 		}
 
 		const chromaStringGradient = (gradientColors) => {
-			console.log(gradientColors)
-
 			try {
 				const chromaColors = chromaGradient(
 					gradientColors.map(color => color.color),
-					gradientColors.map((color, idx) => idx / gradientColors.length)
+					gradientColors.map(color => color.domain)
 				);
 
 				const chromaGradientString = `linear-gradient(\n\t90deg,
@@ -212,7 +241,7 @@ function App() {
 							onChange={(event) => { setDegree(event.target.value); }}
 						/>
 
-						<ColorspaceColor 
+						<ColorspaceColor
 							colors={colors}
 							handleColorChange={handleColorChange}
 						/>
@@ -283,9 +312,11 @@ function App() {
 					</div>
 
 					{/* 2D Gradient Visualization */}
-					<div className="step gradient" style={{
-						background: activeGradient
-					}} />
+					<Colorspace2DGradient
+						colors={colors}
+						gradient={activeGradient}
+						onChange={handleDomainChange}
+					/>
 				</div>
 
 				<div className="grey">

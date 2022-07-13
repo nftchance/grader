@@ -28,6 +28,7 @@ const ColorspaceTextField = styled((props) => {
 			<TextField
 				InputProps={{ disableUnderline: true }}
 				variant="filled"
+				value={colorspaceColor ? colorspaceColor.color : ''}
 				onChange={onChange}
 				{...textInputProps}
 			/>
