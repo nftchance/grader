@@ -6,7 +6,6 @@ import { Button } from '@mui/material';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 
 import chroma from "chroma-js"
-import 'rc-slider/assets/index.css';
 
 import Cube from "./Three/Cube";
 import Colorspace2DGradient from './Two/Colorspace2DGradient';
@@ -20,6 +19,7 @@ import save from "./icons/save.png"
 import shuffle from "./icons/shuffle.png";
 import twitter from "./icons/twitter.png";
 
+import 'rc-slider/assets/index.css';
 import './App.css';
 
 const theme = createTheme({
@@ -137,6 +137,10 @@ function App() {
 		setColors(domainedColors)
 	}
 
+	const saveURL = () => {
+		return encodeURI(`${window.location.href.split("?")[0]}?cube-color-mode=${colorMode}&gradient-color-mode=${gradientColorMode}&colors=${colors.map(color => color.color)}&domains=${colors.map(color => color.domain)}`)
+	}
+
 	useEffect(() => {
 		// scales it in certain mode
 		const chromaGradient = (gradientColors, gradientDomains) => {
@@ -210,8 +214,20 @@ function App() {
 						}}>
 							INPUT
 							<span style={{ marginLeft: "auto" }}>
-								<img src={save} className="fa" alt="save icon" />
-								<img src={shuffle} className="fa" style={{ marginLeft: 15 }} alt="shuffle icon"/>
+								<Button
+									onClick={() => {
+										console.log(saveURL())
+									}}
+								>
+									<img src={save} className="fa" alt="save icon" />
+								</Button>
+								<Button
+									onClick={() => {
+										console.log('shuffle baby')
+									}}
+								>
+									<img src={shuffle} className="fa" alt="shuffle icon" />
+								</Button>
 							</span>
 						</h3>
 
@@ -283,7 +299,13 @@ function App() {
 						<h3>
 							SCORE
 							<span style={{ float: "right" }}>
-								<img src={twitter} className="fa" alt="twitter icon" />
+								<Button
+									onClick={() => { 
+										console.log('Sharing to twitter mfer!')
+									}}
+								>
+									<img src={twitter} className="fa" alt="twitter icon" />
+								</Button>
 							</span>
 						</h3>
 
