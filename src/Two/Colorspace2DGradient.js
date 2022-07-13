@@ -17,7 +17,7 @@ const Colorspace2DGradient = (props) => {
                 max={100}
                 value={colors.map(color => color.domain * 100)}
                 onChange={onChange}
-                allowCross={false}
+                pushable={true}
             />
 
             {colors.map((color, idx) => { 
