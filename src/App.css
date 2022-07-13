@@ -50,6 +50,7 @@
 .code {
     grid-area: code;
     min-width: 300px;
+    font-variant: tabular-nums;
 }
 
 h1 {

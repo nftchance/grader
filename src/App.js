@@ -109,7 +109,11 @@ function App() {
 			return chroma.scale(gradientColors).mode(gradientColorMode.toLowerCase()).colors(points)
 		}
 
-		const stringGradient = (gradientColors) => {
+		const chromaGradientCode = (colors) => {
+			return `background: linear-gradient(\n\t${degree}deg,${colors.map(color => `\n\t${chroma(color).css(gradientColorMode === "RGB" ? 'rgb' : 'hsl')}`)}\n)`;
+		}
+
+		const chromaStringGradient = (gradientColors) => {
 			try {
 				const chromaColors = chromaGradient(
 					gradientColors.map(color => color.color)
@@ -124,20 +128,13 @@ function App() {
 
 				setActiveGradient(chromaGradientString)
 
-				return { chromaColors, chromaGradientString };
+				setCode(chromaGradientCode(chromaColors))
 			} catch (e) {
 				console.log('Failed to update:', e)
 			}
-
-			return null, null;
 		}
 
-		const chromaGradientCode = (colors) => {
-			return `background: linear-gradient(\n\t${degree}deg,${colors.map(color => `\n\t${chroma(color).css(gradientColorMode === "RGB" ? 'rgb' : 'hsl')}`)}\n)`;
-		}
-
-		const { chromaColors: gradientColors, chromaGradientString } = stringGradient(colors)
-		setCode(chromaGradientCode(gradientColors))
+		chromaStringGradient(colors)
 	}, [
 		activeGradient,
 		colors,
