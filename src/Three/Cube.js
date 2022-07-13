@@ -123,7 +123,7 @@ const CubeMesh = (props) => {
 
     // TODO: ROTATE THE CONE REF
     useEffect(() => { 
-        if(mode == "HSL") {
+        if(mode === "HSL") {
             ref.current.rotation.x = Math.PI;
         } else {
             ref.current.rotation.x = 0;
@@ -145,6 +145,8 @@ const CubeMesh = (props) => {
 
 const Cube = (props) => {
     const { colors, colorMode: mode } = props;
+
+    console.log('colors', {colors})
 
     return (
         <Canvas

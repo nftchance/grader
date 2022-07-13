@@ -1,23 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,400;0,900;1,100;1,400;1,900&display=swap');
-	
+
 :root {
-	--black: rgba(0, 0, 0);
-	--white-65: rgba(255, 255, 255, 0.65);
-	--white-85: rgba(255, 255, 255, 0.85);
-	--white: rgba(255, 255, 255);
+  --black: rgba(0, 0, 0);
+  --white-65: rgba(255, 255, 255, 0.65);
+  --white-85: rgba(255, 255, 255, 0.85);
+  --white: rgba(255, 255, 255);
 }
 
 * {
-    box-sizing: border-box;
-    font-family: 'Work Sans', sans-serif;
-    margin: 0;
+  box-sizing: border-box;
+  font-family: 'Work Sans', sans-serif;
+  margin: 0;
 }
 
 body {
-    background: var(--black);
-    overflow-x: hidden;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  background: var(--black);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 h1,
@@ -54,24 +54,33 @@ a:active {
   color: var(--white-85);
 }
 
+pre, 
+pre div {
+  padding-left: 0px !important;
+}
+
+.code {
+  color: var(--white-85);
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar {
-    height: 4px;
-    width: 4px;
+  height: 4px;
+  width: 4px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-    background: var(--black);
+  background: var(--black);
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: var(--white-65); 
-    border-radius: 2px;
+  background: var(--white-65);
+  border-radius: 2px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--white);
+  background: var(--white);
 }

@@ -5,6 +5,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import CodeTheme from "./Code/ColorspaceCodeTheme";
+
+// import { dracula as dark } from 'react-syntax-highlighter/dist/esm/styles/prism/'
+// export { default as oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism/one-dark';
 import chroma from "chroma-js"
 
 import logo from "./images/logo.png"
@@ -14,6 +19,7 @@ import ColorspaceTextField from './Form/ColorspaceTextField';
 import ColorspaceToggleButtonGroup from './Form/ColorspaceToggleButtonGroup';
 
 import './App.css';
+import { Button } from '@mui/material';
 
 library.add(fab)
 
@@ -58,34 +64,12 @@ function App() {
 
 	const [colorMode, setColorMode] = useState(cubeColorModes[0])
 	const [gradientColorMode, setGradientColorMode] = useState(colorsModes[0])
+	const [degree, setDegree] = useState(0);
 
 	const [score, setScore] = useState(0);
 	const [best, setBest] = useState(score);
 
 	const [code, setCode] = useState(null);
-
-	const chromaGradient = (gradientColors) => {
-		return chroma.scale(gradientColors).mode(gradientColorMode.toLowerCase()).colors(points)
-	}
-
-	const stringGradient = (gradientColors) => {
-		try {
-			const chromaColors = chromaGradient(
-				gradientColors.map((color, colordx) => (color.color))
-			);
-
-			const chromaGradientString = `
-				linear-gradient(
-					90deg,
-					${chromaColors} 
-				)
-			`;
-
-			setActiveGradient(chromaGradientString)
-		} catch (e) {
-			console.log('Failed to update:', e)
-		}
-	}
 
 	const handleColorModeChange = (event, newColorMode) => {
 		if (newColorMode !== null) {
@@ -93,7 +77,7 @@ function App() {
 		}
 	};
 
-	const handlePointsChange = (event) => { 
+	const handlePointsChange = (event) => {
 		setPoints(event.target.value)
 	}
 
@@ -112,7 +96,7 @@ function App() {
 
 	const handleColorChange = (e, colorId) => {
 		const _colors = colors.map((color, idx) => (
-			idx != colorId ? color : {
+			idx !== colorId ? color : {
 				color: e.target.value,
 				visible: color.visible
 			}
@@ -122,18 +106,56 @@ function App() {
 	}
 
 	useEffect(() => {
-		stringGradient(colors)
-	}, [colors, gradientColorMode, points])
+		// scales it in certain mode
+		const chromaGradient = (gradientColors) => {
+			return chroma.scale(gradientColors).mode(gradientColorMode.toLowerCase()).colors(points)
+		}
+
+		const stringGradient = (gradientColors) => {
+			try {
+				const chromaColors = chromaGradient(
+					gradientColors.map(color => color.color)
+				);
+
+				console.log('chromaColors', chromaColors)
+
+				const chromaGradientString = `linear-gradient(\n\t90deg,
+						${chromaColors} 
+					)
+				`;
+
+				setActiveGradient(chromaGradientString)
+
+				return { chromaColors, chromaGradientString };
+			} catch (e) {
+				console.log('Failed to update:', e)
+			}
+
+			return null, null;
+		}
+
+		const chromaGradientCode = (colors) => {
+			return `background: linear-gradient(\n\t${degree}deg,${colors.map(color => `\n\t${chroma(color).css(gradientColorMode === "RGB" ? 'rgb' : 'hsl')}`)}\n)`;
+		}
+
+		const { chromaColors: gradientColors, chromaGradientString } = stringGradient(colors)
+		setCode(chromaGradientCode(gradientColors))
+	}, [
+		activeGradient,
+		colors,
+		gradientColorMode,
+		points
+	])
 
 	useEffect(() => {
 		if (score > best) setBest(score);
-	}, [score])
+	}, [score, best])
 
 	return (
 		<ThemeProvider theme={theme}>
 			<div className="container">
 				<div className="navbar">
-					<a href="/"><img src={logo} /></a>
+					<a href="/"><img src={logo} alt="navbar logo" /></a>
 
 					<div className={`theme-controls ${theme}`} />
 				</div>
@@ -190,13 +212,21 @@ function App() {
 						<div style={{
 							marginTop: 10
 						}}>
-							<a href="#" onClick={handleColorAddition}>Add Color</a>
-							<a href="#" onClick={handleColorClear} style={{
-								float: "right",
-								color: "red"
-							}}>
+							<Button
+								onClick={handleColorAddition}
+							>
+								Add Color
+							</Button>
+
+							<Button
+								onClick={handleColorClear}
+								style={{
+									float: "right",
+									color: "red"
+								}}
+							>
 								Clear
-							</a>
+							</Button>
 						</div>
 					</div>
 
@@ -221,7 +251,38 @@ function App() {
 					{/* Formatted Code Output of Active Gradient */}
 					<div className="step code">
 						<h3>CODE</h3>
-						<code>{code}</code>
+						<>
+							<pre>
+								<SyntaxHighlighter
+									language="css"
+									style={CodeTheme()}
+									PreTag="div"
+									children={code}
+								/>
+							</pre>
+						</>
+						{/* <ReactMarkdown
+							children={code}
+							components={{
+								code({ node, inline, className, children, ...props }) {
+									const match = /language-(\w+)/.exec(className || '')
+									return !inline && match ? (
+										<SyntaxHighlighter
+											children={String(children).replace(/\n$/, '')}
+											style={dark}
+											language={match[1]}
+											PreTag="div"
+											{...props}
+										/>
+									) : (
+										<code className={className} {...props}>
+											{children}
+										</code>
+									)
+								}
+							}}
+						/> */}
+						{/* <pre dangerouslySetInnerHTML={{ __html: code }}></pre> */}
 					</div>
 
 					{/* Gradient Color Mode Control */}
@@ -255,7 +316,7 @@ function App() {
 
 				<div className="footer">
 					<a href="/">
-						<img src={logo} />
+						<img src={logo} alt="footer logo" />
 					</a>
 
 					<p>
