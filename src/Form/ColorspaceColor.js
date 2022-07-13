@@ -9,7 +9,7 @@ const ColorspaceColor = (props) => {
                 <ColorspaceTextField
                     key={`color:${idx}`}
                     label={`Color #${idx + 1}`}
-                    defaultValue={`${color.color}`}
+                    value={`${color.color}`}
                     id={`color-${idx}`}
                     colorspaceColor={color}
                     onChange={(e) => {

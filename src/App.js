@@ -234,12 +234,17 @@ function App() {
 							aria-label="color scale points of separation"
 							id="points-of-separation"
 							type="number"
+							inputProps={{ 
+									inputMode: 'numeric', 
+									pattern: '/^-?\d+(?:\.\d+)?$/g',
+									min: colors.length,
+									max: colors.length * 10
+							}}
 							onChange={handlePointsChange}
 						/>
 
 						<ColorspaceTextField
 							label="Angle"
-							defaultValue={degree}
 							aria-label="angle of rotation on gradient"
 							id="degree"
 							type="number"

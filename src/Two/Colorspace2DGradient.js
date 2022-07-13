@@ -5,8 +5,6 @@ import "./Colorspace2DGradient.css";
 const Colorspace2DGradient = (props) => {
     const { colors, onChange, gradient } = props;
 
-    console.log(colors)
-
     return (
         <div className="step gradient" style={{
             background: gradient,
