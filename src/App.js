@@ -194,8 +194,8 @@ function App() {
 						/>
 
 						<ColorspaceTextField
-							label="Gradient Degree"
-							defaultValue={points}
+							label="Angle"
+							defaultValue={degree}
 							aria-label="angle of rotation on gradient"
 							id="degree"
 							type="number"
