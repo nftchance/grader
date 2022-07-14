@@ -260,16 +260,50 @@ function App() {
 				`;
 
 				setActiveGradient(chromaGradientString)
-				setScore(75);
 				setCode(chromaGradientCode(chromaColors))
+
+				return chromaColors; 
 			} catch (e) {
 				console.log('Failed to update:', e)
 			}
+
+			return null
+		}
+
+		const chromaLightnessMaxDiff = (chromaColors) => { 
+			const chromaLightness = chromaColors.map(color => chroma(color).hsl()[2] * 100);
+			// const min = Math.min.apply(null, chromaLightness);
+			// const max = Math.max.apply(null, chromaLightness);
+
+			const chromeLightnessDeviations = chromaLightness.map((color, idx) => { 
+				if (idx > 0)
+					return Math.floor(Math.abs(chromaLightness[idx] - chromaLightness[idx - 1]))
+				return 0
+			})
+
+			return Math.max.apply(null, chromeLightnessDeviations);
+		}
+
+		const chromaGradientScore = (chromaColors) => {
+			let score = 100;
+
+			// Factor in maximum devitation
+			const lightnessMaxDiff = chromaLightnessMaxDiff(chromaColors)
+			console.log(lightnessMaxDiff)
+			score = score - lightnessMaxDiff * 2
+
+			// implement linear consideration
+			// implement rollercoaster poision
+
+			return score
 		}
 
 		if (!colors.every(color => chroma.valid(color.color))) return
 
-		chromaStringGradient(colors)
+		const gradient = chromaStringGradient(colors)
+		const score = chromaGradientScore(gradient)
+
+		setScore(score);
 	}, [
 		activeGradient,
 		colors,
