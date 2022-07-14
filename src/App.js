@@ -187,13 +187,15 @@ function App() {
 		})))
 	}
 
-	const onLinkCopy = (event, element) => {
+	// Control the tooltip for copying the input link
+	const onLinkCopy = () => {
 		setLinkCopied(true)
 		setTimeout(() => {
 			setLinkCopied(false)
 		}, 1500);
 	}
 
+	// Control the tooltip for copying the code of the scale
 	const onCodeCopy = () => { 
 		setCodeCopied(true)
 		setTimeout(() => {
