@@ -60,7 +60,7 @@ function App() {
 
 	const [colorMode, setColorMode] = useState(cubeColorModes[0])
 	const [gradientColorMode, setGradientColorMode] = useState(colorsModes[0])
-	const [degree, setDegree] = useState(0);
+	const [degree, setDegree] = useState(90);
 
 	const [score, setScore] = useState(0);
 	const [best, setBest] = useState(score);
@@ -254,7 +254,7 @@ function App() {
 					gradientColors.map(color => color.domain)
 				);
 
-				const chromaGradientString = `linear-gradient(\n\t90deg,
+				const chromaGradientString = `linear-gradient(\n\t${degree}deg,
 						${chromaColors} 
 					)
 				`;
