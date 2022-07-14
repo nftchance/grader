@@ -54,8 +54,6 @@ function App() {
 
 	const pointsColorsFactor = 3;
 
-	const queryParams = new URLSearchParams(decodeURIComponent(window.location.search))
-
 	const [activeGradient, setActiveGradient] = useState(defaultGradient);
 	const [colors, setColors] = useState(defaultGradient);
 	const [points, setPoints] = useState(defaultGradient.length * pointsColorsFactor)
@@ -68,22 +66,6 @@ function App() {
 	const [best, setBest] = useState(score);
 
 	const [code, setCode] = useState(null);
-
-	const handleQueryParams = () => {
-		setColorMode(queryParams.get('cm'));
-		setGradientColorMode(queryParams.get('gcm'))
-
-		if (queryParams.get('cs') && queryParams.get('ds')) {
-			const queryParamsColors = queryParams.getAll('cs').map((color, colorIdx) => ({
-				color: color,
-				domain: queryParams.getAll('ds')[colorIdx],
-				visible: true,
-			}));
-
-			setColors(queryParamsColors);
-			setPoints(queryParams.get('p'));
-		}
-	}
 
 	function fixedEncodeURIComponent(str) {
 		return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
@@ -203,7 +185,29 @@ function App() {
 		})))
 	}
 
-	handleQueryParams();
+	useEffect(() => { 
+		const queryParams = new URLSearchParams(decodeURIComponent(window.location.search))
+
+		const handleQueryParams = () => {
+			setColorMode(queryParams.get('cm'));
+			setGradientColorMode(queryParams.get('gcm'))
+	
+			if (queryParams.get('cs') && queryParams.get('ds')) {
+				const queryParamsColors = queryParams.getAll('cs').map((color, colorIdx) => ({
+					color: color,
+					domain: queryParams.getAll('ds')[colorIdx],
+					visible: true,
+				}));
+	
+				setColors(queryParamsColors);
+				setPoints(queryParams.get('p'));
+			}
+	
+			return null
+		}
+
+		handleQueryParams();
+	}, [])
 
 	// Keep tracking of the best score
 	useEffect(() => {
@@ -212,6 +216,8 @@ function App() {
 
 	// Update the gradient when the key values are updated
 	useEffect(() => {
+		console.log('running gradient')
+
 		const chromaGradient = (gradientColors, gradientDomains) => {
 			return chroma
 				.scale(gradientColors)
