@@ -27,16 +27,10 @@ import './App.css';
 
 const theme = createTheme({
 	palette: {
-		primary: {
-			main: "#fff",
-		},
-		secondary: {
-			main: "#fff",
-		}
+		primary: { main: "#fff" },
+		secondary: { main: "#fff" }
 	},
-	shape: {
-		borderRadius: 0
-	}
+	shape: { borderRadius: 0 }
 });
 
 function App() {
@@ -60,6 +54,8 @@ function App() {
 
 	const pointsColorsFactor = 3;
 
+	const queryParams = new URLSearchParams(fixedDecodeURIComponent(window.location.search))
+
 	const [activeGradient, setActiveGradient] = useState(defaultGradient);
 	const [colors, setColors] = useState(defaultGradient);
 	const [points, setPoints] = useState(defaultGradient.length * pointsColorsFactor)
@@ -73,8 +69,20 @@ function App() {
 
 	const [code, setCode] = useState(null);
 
-	const randomColor = () => {
-		return chroma(`rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)})`).hex();
+	const handleQueryParams = () => {
+		setColorMode(queryParams.get('cm'));
+		setGradientColorMode(queryParams.get('gcm'))
+
+		if (queryParams.get('cs') && queryParams.get('ds')) {
+			const queryParamsColors = queryParams.getAll('cs').map((color, colorIdx) => ({
+				color: color,
+				domain: queryParams.getAll('ds')[colorIdx],
+				visible: true,
+			}));
+
+			setColors(queryParamsColors);
+			setPoints(queryParams.get('p'));
+		}
 	}
 
 	function fixedEncodeURIComponent(str) {
@@ -83,45 +91,55 @@ function App() {
 		});
 	}
 
+	function fixedDecodeURIComponent(str) {
+		return decodeURIComponent(str)
+	}
+
 	const saveURL = () => {
 		const urlColors = colors.map(color => color.color).join("&cs=")
 		const urlDomains = colors.map(color => color.domain).join("&ds=")
 
-		return fixedEncodeURIComponent(`${window.location.href.split("?")[0]}?cm=${colorMode}&gcm=${gradientColorMode}&cs=${urlColors}&ds=${urlDomains}&d=${degree}`)
+		return `${window.location.href.split("?")[0]}?` + fixedEncodeURIComponent(`cm=${colorMode}&gcm=${gradientColorMode}&cs=${urlColors}&ds=${urlDomains}&d=${degree}&p=${points}`)
 	}
 
 	const shareMessage = () => {
 		return `I justed used @trycolorspace and made this ${score > 70 ? "perfect " : " "}pallete - whats your score ?%0A%0A${saveURL()}`
 	}
 
+	const randomColor = () => {
+		return chroma(`rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)})`).hex();
+	}
+
+	// Respond to the change between RGB & HSL viewing mode
 	const handleColorModeChange = (event, newColorMode) => {
 		if (newColorMode !== null) {
 			setColorMode(newColorMode);
 		}
 	};
 
+	// Control the change of the gradient degree (within 0 - 360)
 	const handleDegreeChange = (event) => {
 		if (event.target.value == null) return
-
 		if (event.target.value < 0 || event.target.value > 360) return
 
 		setDegree(event.target.value);
 	}
 
+	// Make sure the user cannot add an insane amount of points
 	const handlePointsChange = (event) => {
 		if (event.target.value > colors.length * 10) return
 
 		setPoints(event.target.value)
 	}
 
+	// Handle everything when a new color is added to the mix
 	const handleColorAddition = (event) => {
-		event.preventDefault();
-
 		let overlapColors = [colors[0]]
 		const joiningColors = [...colors.slice(1, colors.length - 1)]
 		if (joiningColors)
 			overlapColors = overlapColors.concat(joiningColors)
 
+		// Make sure that the color is added in the right spot 
 		const colorAddedColors = [
 			...overlapColors,
 			{
@@ -139,12 +157,16 @@ function App() {
 		setColors(colorAddedColors)
 	}
 
+	// Full reset of the dashboard -- Updating these two things update
+	// everything else that is needed
 	const handleColorClear = (event) => {
 		event.preventDefault();
 		setColors(defaultGradient)
 		setPoints(defaultGradient.length * pointsColorsFactor)
 	}
 
+	// Make sure we are updating the full dataset of colors when
+	// any piece is being edited
 	const handleColorChange = (e, colorId) => {
 		const _colors = colors.map((color, idx) => (
 			idx !== colorId ? color : {
@@ -157,11 +179,11 @@ function App() {
 		setColors(_colors)
 	}
 
+	// Update the domain of the scale as the slider is used
 	const handleDomainChange = (domains) => {
 		// dont allow users to move the solo base anchors
 		if (domains.length === 2) return
 
-		// loop through all domains
 		const domainedColors = colors.map((color, i) => {
 			return {
 				...color,
@@ -172,6 +194,7 @@ function App() {
 		setColors(domainedColors)
 	}
 
+	// Generate a random and new pallete based on scaled anchors points
 	const handleShuffle = () => {
 		const shuffledColors = chroma.scale([
 			randomColor(),
@@ -184,8 +207,18 @@ function App() {
 		})))
 	}
 
+	// Handling the incoming url query params
 	useEffect(() => {
-		// scales it in certain mode
+		handleQueryParams();
+	}, [])
+
+	// Keep tracking of the best score
+	useEffect(() => {
+		if (score > best) setBest(score);
+	}, [score, best])
+
+	// Update the gradient when the key values are updated
+	useEffect(() => {
 		const chromaGradient = (gradientColors, gradientDomains) => {
 			return chroma
 				.scale(gradientColors)
@@ -228,10 +261,6 @@ function App() {
 		points,
 		degree
 	])
-
-	useEffect(() => {
-		if (score > best) setBest(score);
-	}, [score, best])
 
 	return (
 		<ThemeProvider theme={theme}>
