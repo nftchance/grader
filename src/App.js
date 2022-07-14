@@ -206,9 +206,9 @@ function App() {
 			return null
 		}
 
-		if (queryParams.values.length != 0)
+		if (queryParams.values.length !== 0)
 			handleQueryParams();
-	}, [window.location.search])
+	}, [])
 
 	// Keep tracking of the best score
 	useEffect(() => {
