@@ -13,7 +13,13 @@
     grid-template-rows: 2fr 10fr;
 }
 
-img { height: 56px; }
+img { 
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+}
+
+.container img { height: 56px; width: auto; position: relative; }
 
 h1 { 
     margin-bottom: 40px;
