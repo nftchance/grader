@@ -67,6 +67,9 @@ function App() {
 
 	const [code, setCode] = useState(null);
 
+	const [linkCopied, setLinkCopied] = useState(false);
+	const [codeCopied, setCodeCopied] = useState(false);
+
 	function fixedEncodeURIComponent(str) {
 		return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
 			return '%' + c.charCodeAt(0).toString(16);
@@ -138,7 +141,6 @@ function App() {
 	// Full reset of the dashboard -- Updating these two things update
 	// everything else that is needed
 	const handleColorClear = (event) => {
-		event.preventDefault();
 		setColors(defaultGradient)
 		setPoints(defaultGradient.length * pointsColorsFactor)
 	}
@@ -185,24 +187,38 @@ function App() {
 		})))
 	}
 
-	useEffect(() => { 
+	const onLinkCopy = (event, element) => {
+		setLinkCopied(true)
+		setTimeout(() => {
+			setLinkCopied(false)
+		}, 1500);
+	}
+
+	const onCodeCopy = () => { 
+		setCodeCopied(true)
+		setTimeout(() => {
+			setCodeCopied(false)
+		}, 1500);
+	}
+
+	useEffect(() => {
 		const queryParams = new URLSearchParams(decodeURIComponent(window.location.search))
 
 		const handleQueryParams = () => {
 			setColorMode(queryParams.get('cm'));
 			setGradientColorMode(queryParams.get('gcm'))
-	
+
 			if (queryParams.get('cs') && queryParams.get('ds')) {
 				const queryParamsColors = queryParams.getAll('cs').map((color, colorIdx) => ({
 					color: color,
 					domain: queryParams.getAll('ds')[colorIdx],
 					visible: true,
 				}));
-	
+
 				setColors(queryParamsColors);
 				setPoints(queryParams.get('p'));
 			}
-	
+
 			return null
 		}
 
@@ -284,8 +300,8 @@ function App() {
 						}}>
 							INPUT
 							<span style={{ marginLeft: "auto", display: "grid", alignItems: "center", gridTemplateColumns: "1fr 1fr" }}>
-								<CopyToClipboard text={saveURL()}>
-									<Tooltip title="Copy Input Link">
+								<CopyToClipboard text={saveURL()} onCopy={onLinkCopy} leaveDelay={linkCopied ? 1500 : 0}>
+									<Tooltip title={linkCopied ? "Copied" : "Copy Input Link"}>
 										<Button>
 											<img src={link} className="fa" alt="link icon" />
 										</Button>
@@ -344,13 +360,8 @@ function App() {
 							handleColorChange={handleColorChange}
 						/>
 
-						<div style={{
-							marginTop: 10,
-						}}>
-							<Button
-								style={{
-									fontWeight: 900,
-								}}
+						<div style={{ marginTop: 10 }}>
+							<Button style={{ fontWeight: 900 }}
 								onClick={handleColorAddition}
 							>
 								Add Color
@@ -401,8 +412,8 @@ function App() {
 						<h3>
 							CODE
 							<span style={{ float: "right", alignContent: "center" }}>
-								<CopyToClipboard text={code}>
-									<Tooltip title="Copy Code">
+								<CopyToClipboard text={code} leaveDelay={codeCopied ? 1500 : 0} onCopy={onCodeCopy}>
+									<Tooltip title={codeCopied ? "Copied" : "Copy Code"}>
 										<Button>
 											<img src={clipboard} className="fa" alt="clipboard icon" />
 										</Button>
