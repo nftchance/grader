@@ -57,7 +57,7 @@ function Home({ theme }) {
     const [score, setScore] = useState(0);
     const [best, setBest] = useState(score);
 
-    const [code, setCode] = useState(null);
+    const [code, setCode] = useState("");
 
     const [linkCopied, setLinkCopied] = useState(false);
     const [codeCopied, setCodeCopied] = useState(false);
@@ -72,7 +72,7 @@ function Home({ theme }) {
         const urlColors = colors.map(color => color.color).join("&cs=")
         const urlDomains = colors.map(color => color.domain).join("&ds=")
 
-        return `${window.location.href.split("?")[0]}?` + fixedEncodeURIComponent(`cm=${colorMode}&gcm=${gradientColorMode}&cs=${urlColors}&ds=${urlDomains}&d=${degree}&p=${points}`)
+        return `${window.location.href.split("?")[0]}?` + fixedEncodeURIComponent(`cm=${colorMode}&gcm=${gradientColorMode}&cs=${urlColors}&ds=${urlDomains}&d=${degree}&p=${points}&g=${code.replace("background: ", "")}`)
     }
 
     const shareMessage = () => {
