@@ -270,11 +270,7 @@ function App() {
 			return null
 		}
 
-		const chromaLightnessMaxDiff = (chromaColors) => { 
-			const chromaLightness = chromaColors.map(color => chroma(color).hsl()[2] * 100);
-			// const min = Math.min.apply(null, chromaLightness);
-			// const max = Math.max.apply(null, chromaLightness);
-
+		const chromaLightnessMaxDiff = (chromaLightness) => { 
 			const chromeLightnessDeviations = chromaLightness.map((color, idx) => { 
 				if (idx > 0)
 					return Math.floor(Math.abs(chromaLightness[idx] - chromaLightness[idx - 1]))
@@ -284,18 +280,32 @@ function App() {
 			return Math.max.apply(null, chromeLightnessDeviations);
 		}
 
+		const chromaLightnessAverageDiff = (chromaLightness) => { 
+			const chromaLightnessSum = chromaLightness.reduce((sum, lightness) => sum + lightness, 0);
+			const chromaLightnessAverage = chromaLightnessSum / chromaLightness.length;
+
+			const chromaLightnessMedian = chromaLightness[Math.ceil((chromaLightness.length - 1) / 2)]
+
+			return Math.abs(chromaLightnessAverage - chromaLightnessMedian); 
+		}
+
 		const chromaGradientScore = (chromaColors) => {
 			let score = 100;
 
 			// Factor in maximum devitation
-			const lightnessMaxDiff = chromaLightnessMaxDiff(chromaColors)
-			console.log(lightnessMaxDiff)
-			score = score - lightnessMaxDiff * 2
+			const chromaLightness = chromaColors.map(color => chroma(color).hsl()[2] * 100);
+			const lightnessMaxDiff = chromaLightnessMaxDiff(chromaLightness)
+			score = score - lightnessMaxDiff
 
+			// Factor in the miss from the average
+			const lightnessAverageDiff = chromaLightnessAverageDiff(chromaLightness);
+			score = score - lightnessAverageDiff
+
+			// console.log('average diff deviation', chromaLightnessAverageDiff(chromaLightness))
 			// implement linear consideration
 			// implement rollercoaster poision
 
-			return score
+			return Math.ceil(score)
 		}
 
 		if (!colors.every(color => chroma.valid(color.color))) return
