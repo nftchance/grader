@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react';
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Button } from '@mui/material';
+import Tooltip from '@mui/material/Tooltip';
 
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import chroma from "chroma-js"
-import 'rc-slider/assets/index.css';
 
 import Cube from "./Three/Cube";
 import Colorspace2DGradient from './Two/Colorspace2DGradient';
@@ -16,24 +17,20 @@ import ColorspaceColor from './Form/ColorspaceColor';
 import CodeTheme from "./Code/ColorspaceCodeTheme";
 
 import logo from "./images/logo.png"
-import save from "./icons/save.png"
+import link from "./icons/link.png"
 import shuffle from "./icons/shuffle.png";
+import clipboard from "./icons/clipboard.png";
 import twitter from "./icons/twitter.png";
 
+import 'rc-slider/assets/index.css';
 import './App.css';
 
 const theme = createTheme({
 	palette: {
-		primary: {
-			main: "#fff",
-		},
-		secondary: {
-			main: "#fff",
-		}
+		primary: { main: "#fff" },
+		secondary: { main: "#fff" }
 	},
-	shape: {
-		borderRadius: 0
-	}
+	shape: { borderRadius: 0 }
 });
 
 function App() {
@@ -70,24 +67,60 @@ function App() {
 
 	const [code, setCode] = useState(null);
 
+	const [linkCopied, setLinkCopied] = useState(false);
+	const [codeCopied, setCodeCopied] = useState(false);
+
+	function fixedEncodeURIComponent(str) {
+		return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
+			return '%' + c.charCodeAt(0).toString(16);
+		});
+	}
+
+	const saveURL = () => {
+		const urlColors = colors.map(color => color.color).join("&cs=")
+		const urlDomains = colors.map(color => color.domain).join("&ds=")
+
+		return `${window.location.href.split("?")[0]}?` + fixedEncodeURIComponent(`cm=${colorMode}&gcm=${gradientColorMode}&cs=${urlColors}&ds=${urlDomains}&d=${degree}&p=${points}`)
+	}
+
+	const shareMessage = () => {
+		return `I justed used @trycolorspace and made this ${score > 70 ? "perfect " : " "}pallete - whats your score ?%0A%0A${saveURL()}`
+	}
+
+	const randomColor = () => {
+		return chroma(`rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)})`).hex();
+	}
+
+	// Respond to the change between RGB & HSL viewing mode
 	const handleColorModeChange = (event, newColorMode) => {
 		if (newColorMode !== null) {
 			setColorMode(newColorMode);
 		}
 	};
 
+	// Control the change of the gradient degree (within 0 - 360)
+	const handleDegreeChange = (event) => {
+		if (event.target.value == null) return
+		if (event.target.value < 0 || event.target.value > 360) return
+
+		setDegree(event.target.value);
+	}
+
+	// Make sure the user cannot add an insane amount of points
 	const handlePointsChange = (event) => {
+		if (event.target.value > colors.length * 10) return
+
 		setPoints(event.target.value)
 	}
 
+	// Handle everything when a new color is added to the mix
 	const handleColorAddition = (event) => {
-		event.preventDefault();
-
 		let overlapColors = [colors[0]]
 		const joiningColors = [...colors.slice(1, colors.length - 1)]
 		if (joiningColors)
 			overlapColors = overlapColors.concat(joiningColors)
 
+		// Make sure that the color is added in the right spot 
 		const colorAddedColors = [
 			...overlapColors,
 			{
@@ -105,11 +138,15 @@ function App() {
 		setColors(colorAddedColors)
 	}
 
+	// Full reset of the dashboard -- Updating these two things update
+	// everything else that is needed
 	const handleColorClear = (event) => {
-		event.preventDefault();
 		setColors(defaultGradient)
+		setPoints(defaultGradient.length * pointsColorsFactor)
 	}
 
+	// Make sure we are updating the full dataset of colors when
+	// any piece is being edited
 	const handleColorChange = (e, colorId) => {
 		const _colors = colors.map((color, idx) => (
 			idx !== colorId ? color : {
@@ -122,11 +159,11 @@ function App() {
 		setColors(_colors)
 	}
 
+	// Update the domain of the scale as the slider is used
 	const handleDomainChange = (domains) => {
 		// dont allow users to move the solo base anchors
 		if (domains.length === 2) return
 
-		// loop through all domains
 		const domainedColors = colors.map((color, i) => {
 			return {
 				...color,
@@ -137,8 +174,67 @@ function App() {
 		setColors(domainedColors)
 	}
 
+	// Generate a random and new pallete based on scaled anchors points
+	const handleShuffle = () => {
+		const shuffledColors = chroma.scale([
+			randomColor(),
+			randomColor(),
+		]).colors(colors.length);
+
+		setColors(colors.map((color, i) => ({
+			...color,
+			color: shuffledColors[i]
+		})))
+	}
+
+	// Control the tooltip for copying the input link
+	const onLinkCopy = () => {
+		setLinkCopied(true)
+		setTimeout(() => {
+			setLinkCopied(false)
+		}, 1500);
+	}
+
+	// Control the tooltip for copying the code of the scale
+	const onCodeCopy = () => { 
+		setCodeCopied(true)
+		setTimeout(() => {
+			setCodeCopied(false)
+		}, 1500);
+	}
+
 	useEffect(() => {
-		// scales it in certain mode
+		const queryParams = new URLSearchParams(decodeURIComponent(window.location.search))
+
+		const handleQueryParams = () => {
+			setColorMode(queryParams.get('cm'));
+			setGradientColorMode(queryParams.get('gcm'))
+
+			if (queryParams.get('cs') && queryParams.get('ds')) {
+				const queryParamsColors = queryParams.getAll('cs').map((color, colorIdx) => ({
+					color: color,
+					domain: queryParams.getAll('ds')[colorIdx],
+					visible: true,
+				}));
+
+				setColors(queryParamsColors);
+				setPoints(queryParams.get('p'));
+			}
+
+			return null
+		}
+
+		if (queryParams.values.length !== 0)
+			handleQueryParams();
+	}, [])
+
+	// Keep tracking of the best score
+	useEffect(() => {
+		if (score > best) setBest(score);
+	}, [score, best])
+
+	// Update the gradient when the key values are updated
+	useEffect(() => {
 		const chromaGradient = (gradientColors, gradientDomains) => {
 			return chroma
 				.scale(gradientColors)
@@ -182,10 +278,6 @@ function App() {
 		degree
 	])
 
-	useEffect(() => {
-		if (score > best) setBest(score);
-	}, [score, best])
-
 	return (
 		<ThemeProvider theme={theme}>
 			<div className="container">
@@ -209,9 +301,20 @@ function App() {
 							alignItems: "center"
 						}}>
 							INPUT
-							<span style={{ marginLeft: "auto" }}>
-								<img src={save} className="fa" alt="save icon" />
-								<img src={shuffle} className="fa" style={{ marginLeft: 15 }} alt="shuffle icon"/>
+							<span style={{ marginLeft: "auto", display: "grid", alignItems: "center", gridTemplateColumns: "1fr 1fr" }}>
+								<CopyToClipboard text={saveURL()} onCopy={onLinkCopy} leaveDelay={linkCopied ? 1500 : 0}>
+									<Tooltip title={linkCopied ? "Copied" : "Copy Input Link"}>
+										<Button>
+											<img src={link} className="fa" alt="link icon" />
+										</Button>
+									</Tooltip>
+								</CopyToClipboard>
+
+								<Tooltip title="Shuffle">
+									<Button onClick={handleShuffle}>
+										<img src={shuffle} className="fa" alt="shuffle icon" />
+									</Button>
+								</Tooltip>
 							</span>
 						</h3>
 
@@ -247,10 +350,11 @@ function App() {
 							inputProps={{
 								inputMode: 'numeric',
 								pattern: '/^-?d+(?:.d+)?$/g',
-								min: colors.length,
-								max: colors.length * 10
+								min: 0,
+								max: 360
 							}}
-							onChange={(event) => { setDegree(event.target.value); }}
+							value={degree}
+							onChange={handleDegreeChange}
 						/>
 
 						<ColorspaceColor
@@ -258,10 +362,8 @@ function App() {
 							handleColorChange={handleColorChange}
 						/>
 
-						<div style={{
-							marginTop: 10
-						}}>
-							<Button
+						<div style={{ marginTop: 10 }}>
+							<Button style={{ fontWeight: 900 }}
 								onClick={handleColorAddition}
 							>
 								Add Color
@@ -271,7 +373,8 @@ function App() {
 								onClick={handleColorClear}
 								style={{
 									float: "right",
-									color: "red"
+									color: "red",
+									fontWeight: 900
 								}}
 							>
 								Clear
@@ -282,8 +385,17 @@ function App() {
 					<div className="step result">
 						<h3>
 							SCORE
-							<span style={{ float: "right" }}>
-								<img src={twitter} className="fa" alt="twitter icon" />
+							<span style={{ float: "right", alignContent: "center" }}>
+								<Tooltip title="Share on Twitter">
+									<a target="_blank" rel="noreferrer" href={`https://twitter.com/intent/tweet?text=${shareMessage()}`} style={{
+										display: "inline",
+										justifySelf: "center"
+									}}>
+										<Button>
+											<img src={twitter} className="fa" alt="twitter icon" />
+										</Button>
+									</a>
+								</Tooltip>
 							</span>
 						</h3>
 
@@ -299,7 +411,19 @@ function App() {
 
 					{/* Formatted Code Output of Active Gradient */}
 					<div className="step code">
-						<h3>CODE</h3>
+						<h3>
+							CODE
+							<span style={{ float: "right", alignContent: "center" }}>
+								<CopyToClipboard text={code} leaveDelay={codeCopied ? 1500 : 0} onCopy={onCodeCopy}>
+									<Tooltip title={codeCopied ? "Copied" : "Copy Code"}>
+										<Button>
+											<img src={clipboard} className="fa" alt="clipboard icon" />
+										</Button>
+									</Tooltip>
+								</CopyToClipboard>
+							</span>
+						</h3>
+
 						<>
 							<pre>
 								<SyntaxHighlighter
@@ -356,7 +480,7 @@ function App() {
 					</p>
 				</div>
 			</div>
-		</ThemeProvider>
+		</ThemeProvider >
 	);
 }
 
