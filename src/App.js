@@ -54,7 +54,7 @@ function App() {
 
 	const pointsColorsFactor = 3;
 
-	const queryParams = new URLSearchParams(fixedDecodeURIComponent(window.location.search))
+	const queryParams = new URLSearchParams(decodeURIComponent(window.location.search))
 
 	const [activeGradient, setActiveGradient] = useState(defaultGradient);
 	const [colors, setColors] = useState(defaultGradient);
@@ -89,10 +89,6 @@ function App() {
 		return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
 			return '%' + c.charCodeAt(0).toString(16);
 		});
-	}
-
-	function fixedDecodeURIComponent(str) {
-		return decodeURIComponent(str)
 	}
 
 	const saveURL = () => {
@@ -207,10 +203,7 @@ function App() {
 		})))
 	}
 
-	// Handling the incoming url query params
-	useEffect(() => {
-		handleQueryParams();
-	}, [])
+	handleQueryParams();
 
 	// Keep tracking of the best score
 	useEffect(() => {
