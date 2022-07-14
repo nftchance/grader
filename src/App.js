@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react';
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Button } from '@mui/material';
+import Tooltip from '@mui/material/Tooltip';
 
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import chroma from "chroma-js"
 
@@ -15,8 +17,9 @@ import ColorspaceColor from './Form/ColorspaceColor';
 import CodeTheme from "./Code/ColorspaceCodeTheme";
 
 import logo from "./images/logo.png"
-import save from "./icons/save.png"
+import link from "./icons/link.png"
 import shuffle from "./icons/shuffle.png";
+import clipboard from "./icons/clipboard.png";
 import twitter from "./icons/twitter.png";
 
 import 'rc-slider/assets/index.css';
@@ -87,8 +90,8 @@ function App() {
 		return fixedEncodeURIComponent(`${window.location.href.split("?")[0]}?cm=${colorMode}&gcm=${gradientColorMode}&cs=${urlColors}&ds=${urlDomains}&d=${degree}`)
 	}
 
-	const shareMessage = () => { 
-		return `Check out this beautiful gradient made with @trycolorspace:%0A%0A${saveURL()}`
+	const shareMessage = () => {
+		return `I justed used @trycolorspace and made this ${score > 70 ? "perfect " : " "}pallete - whats your score ?%0A%0A${saveURL()}`
 	}
 
 	const handleColorModeChange = (event, newColorMode) => {
@@ -97,7 +100,17 @@ function App() {
 		}
 	};
 
+	const handleDegreeChange = (event) => {
+		if (event.target.value == null) return
+
+		if (event.target.value < 0 || event.target.value > 360) return
+
+		setDegree(event.target.value);
+	}
+
 	const handlePointsChange = (event) => {
+		if (event.target.value > colors.length * 10) return
+
 		setPoints(event.target.value)
 	}
 
@@ -129,6 +142,7 @@ function App() {
 	const handleColorClear = (event) => {
 		event.preventDefault();
 		setColors(defaultGradient)
+		setPoints(defaultGradient.length * pointsColorsFactor)
 	}
 
 	const handleColorChange = (e, colorId) => {
@@ -246,15 +260,20 @@ function App() {
 							alignItems: "center"
 						}}>
 							INPUT
-							<span style={{ marginLeft: "auto" }}>
-								<Button
-									onClick={handleSave}
-								>
-									<img src={save} className="fa" alt="save icon" />
-								</Button>
-								<Button onClick={handleShuffle}>
-									<img src={shuffle} className="fa" alt="shuffle icon" />
-								</Button>
+							<span style={{ marginLeft: "auto", display: "grid", alignItems: "center", gridTemplateColumns: "1fr 1fr" }}>
+								<CopyToClipboard text={saveURL()}>
+									<Tooltip title="Copy Input Link">
+										<Button>
+											<img src={link} className="fa" alt="link icon" />
+										</Button>
+									</Tooltip>
+								</CopyToClipboard>
+
+								<Tooltip title="Shuffle">
+									<Button onClick={handleShuffle}>
+										<img src={shuffle} className="fa" alt="shuffle icon" />
+									</Button>
+								</Tooltip>
 							</span>
 						</h3>
 
@@ -290,10 +309,11 @@ function App() {
 							inputProps={{
 								inputMode: 'numeric',
 								pattern: '/^-?d+(?:.d+)?$/g',
-								min: colors.length,
-								max: colors.length * 10
+								min: 0,
+								max: 360
 							}}
-							onChange={(event) => { setDegree(event.target.value); }}
+							value={degree}
+							onChange={handleDegreeChange}
 						/>
 
 						<ColorspaceColor
@@ -302,9 +322,12 @@ function App() {
 						/>
 
 						<div style={{
-							marginTop: 10
+							marginTop: 10,
 						}}>
 							<Button
+								style={{
+									fontWeight: 900,
+								}}
 								onClick={handleColorAddition}
 							>
 								Add Color
@@ -314,7 +337,8 @@ function App() {
 								onClick={handleColorClear}
 								style={{
 									float: "right",
-									color: "red"
+									color: "red",
+									fontWeight: 900
 								}}
 							>
 								Clear
@@ -325,10 +349,17 @@ function App() {
 					<div className="step result">
 						<h3>
 							SCORE
-							<span style={{ float: "right" }}>
-								<a target="_blank" rel="noreferrer" href={`https://twitter.com/intent/tweet?text=${shareMessage()}`}>
-									<img src={twitter} className="fa" alt="twitter icon" />
-								</a>
+							<span style={{ float: "right", alignContent: "center" }}>
+								<Tooltip title="Share on Twitter">
+									<a target="_blank" rel="noreferrer" href={`https://twitter.com/intent/tweet?text=${shareMessage()}`} style={{
+										display: "inline",
+										justifySelf: "center"
+									}}>
+										<Button>
+											<img src={twitter} className="fa" alt="twitter icon" />
+										</Button>
+									</a>
+								</Tooltip>
 							</span>
 						</h3>
 
@@ -344,7 +375,19 @@ function App() {
 
 					{/* Formatted Code Output of Active Gradient */}
 					<div className="step code">
-						<h3>CODE</h3>
+						<h3>
+							CODE
+							<span style={{ float: "right", alignContent: "center" }}>
+								<CopyToClipboard text={code}>
+									<Tooltip title="Copy Code">
+										<Button>
+											<img src={clipboard} className="fa" alt="clipboard icon" />
+										</Button>
+									</Tooltip>
+								</CopyToClipboard>
+							</span>
+						</h3>
+
 						<>
 							<pre>
 								<SyntaxHighlighter
@@ -401,7 +444,7 @@ function App() {
 					</p>
 				</div>
 			</div>
-		</ThemeProvider>
+		</ThemeProvider >
 	);
 }
 
