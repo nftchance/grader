@@ -325,6 +325,11 @@ function Home({ theme }) {
         const score = chromaGradientScore(gradient)
 
         setScore(score);
+
+        // update the url so that someone can just copy-paste
+        window.history.replaceState({ 
+            additionalInformation: 'Updated when changing colors.' 
+        }, 'COLORSPACE', saveURL())
     }, [
         activeGradient,
         colors,
