@@ -206,8 +206,9 @@ function App() {
 			return null
 		}
 
-		handleQueryParams();
-	}, [])
+		if (queryParams.values.length != 0)
+			handleQueryParams();
+	}, [window.location.search])
 
 	// Keep tracking of the best score
 	useEffect(() => {
@@ -216,8 +217,6 @@ function App() {
 
 	// Update the gradient when the key values are updated
 	useEffect(() => {
-		console.log('running gradient')
-
 		const chromaGradient = (gradientColors, gradientDomains) => {
 			return chroma
 				.scale(gradientColors)
