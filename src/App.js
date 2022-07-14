@@ -172,10 +172,6 @@ function App() {
 		setColors(domainedColors)
 	}
 
-	const handleSave = () => {
-		console.log(saveURL())
-	}
-
 	const handleShuffle = () => {
 		const shuffledColors = chroma.scale([
 			randomColor(),
