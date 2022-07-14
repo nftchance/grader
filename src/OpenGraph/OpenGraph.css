@@ -7,22 +7,31 @@
     padding: 90px;
     height: 100vh;
     display: grid;
-    align-items: end;
+    align-items: center;
+    grid-template: "a b"
+                   "c c";
+    grid-template-rows: 2fr 10fr;
 }
 
+img { height: 56px; }
+
 h1 { 
-    font-size: 56px;
     margin-bottom: 40px;
+}
+
+h2 {
+    text-align: right;
+    font-size: 42px;
 }
 
 .step {
     background: #000;
     border: 1px solid #fff;
-    padding: 30px;
     height: 100%;
 }
 
 .gradient {
     display: grid;
-    grid-template-rows: "1fr";
+    grid-template-rows: 1fr;
+    grid-area: c;
 }
