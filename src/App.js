@@ -296,7 +296,6 @@ function App() {
 				return color >= chromaLightness[idx - 1]
 			})
 
-			console.log(chromaLightnessDirections)
 			const chromaLightnessBumps = chromaLightnessDirections
 				.filter((direction, idx) => {
 					if(direction === undefined) return false
@@ -323,7 +322,6 @@ function App() {
 
 			// Handling the 'rollercoaster effect'
 			const lightnessBumpiness = chromaLightnessBumpiness(chromaLightness)
-			console.log('final bumps', lightnessBumpiness)
 			score = score - lightnessBumpiness * 5
 
 			return Math.ceil(score)
