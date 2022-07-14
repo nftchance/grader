@@ -291,7 +291,7 @@ function App() {
 
 		const chromaLightnessBumpiness = (chromaLightness) => {
 			const chromaLightnessDirections = chromaLightness.map((color, idx) => {
-				if(idx == 0) return undefined
+				if(idx === 0) return undefined
 				
 				return color >= chromaLightness[idx - 1]
 			})
