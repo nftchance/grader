@@ -84,7 +84,7 @@ function App() {
 	}
 
 	const shareMessage = () => {
-		return `I justed used @trycolorspace and made this ${score > 70 ? "perfect " : " "}pallete - whats your score ?%0A%0A${saveURL()}`
+		return `I justed used @trycolorspace and made this ${score > 81 ? "perfect " : " "}pallete - whats your score ?%0A%0A${saveURL()}`
 	}
 
 	const randomColor = () => {
