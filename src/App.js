@@ -60,7 +60,7 @@ function App() {
 
 	const [colorMode, setColorMode] = useState(cubeColorModes[0])
 	const [gradientColorMode, setGradientColorMode] = useState(colorsModes[0])
-	const [degree, setDegree] = useState(0);
+	const [degree, setDegree] = useState(90);
 
 	const [score, setScore] = useState(0);
 	const [best, setBest] = useState(score);
@@ -254,7 +254,7 @@ function App() {
 					gradientColors.map(color => color.domain)
 				);
 
-				const chromaGradientString = `linear-gradient(\n\t90deg,
+				const chromaGradientString = `linear-gradient(\n\t${degree}deg,
 						${chromaColors} 
 					)
 				`;
@@ -302,7 +302,7 @@ function App() {
 						}}>
 							INPUT
 							<span style={{ marginLeft: "auto", display: "grid", alignItems: "center", gridTemplateColumns: "1fr 1fr" }}>
-								<CopyToClipboard text={saveURL()} onCopy={onLinkCopy} leaveDelay={linkCopied ? 1500 : 0}>
+								<CopyToClipboard text={saveURL()} onCopy={onLinkCopy} leaveDelay={linkCopied ? 1250 : 0}>
 									<Tooltip title={linkCopied ? "Copied" : "Copy Input Link"}>
 										<Button>
 											<img src={link} className="fa" alt="link icon" />
@@ -414,7 +414,7 @@ function App() {
 						<h3>
 							CODE
 							<span style={{ float: "right", alignContent: "center" }}>
-								<CopyToClipboard text={code} leaveDelay={codeCopied ? 1500 : 0} onCopy={onCodeCopy}>
+								<CopyToClipboard text={code} leaveDelay={codeCopied ? 1250 : 0} onCopy={onCodeCopy}>
 									<Tooltip title={codeCopied ? "Copied" : "Copy Code"}>
 										<Button>
 											<img src={clipboard} className="fa" alt="clipboard icon" />
