@@ -84,7 +84,7 @@ function App() {
 	}
 
 	const shareMessage = () => {
-		return `I justed used @trycolorspace and made this ${score > 70 ? "perfect " : " "}pallete - whats your score ?%0A%0A${saveURL()}`
+		return `I justed used @trycolorspace and made this ${score > 81 ? "perfect " : " "}pallete - whats your score ?%0A%0A${saveURL()}`
 	}
 
 	const randomColor = () => {
@@ -196,7 +196,7 @@ function App() {
 	}
 
 	// Control the tooltip for copying the code of the scale
-	const onCodeCopy = () => { 
+	const onCodeCopy = () => {
 		setCodeCopied(true)
 		setTimeout(() => {
 			setCodeCopied(false)
@@ -260,16 +260,81 @@ function App() {
 				`;
 
 				setActiveGradient(chromaGradientString)
-				setScore(75);
 				setCode(chromaGradientCode(chromaColors))
+
+				return chromaColors;
 			} catch (e) {
 				console.log('Failed to update:', e)
 			}
+
+			return null
+		}
+
+		const chromaLightnessMaxDiff = (chromaLightness) => {
+			const chromeLightnessDeviations = chromaLightness.map((color, idx) => {
+				if (idx > 0)
+					return Math.floor(Math.abs(chromaLightness[idx] - chromaLightness[idx - 1]))
+				return 0
+			})
+
+			return Math.max.apply(null, chromeLightnessDeviations);
+		}
+
+		const chromaLightnessAverageDiff = (chromaLightness) => {
+			const chromaLightnessSum = chromaLightness.reduce((sum, lightness) => sum + lightness, 0);
+			const chromaLightnessAverage = chromaLightnessSum / chromaLightness.length;
+
+			const chromaLightnessMedian = chromaLightness[Math.ceil((chromaLightness.length - 1) / 2)]
+
+			return Math.abs(chromaLightnessAverage - chromaLightnessMedian);
+		}
+
+		const chromaLightnessBumpiness = (chromaLightness) => {
+			const chromaLightnessDirections = chromaLightness.map((color, idx) => {
+				if(idx === 0) return undefined
+				
+				return color >= chromaLightness[idx - 1]
+			})
+
+			console.log(chromaLightnessDirections)
+			const chromaLightnessBumps = chromaLightnessDirections
+				.filter((direction, idx) => {
+					if(direction === undefined) return false
+					if(idx <= 1) return false
+
+					return direction !== chromaLightnessDirections[idx - 1]
+				}).length
+
+
+			return chromaLightnessBumps
+		}
+
+		const chromaGradientScore = (chromaColors) => {
+			let score = 100;
+
+			// Factor in maximum devitation
+			const chromaLightness = chromaColors.map(color => chroma(color).hsl()[2] * 100);
+			const lightnessMaxDiff = chromaLightnessMaxDiff(chromaLightness)
+			score = score - lightnessMaxDiff
+
+			// Factor in the miss from the average
+			const lightnessAverageDiff = chromaLightnessAverageDiff(chromaLightness);
+			score = score - lightnessAverageDiff
+
+			// Handling the 'rollercoaster effect'
+			const lightnessBumpiness = chromaLightnessBumpiness(chromaLightness)
+			console.log('final bumps', lightnessBumpiness)
+			score = score - lightnessBumpiness * 5
+
+			return Math.ceil(score)
 		}
 
 		if (!colors.every(color => chroma.valid(color.color))) return
 
-		chromaStringGradient(colors)
+		const gradient = chromaStringGradient(colors)
+		const score = chromaGradientScore(gradient)
+
+		setScore(score);
 	}, [
 		activeGradient,
 		colors,
