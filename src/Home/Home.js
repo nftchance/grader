@@ -126,7 +126,7 @@ function Home({ theme }) {
     }
 
     const chromaScaleDomainPosition = (colors, index) => {
-        if (index == 0) return 0
+        if (index === 0) return 0
 
         return (index / colors.length)
     }
