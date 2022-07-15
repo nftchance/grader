@@ -27,7 +27,6 @@ import 'rc-slider/assets/index.css';
 
 import './Home.css';
 
-
 library.add(fab, fal)
 
 function Home({ theme }) {
