@@ -339,7 +339,6 @@ function Home({ theme }) {
         }
 
         // update the url so that someone can just copy-paste
-        // test
         window.history.replaceState({ 
             additionalInformation: 'Updated when changing colors.' 
         }, 'COLORSPACE', chromaSaveURL())
