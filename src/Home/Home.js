@@ -14,7 +14,7 @@ import { fal } from '@fortawesome/pro-light-svg-icons'
 
 import chroma from "chroma-js"
 
-import Cube from "../Three/Cube";
+import ThreeScene from "../Three/ThreeScene";
 import Colorspace2DGradient from '../Two/Colorspace2DGradient';
 import ColorspaceTextField from '../Form/ColorspaceTextField';
 import ColorspaceToggleButtonGroup from '../Form/ColorspaceToggleButtonGroup';
@@ -429,7 +429,7 @@ function Home({ theme }) {
 
             <div className="tool">
                 <div className="step cube">
-                    <Cube colors={colors} colorMode={colorMode} />
+                    <ThreeScene colors={colors} colorMode={colorMode} />
                 </div>
 
                 <div className="step input">

@@ -1,70 +1,38 @@
-import { useRef, Suspense, useEffect } from "react";
+import { useEffect, useRef } from 'react';
 
 import * as THREE from 'three';
 
-import { Canvas, useLoader } from "@react-three/fiber"
-import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
-import { TextureLoader } from 'three/src/loaders/TextureLoader'
-
-const SIZE = 10;
-const SEGMENTS = 1;
-
-// TODO: On hover make it have an opacity
-// TODO: On hover show the points of the circle
-
-const Floor = () => {
-    // REPEAT THE TEXTURE A TON OF TIMES
-    const floorTexture = useLoader(TextureLoader, 'ground.jpg');
-    floorTexture.wrapS = floorTexture.wrapT = THREE.RepeatWrapping;
-    floorTexture.repeat.set(350, 350);
-
-    // Set the material
-    const floorMaterial = new THREE.MeshBasicMaterial({ map: floorTexture, side: THREE.DoubleSide })
-    const floorGeometry = new THREE.PlaneGeometry(1000, 1000, 10, 10);
-
-    return (
-        <mesh
-            geometry={floorGeometry}
-            material={floorMaterial}
-            position={[0, -1.01 * SIZE / 2, 0]}
-            rotation={[Math.PI / 2, 0, 0]}
-            castShadow={true}
-            receiveShadow={true}
-        />
-    )
-}
-
-const CubeMesh = (props) => {
-    const { mode } = props;
+export default function CubeMesh (props) {
+    const { size: SIZE, segments: SEGMENTS, mode } = props;
 
     const ref = useRef(null);
 
     // HANDLING THE CONVERSION OF POINTS TO ANGLES
     const p = (x, y) => {
-        return {x,y}
+        return { x, y }
     }
 
     const normalizeAngle = (angle) => {
         if (angle < 0)
             angle += (2 * Math.PI)
-   
+
         return angle
     }
-    
+
     const angle = (p1, center, p2) => {
         const transformedP1 = p(p1.x - center.x, p1.y - center.y)
         const transformedP2 = p(p2.x - center.x, p2.y - center.y)
-    
+
         const angleToP1 = Math.atan2(transformedP1.y, transformedP1.x)
         const angleToP2 = Math.atan2(transformedP2.y, transformedP2.x)
-    
+
         return normalizeAngle(angleToP2 - angleToP1)
     }
-    
+
     const toDegrees = (radians) => {
         return 360 * radians / (2 * Math.PI)
     }
-    
+
     const appendColorVertex = (colors, x, y, z) => {
         var color = new THREE.Color(0xffffff);
 
@@ -122,8 +90,8 @@ const CubeMesh = (props) => {
     boxGeometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
 
     // TODO: ROTATE THE CONE REF
-    useEffect(() => { 
-        if(mode === "HSL") {
+    useEffect(() => {
+        if (mode === "HSL") {
             ref.current.rotation.x = Math.PI;
         } else {
             ref.current.rotation.x = 0;
@@ -142,32 +110,3 @@ const CubeMesh = (props) => {
         </>
     )
 }
-
-const Cube = (props) => {
-    const { colors, colorMode: mode } = props;
-
-    console.log(colors)
-
-    return (
-        <Canvas
-            gl={{ antialias: true, alpha: true }}
-        >
-            <ambientLight />
-            <pointLight intensity={1} position={[10, 10, 10]} />
-
-            <fog attach="fog" args={['black', 1, 150]} />
-
-            <Suspense fallback={null}>
-                <Floor />
-            </Suspense>
-            <Suspense fallback={null}>
-                <CubeMesh mode={mode} />
-            </Suspense>
-
-            <OrbitControls makeDefault minDistance={SIZE * 1.5} maxDistance={SIZE * 3} />
-            <PerspectiveCamera makeDefault fov={50} position={[10, 10, 10]} />
-        </Canvas>
-    )
-}
-
-export default Cube;
