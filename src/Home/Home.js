@@ -188,8 +188,8 @@ function Home({ theme }) {
     // Full reset of the dashboard -- Updating these two things update
     // everything else that is needed
     const handleColorClear = (event) => {
+        setPoints(defaultGradient.length * pointsColorsFactor) 
         setColors(defaultGradient)
-        setPoints(defaultGradient.length * pointsColorsFactor)
     }
 
     // Update the domain of the scale as the slider is used
