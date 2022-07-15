@@ -54,6 +54,8 @@ function Home({ theme }) {
     const [gradientColorMode, setGradientColorMode] = useState(colorsModes[0])
     const [degree, setDegree] = useState(90);
 
+    const [useFaces, setUseFaces] = useState(false); 
+
     const [score, setScore] = useState(0);
     const [best, setBest] = useState(score);
 
@@ -324,7 +326,7 @@ function Home({ theme }) {
             const urlColors = colors.map(color => color.color).join("&cs=")
             const urlDomains = colors.map(color => color.domain).join("&ds=")
             
-            return `${window.location.href.split("?")[0]}?` + fixedEncodeURIComponent(`cm=${colorMode}&gcm=${gradientColorMode}&cs=${urlColors}&ds=${urlDomains}&d=${degree}&p=${points}&g=${code.replace("background: ", "")}`)
+            return `${window.location.href.split("?")[0]}?` + fixedEncodeURIComponent(`cm=${colorMode}&gcm=${gradientColorMode}&cs=${urlColors}&ds=${urlDomains}&d=${degree}&p=${points}&g=${code.replace("background: ", "")}&f=${useFaces}`)
         }
 
 
