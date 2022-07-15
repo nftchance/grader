@@ -139,19 +139,18 @@ function Home({ theme }) {
             return color.domain === chromaScaleDomainPosition(trimmedColors, idx + 1);
         })
         
-        console.log(usingDefaultScale)
-        console.log('trimmed', trimmedColors)
-
+        // Building the color scale with the proper domain
         const joiningColors = trimmedColors.map((color, idx) => {
             const colorSquishedDomain = (1 + colors[colors.length - 2].domain) / 2
+            const colorDomain = usingDefaultScale
+            ? chromaScaleDomainPosition(colors, idx + 1)
+            : idx !== trimmedColors.length - 1 
+                ? color.domain 
+                : colorSquishedDomain 
 
             return {
                 ...color,
-                domain: usingDefaultScale
-                    ? chromaScaleDomainPosition(colors, idx + 1)
-                    : idx !== trimmedColors.length - 1 
-                        ? color.domain 
-                        : colorSquishedDomain 
+                domain: colorDomain
             }
         })
 
@@ -161,8 +160,6 @@ function Home({ theme }) {
             ...joiningColors,
             colors[colors.length - 1]
         ]
-
-        console.log('final', colorAddedColors)
 
         // if the default points value is being used, continue using it
         if (points === (colorAddedColors.length - 1) * pointsColorsFactor)
