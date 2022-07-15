@@ -125,22 +125,39 @@ function Home({ theme }) {
         setColors(_colors)
     }
 
+    const chromaScaleDomainPosition = (colors, index) => {
+        if (index === 0) return 0
+
+        return (index / colors.length)
+    }
+
     // Handle everything when a new color is added to the mix
     const handleColorAddition = (event) => {
-        let overlapColors = [colors[0]]
-        const joiningColors = [...colors.slice(1, colors.length - 1)]
-        if (joiningColors)
-            overlapColors = overlapColors.concat(joiningColors)
+        const trimmedColors = [...colors.slice(1, colors.length)];
+
+        const usingDefaultScale = trimmedColors.every((color, idx) => {
+            return color.domain === chromaScaleDomainPosition(trimmedColors, idx + 1);
+        })
+        
+        // Building the color scale with the proper domain
+        const joiningColors = trimmedColors.map((color, idx) => {
+            const colorSquishedDomain = (1 + colors[colors.length - 2].domain) / 2
+            const colorDomain = usingDefaultScale
+            ? chromaScaleDomainPosition(colors, idx + 1)
+            : idx !== trimmedColors.length - 1 
+                ? color.domain 
+                : colorSquishedDomain 
+
+            return {
+                ...color,
+                domain: colorDomain
+            }
+        })
 
         // Make sure that the color is added in the right spot 
         const colorAddedColors = [
-            ...overlapColors,
-            buildColor(
-                "#000000",
-                (1 + colors[colors.length - 2].domain) / 2,
-                true,
-                false
-            ),
+            ...[colors[0]],
+            ...joiningColors,
             colors[colors.length - 1]
         ]
 
@@ -152,27 +169,27 @@ function Home({ theme }) {
     }
 
     // Update the locked state of a color
-    const handleColorLock = (event, colorId) => { 
-        setColors(colors.map((color, idx) => { 
+    const handleColorLock = (event, colorId) => {
+        setColors(colors.map((color, idx) => {
             return buildColor(
-                color.color, 
-                color.domain, 
-                color.visible, 
+                color.color,
+                color.domain,
+                color.visible,
                 idx === colorId ? !color.locked : color.locked
             )
         }))
     }
 
     // Remove a color from the list
-    const handleColorRemove = (event, colorId) => { 
+    const handleColorRemove = (event, colorId) => {
         setColors(colors.filter((color, idx) => idx !== colorId))
     }
 
     // Full reset of the dashboard -- Updating these two things update
     // everything else that is needed
     const handleColorClear = (event) => {
+        setPoints(defaultGradient.length * pointsColorsFactor) 
         setColors(defaultGradient)
-        setPoints(defaultGradient.length * pointsColorsFactor)
     }
 
     // Update the domain of the scale as the slider is used
@@ -198,7 +215,7 @@ function Home({ theme }) {
         ]).colors(colors.length);
 
         setColors(colors.map((color, i) => {
-            if(color.locked) return color
+            if (color.locked) return color
 
             // keep the color but update the color.color
             return {

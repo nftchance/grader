@@ -13,7 +13,7 @@ const ColorspaceColor = (props) => {
     return (
         <>
             {colors.map((color, idx) => (
-                <>
+                <div key={`color:${idx}`}>
                     <div style={{
                         display: "grid",
                         gridTemplateColumns: "1fr 1fr",
@@ -48,7 +48,6 @@ const ColorspaceColor = (props) => {
                     </div>
 
                     <ColorspaceTextField
-                        key={`color:${idx}`}
                         label={`Color #${idx + 1}`}
                         value={`${color.color}`}
                         id={`color-${idx}`}
@@ -57,7 +56,7 @@ const ColorspaceColor = (props) => {
                             handleColorChange(e, idx)
                         }}
                     />
-                </>
+                </div>
             ))}
         </>
     )
