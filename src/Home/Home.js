@@ -88,12 +88,6 @@ function Home({ theme }) {
         return chroma(`rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)})`).hex();
     }
 
-    const colorPosition = (colors, index) => { 
-        if(index == 0) return 0
-
-        return (index / colors.length).toFixed(4)
-    }
-
     // Respond to the change between RGB & HSL viewing mode
     const handleColorModeChange = (event, newColorMode) => {
         if (newColorMode !== null) {
@@ -131,12 +125,33 @@ function Home({ theme }) {
         setColors(_colors)
     }
 
+    const chromaScaleDomainPosition = (colors, index) => {
+        if (index == 0) return 0
+
+        return (index / colors.length)
+    }
+
     // Handle everything when a new color is added to the mix
     const handleColorAddition = (event) => {
-        const joiningColors = [...colors.slice(1, colors.length)].map((color, idx) => {
+        const trimmedColors = [...colors.slice(1, colors.length)];
+
+        const usingDefaultScale = trimmedColors.every((color, idx) => {
+            return color.domain === chromaScaleDomainPosition(trimmedColors, idx + 1);
+        })
+        
+        console.log(usingDefaultScale)
+        console.log('trimmed', trimmedColors)
+
+        const joiningColors = trimmedColors.map((color, idx) => {
+            const colorSquishedDomain = (1 + colors[colors.length - 2].domain) / 2
+
             return {
                 ...color,
-                domain: colorPosition(colors, idx + 1)
+                domain: usingDefaultScale
+                    ? chromaScaleDomainPosition(colors, idx + 1)
+                    : idx !== trimmedColors.length - 1 
+                        ? color.domain 
+                        : colorSquishedDomain 
             }
         })
 
@@ -146,6 +161,8 @@ function Home({ theme }) {
             ...joiningColors,
             colors[colors.length - 1]
         ]
+
+        console.log('final', colorAddedColors)
 
         // if the default points value is being used, continue using it
         if (points === (colorAddedColors.length - 1) * pointsColorsFactor)
