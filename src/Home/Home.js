@@ -110,6 +110,21 @@ function Home({ theme }) {
         setPoints(event.target.value)
     }
 
+    // Make sure we are updating the full dataset of colors when
+    // any piece is being edited
+    const handleColorChange = (e, colorId) => {
+        const _colors = colors.map((color, idx) => (
+            idx !== colorId ? color : buildColor(
+                e.target.value,
+                color.domain,
+                color.visible,
+                color.locked
+            )
+        ))
+
+        setColors(_colors)
+    }
+
     // Handle everything when a new color is added to the mix
     const handleColorAddition = (event) => {
         let overlapColors = [colors[0]]
@@ -136,26 +151,28 @@ function Home({ theme }) {
         setColors(colorAddedColors)
     }
 
+    // Update the locked state of a color
+    const handleColorLock = (event, colorId) => { 
+        setColors(colors.map((color, idx) => { 
+            return buildColor(
+                color.color, 
+                color.domain, 
+                color.visible, 
+                idx === colorId ? !color.locked : color.locked
+            )
+        }))
+    }
+
+    // Remove a color from the list
+    const handleColorRemove = (event, colorId) => { 
+        setColors(colors.filter((color, idx) => idx !== colorId))
+    }
+
     // Full reset of the dashboard -- Updating these two things update
     // everything else that is needed
     const handleColorClear = (event) => {
         setColors(defaultGradient)
         setPoints(defaultGradient.length * pointsColorsFactor)
-    }
-
-    // Make sure we are updating the full dataset of colors when
-    // any piece is being edited
-    const handleColorChange = (e, colorId) => {
-        const _colors = colors.map((color, idx) => (
-            idx !== colorId ? color : buildColor(
-                e.target.value,
-                color.domain,
-                color.visible,
-                color.locked
-            )
-        ))
-
-        setColors(_colors)
     }
 
     // Update the domain of the scale as the slider is used
@@ -455,6 +472,8 @@ function Home({ theme }) {
                     <ColorspaceColor
                         colors={colors}
                         handleColorChange={handleColorChange}
+                        handleColorLock={handleColorLock}
+                        handleColorRemove={handleColorRemove}
                     />
 
                     <div style={{ marginTop: 10 }}>
