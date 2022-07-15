@@ -4,6 +4,8 @@ import hero from "../images/demo/colorspace.png";
 import "./OpenGraph.css";
 
 const OpenGraph = () => {
+    const defaultState = <img src={hero} alt="hero" />
+
     try {
         const queryParams = new URLSearchParams(
             decodeURIComponent(window.location.search))
@@ -25,6 +27,8 @@ const OpenGraph = () => {
 
         // Catch the score 
         const score = queryParams.get('s');
+
+        if(score === undefined || score === null) return defaultState
 
         return (
             <div className="container">
@@ -49,7 +53,7 @@ const OpenGraph = () => {
         )
     } catch {
         // Return default OpenGraph image when dynamic is missing or fails
-        return <img src={hero} alt="hero" /> 
+        return defaultState
     }
 }
 
