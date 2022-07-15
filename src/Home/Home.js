@@ -508,7 +508,7 @@ function Home({ theme }) {
                             <FontAwesomeIcon icon={['fal', 'plus']} />
                         </Button>
 
-                        <Button
+                        {colors.length > 2 ? <Button
                             onClick={handleColorClear}
                             style={{
                                 float: "right",
@@ -517,7 +517,7 @@ function Home({ theme }) {
                             }}
                         >
                             <FontAwesomeIcon icon={['fal', 'trash']} />
-                        </Button>
+                        </Button> : null}
                     </div>
                 </div>
 
