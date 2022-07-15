@@ -61,6 +61,7 @@ function Home({ theme }) {
     const [code, setCode] = useState("");
 
     const [saveURL, setSaveURL] = useState("");
+    const [ogURL, setOGURL] = useState("");
     const [linkCopied, setLinkCopied] = useState(false);
     const [codeCopied, setCodeCopied] = useState(false);
 
@@ -329,12 +330,21 @@ function Home({ theme }) {
             return `${url}?` + fixedEncodeURIComponent(`cm=${colorMode}&gcm=${gradientColorMode}&cs=${urlColors}&ds=${urlDomains}&d=${degree}&p=${points}&g=${code.replace("background: ", "")}&f=${Math.random() > 0.5 ? true : false}&s=${score}&url=${url}`)
         }
 
+        const chromaOGURL = () => { 
+            const urlColors = colors.map(color => color.color).join("&cs=")
+            const urlDomains = colors.map(color => color.domain).join("&ds=")
+            const url = window.location.href.split("?")[0]
+
+            return `${url}.netlify/functions/opengraph/?` + fixedEncodeURIComponent(`cm=${colorMode}&gcm=${gradientColorMode}&cs=${urlColors}&ds=${urlDomains}&d=${degree}&p=${points}&g=${code.replace("background: ", "")}&f=${Math.random() > 0.5 ? true : false}&s=${score}&url=${url}`)  
+        }
+
         // update the url so that someone can just copy-paste
         window.history.replaceState({ 
             additionalInformation: 'Updated when changing colors.' 
         }, 'COLORSPACE', chromaSaveURL())
 
         setSaveURL(chromaSaveURL())
+        setOGURL(chromaOGURL())
     }, [
         colorMode,
         gradientColorMode,
@@ -348,8 +358,8 @@ function Home({ theme }) {
     return (
         <div className="container">
             <Helmet>
-		        <meta property="og:image" content={saveURL} />
-                <meta name="twitter:image" content={saveURL} />
+		        <meta property="og:image" content={ogURL} />
+                <meta name="twitter:image" content={ogURL} />
             </Helmet>
 
             <div className="navbar">
