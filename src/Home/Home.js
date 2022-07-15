@@ -5,6 +5,7 @@ import Tooltip from '@mui/material/Tooltip';
 
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { Helmet } from 'react-helmet-async';
 
 import chroma from "chroma-js"
 
@@ -348,6 +349,11 @@ function Home({ theme }) {
 
     return (
         <div className="container">
+            <Helmet>
+		        <meta property="og:image" content={saveURL} />
+                <meta name="twitter:image" content={saveURL} />
+            </Helmet>
+
             <div className="navbar">
                 <a href="/"><img src={logo} alt="navbar logo" /></a>
 

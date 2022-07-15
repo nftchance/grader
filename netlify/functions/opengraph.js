@@ -1,6 +1,3 @@
-// import chrome from "chrome-aws-lambda";
-// import { launch } from "puppeteer-core";
-
 const chrome = require('chrome-aws-lambda');
 const puppeteer = require("puppeteer-core")
 
@@ -10,6 +7,7 @@ const puppeteer = require("puppeteer-core")
 // windows
 const exePath =  'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
 
+// setup the browser
 async function getOptions(isDev) {
     let options;
 
@@ -30,6 +28,7 @@ async function getOptions(isDev) {
     return options;
 }
 
+// take the screenshot
 async function getScreenshot(url, isDev) {
     const options = await getOptions(isDev);
     const browser = await puppeteer.launch(options);
@@ -41,6 +40,7 @@ async function getScreenshot(url, isDev) {
     return page.screenshot({ type: "jpeg", quality: 100 });
 }
 
+// send it to netlify
 exports.handler = async (event, context) => { 
     try {
         const url = `http://${event.headers.host}/opengraph/?${event.rawQuery}`
