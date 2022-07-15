@@ -505,7 +505,7 @@ function Home({ theme }) {
                         <Button style={{ fontWeight: 900 }}
                             onClick={handleColorAddition}
                         >
-                            Add Color
+                            <FontAwesomeIcon icon={['fal', 'plus']} />
                         </Button>
 
                         <Button
@@ -516,7 +516,7 @@ function Home({ theme }) {
                                 fontWeight: 900
                             }}
                         >
-                            Clear
+                            <FontAwesomeIcon icon={['fal', 'trash']} />
                         </Button>
                     </div>
                 </div>

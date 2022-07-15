@@ -1,3 +1,4 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
 
 import ColorspaceTextField from "./ColorspaceTextField";
@@ -28,7 +29,7 @@ const ColorspaceColor = (props) => {
                                 handleColorLock(event, idx)
                             }}
                         >
-                            {color.locked ? "Unlock" : "Lock"}
+                            {color.locked ? <FontAwesomeIcon icon={['fal', 'lock']} /> : <FontAwesomeIcon icon={['fal', 'lock-open']} />}
                         </Button>
 
                         {idx > 1
@@ -41,7 +42,7 @@ const ColorspaceColor = (props) => {
                                     handleColorRemove(event, idx)
                                 }}
                             >
-                                Remove
+                                <FontAwesomeIcon icon={['fal', 'close']} />
                             </Button>
                             : null
                         }
