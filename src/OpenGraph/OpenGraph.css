@@ -1,0 +1,43 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.container { 
+    padding: 90px;
+    height: 100vh;
+    display: grid;
+    align-items: center;
+    grid-template: "a b"
+                   "c c";
+    grid-template-rows: 2fr 10fr;
+}
+
+img { 
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+}
+
+.container img { height: 56px; width: auto; position: relative; }
+
+h1 { 
+    margin-bottom: 40px;
+}
+
+h2 {
+    text-align: right;
+    font-size: 42px;
+}
+
+.step {
+    background: #000;
+    border: 1px solid #fff;
+    height: 100%;
+}
+
+.gradient {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-area: c;
+}
