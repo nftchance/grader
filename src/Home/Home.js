@@ -55,8 +55,6 @@ function Home({ theme }) {
     const [gradientColorMode, setGradientColorMode] = useState(colorsModes[0])
     const [degree, setDegree] = useState(90);
 
-    const [useFaces, setUseFaces] = useState(false); 
-
     const [score, setScore] = useState(0);
     const [best, setBest] = useState(score);
 
@@ -161,10 +159,6 @@ function Home({ theme }) {
         })
 
         setColors(domainedColors)
-    }
-
-    const handleUseFaces = () => {
-        setUseFaces(!useFaces);
     }
 
     // Generate a random and new pallete based on scaled anchors points
@@ -332,7 +326,7 @@ function Home({ theme }) {
             const urlDomains = colors.map(color => color.domain).join("&ds=")
             const url = window.location.href.split("?")[0]
 
-            return `${url}?` + fixedEncodeURIComponent(`cm=${colorMode}&gcm=${gradientColorMode}&cs=${urlColors}&ds=${urlDomains}&d=${degree}&p=${points}&g=${code.replace("background: ", "")}&f=${useFaces}&s=${score}&url=${url}`)
+            return `${url}?` + fixedEncodeURIComponent(`cm=${colorMode}&gcm=${gradientColorMode}&cs=${urlColors}&ds=${urlDomains}&d=${degree}&p=${points}&g=${code.replace("background: ", "")}&f=${Math.random() > 0.5 ? true : false}&s=${score}&url=${url}`)
         }
 
         // update the url so that someone can just copy-paste
@@ -349,7 +343,6 @@ function Home({ theme }) {
         colors,
         code,
         activeGradient,
-        useFaces
     ])
 
     return (
