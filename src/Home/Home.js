@@ -325,10 +325,10 @@ function Home({ theme }) {
         const chromaSaveURL = () => {
             const urlColors = colors.map(color => color.color).join("&cs=")
             const urlDomains = colors.map(color => color.domain).join("&ds=")
-            
-            return `${window.location.href.split("?")[0]}?` + fixedEncodeURIComponent(`cm=${colorMode}&gcm=${gradientColorMode}&cs=${urlColors}&ds=${urlDomains}&d=${degree}&p=${points}&g=${code.replace("background: ", "")}&f=${useFaces}`)
-        }
+            const url = window.location.href.split("?")[0]
 
+            return `${url}?` + fixedEncodeURIComponent(`cm=${colorMode}&gcm=${gradientColorMode}&cs=${urlColors}&ds=${urlDomains}&d=${degree}&p=${points}&g=${code.replace("background: ", "")}&f=${useFaces}&s=${score}&url=${url}`)
+        }
 
         // update the url so that someone can just copy-paste
         window.history.replaceState({ 
