@@ -7,6 +7,11 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Helmet } from 'react-helmet-async';
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fab } from '@fortawesome/free-brands-svg-icons'
+import { fal } from '@fortawesome/pro-light-svg-icons'
+
 import chroma from "chroma-js"
 
 import Cube from "../Three/Cube";
@@ -17,14 +22,12 @@ import ColorspaceColor from '../Form/ColorspaceColor';
 import CodeTheme from "../Code/ColorspaceCodeTheme";
 
 import logo from "../images/logo.png"
-import link from "../icons/link.png"
-import shuffle from "../icons/shuffle.png";
-import clipboard from "../icons/clipboard.png";
-import twitter from "../icons/twitter.png";
 
 import 'rc-slider/assets/index.css';
 
 import './Home.css';
+
+library.add(fab, fal)
 
 function Home({ theme }) {
     const cubeColorModes = [
@@ -138,15 +141,15 @@ function Home({ theme }) {
         const usingDefaultScale = trimmedColors.every((color, idx) => {
             return color.domain === chromaScaleDomainPosition(trimmedColors, idx + 1);
         })
-        
+
         // Building the color scale with the proper domain
         const joiningColors = trimmedColors.map((color, idx) => {
             const colorSquishedDomain = (1 + colors[colors.length - 2].domain) / 2
             const colorDomain = usingDefaultScale
-            ? chromaScaleDomainPosition(colors, idx + 1)
-            : idx !== trimmedColors.length - 1 
-                ? color.domain 
-                : colorSquishedDomain 
+                ? chromaScaleDomainPosition(colors, idx + 1)
+                : idx !== trimmedColors.length - 1
+                    ? color.domain
+                    : colorSquishedDomain
 
             return {
                 ...color,
@@ -188,7 +191,7 @@ function Home({ theme }) {
     // Full reset of the dashboard -- Updating these two things update
     // everything else that is needed
     const handleColorClear = (event) => {
-        setPoints(defaultGradient.length * pointsColorsFactor) 
+        setPoints(defaultGradient.length * pointsColorsFactor)
         setColors(defaultGradient)
     }
 
@@ -439,14 +442,14 @@ function Home({ theme }) {
                             <CopyToClipboard text={saveURL} onCopy={onLinkCopy} leaveDelay={linkCopied ? 1250 : 0}>
                                 <Tooltip title={linkCopied ? "Copied" : "Copy Input Link"}>
                                     <Button>
-                                        <img src={link} className="fa" alt="link icon" />
+                                        <FontAwesomeIcon icon={['fal', 'link']} />
                                     </Button>
                                 </Tooltip>
                             </CopyToClipboard>
 
                             <Tooltip title="Shuffle">
                                 <Button onClick={handleShuffle}>
-                                    <img src={shuffle} className="fa" alt="shuffle icon" />
+                                    <FontAwesomeIcon icon={['fal', 'shuffle']} />
                                 </Button>
                             </Tooltip>
                         </span>
@@ -528,7 +531,7 @@ function Home({ theme }) {
                                     justifySelf: "center"
                                 }}>
                                     <Button>
-                                        <img src={twitter} className="fa" alt="twitter icon" />
+                                        <FontAwesomeIcon icon={['fab', 'twitter']} />
                                     </Button>
                                 </a>
                             </Tooltip>
@@ -553,7 +556,7 @@ function Home({ theme }) {
                             <CopyToClipboard text={code} leaveDelay={codeCopied ? 1250 : 0} onCopy={onCodeCopy}>
                                 <Tooltip title={codeCopied ? "Copied" : "Copy Code"}>
                                     <Button>
-                                        <img src={clipboard} className="fa" alt="clipboard icon" />
+                                        <FontAwesomeIcon icon={['fal', 'clipboard']} />
                                     </Button>
                                 </Tooltip>
                             </CopyToClipboard>
