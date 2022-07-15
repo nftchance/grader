@@ -88,6 +88,12 @@ function Home({ theme }) {
         return chroma(`rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)})`).hex();
     }
 
+    const colorPosition = (colors, index) => { 
+        if(index == 0) return 0
+
+        return (index / colors.length).toFixed(4)
+    }
+
     // Respond to the change between RGB & HSL viewing mode
     const handleColorModeChange = (event, newColorMode) => {
         if (newColorMode !== null) {
@@ -127,20 +133,17 @@ function Home({ theme }) {
 
     // Handle everything when a new color is added to the mix
     const handleColorAddition = (event) => {
-        let overlapColors = [colors[0]]
-        const joiningColors = [...colors.slice(1, colors.length - 1)]
-        if (joiningColors)
-            overlapColors = overlapColors.concat(joiningColors)
+        const joiningColors = [...colors.slice(1, colors.length)].map((color, idx) => {
+            return {
+                ...color,
+                domain: colorPosition(colors, idx + 1)
+            }
+        })
 
         // Make sure that the color is added in the right spot 
         const colorAddedColors = [
-            ...overlapColors,
-            buildColor(
-                "#000000",
-                (1 + colors[colors.length - 2].domain) / 2,
-                true,
-                false
-            ),
+            ...[colors[0]],
+            ...joiningColors,
             colors[colors.length - 1]
         ]
 
@@ -152,19 +155,19 @@ function Home({ theme }) {
     }
 
     // Update the locked state of a color
-    const handleColorLock = (event, colorId) => { 
-        setColors(colors.map((color, idx) => { 
+    const handleColorLock = (event, colorId) => {
+        setColors(colors.map((color, idx) => {
             return buildColor(
-                color.color, 
-                color.domain, 
-                color.visible, 
+                color.color,
+                color.domain,
+                color.visible,
                 idx === colorId ? !color.locked : color.locked
             )
         }))
     }
 
     // Remove a color from the list
-    const handleColorRemove = (event, colorId) => { 
+    const handleColorRemove = (event, colorId) => {
         setColors(colors.filter((color, idx) => idx !== colorId))
     }
 
@@ -198,7 +201,7 @@ function Home({ theme }) {
         ]).colors(colors.length);
 
         setColors(colors.map((color, i) => {
-            if(color.locked) return color
+            if (color.locked) return color
 
             // keep the color but update the color.color
             return {
