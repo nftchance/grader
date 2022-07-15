@@ -59,6 +59,7 @@ function Home({ theme }) {
 
     const [code, setCode] = useState("");
 
+    const [saveURL, setSaveURL] = useState("");
     const [linkCopied, setLinkCopied] = useState(false);
     const [codeCopied, setCodeCopied] = useState(false);
 
@@ -68,15 +69,8 @@ function Home({ theme }) {
         });
     }
 
-    const saveURL = () => {
-        const urlColors = colors.map(color => color.color).join("&cs=")
-        const urlDomains = colors.map(color => color.domain).join("&ds=")
-
-        return `${window.location.href.split("?")[0]}?` + fixedEncodeURIComponent(`cm=${colorMode}&gcm=${gradientColorMode}&cs=${urlColors}&ds=${urlDomains}&d=${degree}&p=${points}&g=${code.replace("background: ", "")}`)
-    }
-
     const shareMessage = () => {
-        return `I justed used @trycolorspace and made this ${score > 81 ? "perfect " : " "}pallete - whats your score ?%0A%0A${saveURL()}`
+        return `I justed used @trycolorspace and made this ${score > 81 ? "perfect " : " "}pallete - whats your score ?%0A%0A${saveURL}`
     }
 
     const randomColor = () => {
@@ -326,16 +320,28 @@ function Home({ theme }) {
 
         setScore(score);
 
+        const chromaSaveURL = () => {
+            const urlColors = colors.map(color => color.color).join("&cs=")
+            const urlDomains = colors.map(color => color.domain).join("&ds=")
+            
+            return `${window.location.href.split("?")[0]}?` + fixedEncodeURIComponent(`cm=${colorMode}&gcm=${gradientColorMode}&cs=${urlColors}&ds=${urlDomains}&d=${degree}&p=${points}&g=${code.replace("background: ", "")}`)
+        }
+
+
         // update the url so that someone can just copy-paste
         window.history.replaceState({ 
             additionalInformation: 'Updated when changing colors.' 
-        }, 'COLORSPACE', saveURL())
+        }, 'COLORSPACE', chromaSaveURL())
+
+        setSaveURL(chromaSaveURL())
     }, [
-        activeGradient,
-        colors,
+        colorMode,
         gradientColorMode,
         points,
-        degree
+        degree,
+        colors,
+        code,
+        activeGradient,
     ])
 
     return (
@@ -361,7 +367,7 @@ function Home({ theme }) {
                     }}>
                         INPUT
                         <span style={{ marginLeft: "auto", display: "grid", alignItems: "center", gridTemplateColumns: "1fr 1fr" }}>
-                            <CopyToClipboard text={saveURL()} onCopy={onLinkCopy} leaveDelay={linkCopied ? 1250 : 0}>
+                            <CopyToClipboard text={saveURL} onCopy={onLinkCopy} leaveDelay={linkCopied ? 1250 : 0}>
                                 <Tooltip title={linkCopied ? "Copied" : "Copy Input Link"}>
                                     <Button>
                                         <img src={link} className="fa" alt="link icon" />
