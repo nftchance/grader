@@ -163,6 +163,10 @@ function Home({ theme }) {
         setColors(domainedColors)
     }
 
+    const handleUseFaces = () => {
+        setUseFaces(!useFaces);
+    }
+
     // Generate a random and new pallete based on scaled anchors points
     const handleShuffle = () => {
         const shuffledColors = chroma.scale([
@@ -345,6 +349,7 @@ function Home({ theme }) {
         colors,
         code,
         activeGradient,
+        useFaces
     ])
 
     return (
