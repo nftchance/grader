@@ -27,11 +27,6 @@ import 'rc-slider/assets/index.css';
 import './Home.css';
 
 function Home({ theme }) {
-    const defaultGradient = [
-        { color: '#ffffff', domain: 0, visible: true },
-        { color: '#000000', domain: 1, visible: true }
-    ];
-
     const cubeColorModes = [
         'RGB',
         'HSL'
@@ -43,6 +38,20 @@ function Home({ theme }) {
         'HSV',
         'HCL',
         'LAB',
+    ];
+
+    const buildColor = (color, domain, visible, locked) => {
+        return {
+            color,
+            domain,
+            visible,
+            locked
+        }
+    }
+
+    const defaultGradient = [
+        buildColor('#ffffff', 0, true, false),
+        buildColor("#000000", 1, true, false),
     ];
 
     const pointsColorsFactor = 3;
@@ -65,7 +74,7 @@ function Home({ theme }) {
     const [linkCopied, setLinkCopied] = useState(false);
     const [codeCopied, setCodeCopied] = useState(false);
 
-    function fixedEncodeURIComponent(str) {
+    const fixedEncodeURIComponent = (str) => {
         return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
             return '%' + c.charCodeAt(0).toString(16);
         });
@@ -111,11 +120,12 @@ function Home({ theme }) {
         // Make sure that the color is added in the right spot 
         const colorAddedColors = [
             ...overlapColors,
-            {
-                color: '#000000',
-                domain: (1 + colors[colors.length - 2].domain) / 2,
-                visible: true
-            },
+            buildColor(
+                "#000000",
+                (1 + colors[colors.length - 2].domain) / 2,
+                true,
+                false
+            ),
             colors[colors.length - 1]
         ]
 
@@ -137,11 +147,12 @@ function Home({ theme }) {
     // any piece is being edited
     const handleColorChange = (e, colorId) => {
         const _colors = colors.map((color, idx) => (
-            idx !== colorId ? color : {
-                color: e.target.value,
-                domain: color.domain,
-                visible: color.visible
-            }
+            idx !== colorId ? color : buildColor(
+                e.target.value,
+                color.domain,
+                color.visible,
+                color.locked
+            )
         ))
 
         setColors(_colors)
@@ -199,11 +210,14 @@ function Home({ theme }) {
             setGradientColorMode(queryParams.get('gcm'))
 
             if (queryParams.get('cs') && queryParams.get('ds')) {
-                const queryParamsColors = queryParams.getAll('cs').map((color, colorIdx) => ({
-                    color: color,
-                    domain: queryParams.getAll('ds')[colorIdx],
-                    visible: true,
-                }));
+                const queryParamsColors = queryParams
+                    .getAll('cs')
+                    .map((color, colorIdx) => buildColor(
+                        color,
+                        queryParams.getAll('ds')[colorIdx],
+                        true,
+                        false // when loaded by query parameters all are locked
+                    ));
 
                 setColors(queryParamsColors);
                 setPoints(queryParams.get('p'));
@@ -330,17 +344,17 @@ function Home({ theme }) {
             return `${url}?` + fixedEncodeURIComponent(`cm=${colorMode}&gcm=${gradientColorMode}&cs=${urlColors}&ds=${urlDomains}&d=${degree}&p=${points}&g=${code.replace("background: ", "")}&f=${Math.random() > 0.5 ? true : false}&s=${score}&url=${url}`)
         }
 
-        const chromaOGURL = () => { 
+        const chromaOGURL = () => {
             const urlColors = colors.map(color => color.color).join("&cs=")
             const urlDomains = colors.map(color => color.domain).join("&ds=")
             const url = window.location.href.split("?")[0]
 
-            return `${url}.netlify/functions/opengraph/?` + fixedEncodeURIComponent(`cm=${colorMode}&gcm=${gradientColorMode}&cs=${urlColors}&ds=${urlDomains}&d=${degree}&p=${points}&g=${code.replace("background: ", "")}&f=${Math.random() > 0.5 ? true : false}&s=${score}&url=${url}`)  
+            return `${url}.netlify/functions/opengraph/?` + fixedEncodeURIComponent(`cm=${colorMode}&gcm=${gradientColorMode}&cs=${urlColors}&ds=${urlDomains}&d=${degree}&p=${points}&g=${code.replace("background: ", "")}&f=${Math.random() > 0.5 ? true : false}&s=${score}&url=${url}`)
         }
 
         // update the url so that someone can just copy-paste
-        window.history.replaceState({ 
-            additionalInformation: 'Updated when changing colors.' 
+        window.history.replaceState({
+            additionalInformation: 'Updated when changing colors.'
         }, 'COLORSPACE', chromaSaveURL())
 
         setSaveURL(chromaSaveURL())
@@ -358,7 +372,7 @@ function Home({ theme }) {
     return (
         <div className="container">
             <Helmet>
-		        <meta property="og:image" content={ogURL} />
+                <meta property="og:image" content={ogURL} />
                 <meta name="twitter:image" content={ogURL} />
             </Helmet>
 
