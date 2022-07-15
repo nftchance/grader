@@ -197,10 +197,15 @@ function Home({ theme }) {
             randomColor(),
         ]).colors(colors.length);
 
-        setColors(colors.map((color, i) => ({
-            ...color,
-            color: shuffledColors[i]
-        })))
+        setColors(colors.map((color, i) => {
+            if(color.locked) return color
+
+            // keep the color but update the color.color
+            return {
+                ...color,
+                color: shuffledColors[i]
+            }
+        }))
     }
 
     // Control the tooltip for copying the input link
