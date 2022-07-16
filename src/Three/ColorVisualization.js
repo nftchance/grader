@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 
 import * as THREE from 'three';
 
-export default function CubeMesh (props) {
+export default function ColorVisualization(props) {
     const { size: SIZE, segments: SEGMENTS, mode } = props;
 
     const ref = useRef(null);
@@ -63,13 +63,24 @@ export default function CubeMesh (props) {
     }
 
     // DEFINE THE GEOMETRY
-    var boxGeometry = new THREE.BoxGeometry(SIZE, SIZE, SIZE, SEGMENTS, SEGMENTS, SEGMENTS);
+    var boxGeometry = new THREE.BoxGeometry(
+        SIZE,
+        SIZE,
+        SIZE,
+        SEGMENTS,
+        SEGMENTS,
+        SEGMENTS
+    );
     if (mode === "HSL") {
-        boxGeometry = new THREE.ConeBufferGeometry(SIZE / 2, SIZE, SEGMENTS * 50)
+        boxGeometry = new THREE.ConeBufferGeometry(
+            SIZE / 2,
+            SIZE,
+            SEGMENTS * 50
+        )
     }
 
     // ENABLE THE ABILITY TO COLOR THE CUBE BY VERTEX
-    const material = new THREE.MeshBasicMaterial({ vertexColors: true, transparent: true, opacity: 1 });
+    const material = new THREE.MeshBasicMaterial({ vertexColors: true, transparent: true, opacity: .75 });
     const vertexPositions = boxGeometry.attributes.position.array;
 
     // STORE THE COLORS NEEDED FOR THE VERTEXES

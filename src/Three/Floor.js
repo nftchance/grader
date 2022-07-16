@@ -14,14 +14,12 @@ export default function Floor({ size: SIZE }) {
     const floorMaterial = new THREE.MeshBasicMaterial({ map: floorTexture, side: THREE.DoubleSide })
     const floorGeometry = new THREE.PlaneGeometry(1000, 1000, 10, 10);
 
-    return (
-        <mesh
-            geometry={floorGeometry}
-            material={floorMaterial}
-            position={[0, -1.01 * SIZE / 2, 0]}
-            rotation={[Math.PI / 2, 0, 0]}
-            castShadow={true}
-            receiveShadow={true}
-        />
-    )
+    return <mesh
+        geometry={floorGeometry}
+        material={floorMaterial}
+        position={[0, -1.01 * SIZE / 2, 0]}
+        rotation={[Math.PI / 2, 0, 0]}
+        castShadow={true}
+        receiveShadow={true}
+    />
 }
