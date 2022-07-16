@@ -2,8 +2,6 @@ import Tool from "../Tool/Tool"
 
 import logo from "../images/logo.png"
 
-import 'rc-slider/assets/index.css';
-
 import './Home.css';
 
 function Home() {

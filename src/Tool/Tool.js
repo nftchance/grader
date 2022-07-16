@@ -22,6 +22,8 @@ import ColorspaceColor from '../Form/ColorspaceColor';
 import CodeTheme from "../Code/ColorspaceCodeTheme";
 import ColorMath from '../Three/ColorMath';
 
+import 'rc-slider/assets/index.css';
+
 library.add(fab, fal)
 
 const Tool = () => {
