@@ -102,14 +102,6 @@ function Home({ theme }) {
 
     const chromaOGURL = `${window.location.href.split("?")[0]}.netlify/functions/opengraph/?` + URLTail;
 
-    // Flip the state of the active copy index
-    const copiedToggled = (copyIndex) => {
-        return copied.map((copy, idx) => {
-            if (idx === copyIndex) return !(copy !== false)
-            return copy
-        })
-    }
-
     // Respond to the change between RGB & HSL viewing mode
     const handleColorModeChange = (event, newColorMode) => {
         if (newColorMode !== null) setColorMode(newColorMode);
@@ -173,7 +165,7 @@ function Home({ theme }) {
         setColors(DEFAULT_GRADIENT)
     }
 
-    const handleGradientColorModeChange = (event) => { 
+    const handleGradientColorModeChange = (event) => {
         setGradientColorMode(event.target.value)
     }
 
@@ -227,6 +219,14 @@ function Home({ theme }) {
 
     // Update when someone clicks the copy action
     const handleCopy = (copyIndex) => {
+        // Flip the state of the active copy index
+        const copiedToggled = (copyIndex) => {
+            return copied.map((copy, idx) => {
+                if (idx === copyIndex) return !(copy !== false)
+                return copy
+            })
+        }
+
         setCopied(copiedToggled(copyIndex))
 
         setTimeout(() => {
@@ -485,16 +485,14 @@ function Home({ theme }) {
                         </span>
                     </h3>
 
-                    <>
-                        <pre>
-                            <SyntaxHighlighter
-                                language="css"
-                                style={CodeTheme()}
-                                PreTag="div"
-                                children={code}
-                            />
-                        </pre>
-                    </>
+                    <pre>
+                        <SyntaxHighlighter
+                            language="css"
+                            style={CodeTheme()}
+                            PreTag="div"
+                            children={code}
+                        />
+                    </pre>
                 </div>
 
                 {/* Gradient Color Mode Control */}
