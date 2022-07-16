@@ -26,23 +26,24 @@ import logo from "../images/logo.png"
 import 'rc-slider/assets/index.css';
 
 import './Home.css';
+import ColorMath from '../Three/ColorMath';
 
 library.add(fab, fal)
 
 function Home({ theme }) {
-    const c = (color, domain, visible, locked) => ({ color, domain, visible, locked })
-
     const VISUALIZATION_MODES = ['RGB', 'HSL']
     const SCALE_MODES = ['RGB', 'HSL', 'HSV', 'HCL', 'LAB'];
     const POINTS_SCALE_FACTOR = 3;
 
-    const DEFAULT_GRADIENT = [c('#ffffff', 0, true, false), c("#000000", 1, true, false)];
+    const [colorMode, setColorMode] = useState(VISUALIZATION_MODES[0])
+
+    const colorMath = new ColorMath(colorMode, 0, 0)
+    const DEFAULT_GRADIENT = [colorMath.c('#ffffff', 0, true, false), colorMath.c("#000000", 1, true, false)];
 
     const [points, setPoints] = useState(DEFAULT_GRADIENT.length * POINTS_SCALE_FACTOR)
     const [pointsMode, setPointsMode] = useState(0); // 0 = input | 1 = scale
     const [degree, setDegree] = useState(90); // left -> right
 
-    const [colorMode, setColorMode] = useState(VISUALIZATION_MODES[0])
     const [colors, setColors] = useState(DEFAULT_GRADIENT);
     const [chromaColors, setChromaColors] = useState([]);
 
@@ -63,6 +64,32 @@ function Home({ theme }) {
         const defaultColor = DEFAULT_GRADIENT[idx]
         return color.color === defaultColor.color && color.domain === defaultColor.domain && color.locked === defaultColor.locked
     })
+
+    const trimmedColors = [...colors.slice(1, colors.length)];
+
+    const usingDefaultScale = trimmedColors.every((color, idx) => {
+        return color.domain === colorMath.indexToDomainPos(trimmedColors, idx + 1);
+    })
+
+    const colorSquishedDomain = (1 + colors[colors.length - 2].domain) / 2
+
+    // Building the color scale with the proper domain
+    const joiningColors = trimmedColors.map((color, idx) => ({
+        ...color,
+        domain: usingDefaultScale
+            ? colorMath.indexToDomainPos(colors, idx + 1)
+            : idx !== trimmedColors.length - 1
+                ? color.domain
+                : colorSquishedDomain
+    }))
+
+    // Make sure that the color is added in the right spot 
+    const colorAddedColors = [
+        ...[colors[0]],
+        ...joiningColors,
+        colors[colors.length - 1]
+    ]
+
 
     const shareMessage = `I justed used @trycolorspace and made this ${score > 81 ? "perfect " : " "}pallete - whats your score ?%0A%0A${saveURL}`;
 
@@ -110,39 +137,6 @@ function Home({ theme }) {
 
     // Handle everything when a new color is added to the mix
     const handleColorAddition = () => {
-        const chromaScaleDomainPosition = (colors, index) => {
-            if (index === 0) return 0
-            return (index / colors.length)
-        }
-
-        const trimmedColors = [...colors.slice(1, colors.length)];
-
-        const usingDefaultScale = trimmedColors.every((color, idx) => {
-            return color.domain === chromaScaleDomainPosition(trimmedColors, idx + 1);
-        })
-
-        // Building the color scale with the proper domain
-        const joiningColors = trimmedColors.map((color, idx) => {
-            const colorSquishedDomain = (1 + colors[colors.length - 2].domain) / 2
-            const colorDomain = usingDefaultScale
-                ? chromaScaleDomainPosition(colors, idx + 1)
-                : idx !== trimmedColors.length - 1
-                    ? color.domain
-                    : colorSquishedDomain
-
-            return {
-                ...color,
-                domain: colorDomain
-            }
-        })
-
-        // Make sure that the color is added in the right spot 
-        const colorAddedColors = [
-            ...[colors[0]],
-            ...joiningColors,
-            colors[colors.length - 1]
-        ]
-
         // if the default points value is being used, continue using it
         if (points === (colorAddedColors.length - 1) * POINTS_SCALE_FACTOR)
             setPoints(colorAddedColors.length * POINTS_SCALE_FACTOR)
@@ -151,9 +145,9 @@ function Home({ theme }) {
     }
 
     // Update the locked state of a color
-    const handleColorLock = (event, colorId) => {
+    const handleColorLock = (colorId) => {
         setColors(colors.map((color, idx) => {
-            return c(
+            return colorMath.c(
                 color.color,
                 color.domain,
                 color.visible,
@@ -163,13 +157,13 @@ function Home({ theme }) {
     }
 
     // Remove a color from the list
-    const handleColorRemove = (event, colorId) => {
+    const handleColorRemove = (colorId) => {
         setColors(colors.filter((color, idx) => idx !== colorId))
     }
 
     // Full reset of the dashboard -- Updating these two things update
     // everything else that is needed
-    const handleColorClear = (event) => {
+    const handleColorClear = () => {
         setPoints(DEFAULT_GRADIENT.length * POINTS_SCALE_FACTOR)
         setColors(DEFAULT_GRADIENT)
     }
@@ -179,12 +173,10 @@ function Home({ theme }) {
         // dont allow users to move the solo base anchors
         if (domains.length === 2) return
 
-        const domainedColors = colors.map((color, i) => {
-            return {
-                ...color,
-                domain: domains[i] / 100,
-            }
-        })
+        const domainedColors = colors.map((color, i) => ({
+            ...color,
+            domain: domains[i] / 100,
+        }))
 
         setColors(domainedColors)
     }
@@ -228,7 +220,7 @@ function Home({ theme }) {
             if (queryParams.get('cs') && queryParams.get('ds')) {
                 const queryParamsColors = queryParams
                     .getAll('cs')
-                    .map((color, colorIdx) => c(
+                    .map((color, colorIdx) => colorMath.c(
                         color,
                         queryParams.getAll('ds')[colorIdx],
                         true,

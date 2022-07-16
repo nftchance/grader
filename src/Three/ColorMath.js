@@ -21,9 +21,19 @@ export default class ColorMath {
         )
     }
 
+    // MUSHING ARGS INTO COLOR OBJECT
+    c = (color, domain, visible, locked) => (
+        { color, domain, visible, locked }
+    )
+
     // HANDLING THE CONVERSION OF POINTS TO ANGLES
     p = (x, y) => {
         return { x, y }
+    }
+
+    indexToDomainPos = (colors, index) => {
+        if (index === 0) return 0
+        return (index / colors.length)
     }
 
     // MAKE SURE OUR ANGLE IS NOT BLOWN OUT 

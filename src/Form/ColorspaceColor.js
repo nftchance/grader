@@ -26,7 +26,7 @@ const ColorspaceColor = (props) => {
                                 marginRight: "auto",
                             }}
                             onClick={(event) => {
-                                handleColorLock(event, idx)
+                                handleColorLock(idx)
                             }}
                         >
                             {color.locked ? <FontAwesomeIcon icon={['fal', 'lock']} /> : <FontAwesomeIcon icon={['fal', 'lock-open']} />}
@@ -39,7 +39,7 @@ const ColorspaceColor = (props) => {
                                     marginLeft: "auto"
                                 }}
                                 onClick={(event) => {
-                                    handleColorRemove(event, idx)
+                                    handleColorRemove(idx)
                                 }}
                             >
                                 <FontAwesomeIcon icon={['fal', 'close']} />
