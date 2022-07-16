@@ -1,40 +1,53 @@
-import { Suspense } from "react";
+import { Suspense, useLayoutEffect, useState } from "react";
 
 import { Canvas } from "@react-three/fiber"
-import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 
 import Floor from "./Floor"
-import CubeMesh from "./CubeMesh"
+import ColorVisualization from "./ColorVisualization"
 
-const SIZE = 10;
-const SEGMENTS = 1;
+import ColorPoints from "./ColorPoints"
+import ColorMath from "./ColorMath";
+import chroma from "chroma-js";
+import LightsAndCamera from "./LightsAndCamera";
 
-// TODO: On hover make it have an opacity
-// TODO: On hover show the points of the circle
+const ThreeScene = ({ colors, colorMode: mode }) => {
+    const SIZE = 10;
+    const SEGMENTS = 1;
 
-const ThreeScene = (props) => {
-    const { colors, colorMode: mode } = props;
+    const [points, setPoints] = useState([])
 
-    console.log(colors)
+    useLayoutEffect(() => {
+        if (!colors.every(color => chroma.valid(color.color))) return
+
+        const colorMath = new ColorMath(mode, SIZE, SEGMENTS)
+
+        setPoints(colors.map(color => colorMath.hexToPos(mode, color.color)))
+    }, [colors, mode])
 
     return (
-        <Canvas
-            gl={{ antialias: true, alpha: true }}
-        >
-            <ambientLight />
-            <pointLight shadow intensity={1} position={[10, 10, 10]} />
-
-            <fog attach="fog" args={['black', 1, 150]} />
-
+        <Canvas gl={{ antialias: true, alpha: true }}>
             <Suspense fallback={null}>
-                <Floor receiveShadow size={SIZE} />
-                <CubeMesh receiveShadow mode={mode} size={SIZE} segments={SEGMENTS} />
-                {/* TODO: Implement group */}
-                {/* TODO: Implement array of scale colors */}
-            </Suspense>
+                <LightsAndCamera
+                    size={SIZE}
+                />
 
-            <OrbitControls makeDefault minDistance={SIZE * 1.5} maxDistance={SIZE * 3} />
-            <PerspectiveCamera makeDefault fov={50} position={[10, 10, 10]} />
+                <Floor
+                    receiveShadow
+                    size={SIZE} />
+
+                <ColorVisualization
+                    receiveShadow
+                    mode={mode}
+                    size={SIZE}
+                    segments={SEGMENTS * 5} />
+
+                <ColorPoints
+                    receiveShadow
+                    points={points}
+                    mode={mode}
+                    size={SIZE}
+                    segments={SEGMENTS} />
+            </Suspense>
         </Canvas>
     )
 }
