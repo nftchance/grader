@@ -85,27 +85,11 @@ export default class ColorMath {
         const y = (hexRGB[1] / 255 - 0.5) * this.SIZE;
         const z = (hexRGB[2] / 255 - 0.5) * this.SIZE;
 
-        // CALCULATE ANCLE AROUND CONE
-        let h = this.toDegrees(this.angle(
-            this.p(5, 0),
-            this.p(0, 0),
-            this.p(x, z)
-        )) / 360;
-
-        let s = 1;
-        let v = 0.5;
-
-        // DETERMINE IF THE POINT IS IN THE CENTER
-        if ((x, Math.abs(y), z) === (0, this.SIZE / 2, 0)) {
-            s = 0;                      // saturation levels of zero
-            v = 0.5 - y / this.SIZE     // set the light levels for the center
-        }
-
         return [x, y, z]
     }
 
     hexTOHSLPos = (hex) => {
-        const hexHSL = chroma(hex).hsl()
+        const hexHSL = chroma(hex).hsv()
 
         console.log(hex, 'to', hexHSL)
 
@@ -113,15 +97,21 @@ export default class ColorMath {
         // (y) left side of the box is lightness (vertical)  
 
         const hue = (hexHSL[0]) * Math.PI / 180 
-        const saturation = hexHSL[1] * (this.SIZE / 2);
-        console.log('saturation', saturation)
 
-        const x = (saturation * Math.cos(hue))
-        const z = (saturation * Math.sin(hue))
-
+        // const y = (hexHSL[2] * this.SIZE / 2);
         const y = 5;
 
-        // const y = (hexHSL[2] + 0.5) * (this.SIZE / 2);
+        const saturation = hexHSL[1] * this.SIZE / 2;
+        console.log('distance from center', saturation)
+
+        const x = ((saturation) * Math.cos(hue))
+        const z = ((saturation) * Math.sin(hue))
+        console.log({x,z})
+
+        // const y = 5;
+
+
+        console.log('y', y)
 
         console.log(x, y, z)
 
