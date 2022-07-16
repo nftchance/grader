@@ -30,56 +30,40 @@ import './Home.css';
 library.add(fab, fal)
 
 function Home({ theme }) {
-    const cubeColorModes = [
-        'RGB',
-        'HSL'
-    ]
+    const buildColor = (color, domain, visible, locked) => ({ color, domain, visible, locked })
 
-    const colorsModes = [
-        'RGB',
-        'HSL',
-        'HSV',
-        'HCL',
-        'LAB',
-    ];
+    // CONSTANT VARIABLES
+    const VISUALIZATION_MODES = ['RGB', 'HSL']
+    const SCALE_MODES = ['RGB', 'HSL', 'HSV', 'HCL', 'LAB'];
+    const POINTS_SCALE_FACTOR = 3;
 
-    const buildColor = (color, domain, visible, locked) => {
-        return {
-            color,
-            domain,
-            visible,
-            locked
-        }
-    }
+    const DEFAULT_GRADIENT = [buildColor('#ffffff', 0, true, false), buildColor("#000000", 1, true, false)];
 
-    const defaultGradient = [
-        buildColor('#ffffff', 0, true, false),
-        buildColor("#000000", 1, true, false),
-    ];
+    const [points, setPoints] = useState(DEFAULT_GRADIENT.length * POINTS_SCALE_FACTOR)
+    const [pointsMode, setPointsMode] = useState(0); // 0 = input | 1 = scale
+    const [degree, setDegree] = useState(90); // left -> right
 
-    const pointsColorsFactor = 3;
-
-    const [activeGradient, setActiveGradient] = useState(defaultGradient);
-    const [colors, setColors] = useState(defaultGradient);
+    const [colorMode, setColorMode] = useState(VISUALIZATION_MODES[0])
+    const [colors, setColors] = useState(DEFAULT_GRADIENT);
     const [chromaColors, setChromaColors] = useState([]);
-    const [points, setPoints] = useState(defaultGradient.length * pointsColorsFactor)
-
-    const [colorMode, setColorMode] = useState(cubeColorModes[0])
-    const [gradientColorMode, setGradientColorMode] = useState(colorsModes[0])
-    const [pointsMode, setPointsMode] = useState(0);
-
-    const [degree, setDegree] = useState(90);
 
     const [score, setScore] = useState(0);
     const [best, setBest] = useState(score);
 
     const [code, setCode] = useState("");
 
+    const [gradientColorMode, setGradientColorMode] = useState(SCALE_MODES[0])
+    const [activeGradient, setActiveGradient] = useState(DEFAULT_GRADIENT);
+
     const [saveURL, setSaveURL] = useState("");
     const [ogURL, setOGURL] = useState("");
+ 
+    const [copied, setCopied] = useState([false, false])
 
-    const [linkCopied, setLinkCopied] = useState(false);
-    const [codeCopied, setCodeCopied] = useState(false);
+    const hasMadeChange = !colors.every((color, idx) => {
+        const defaultColor = DEFAULT_GRADIENT[idx]
+        return color.color === defaultColor.color && color.domain === defaultColor.domain && color.locked === defaultColor.locked
+    })
 
     const fixedEncodeURIComponent = (str) => {
         return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
@@ -169,8 +153,8 @@ function Home({ theme }) {
         ]
 
         // if the default points value is being used, continue using it
-        if (points === (colorAddedColors.length - 1) * pointsColorsFactor)
-            setPoints(colorAddedColors.length * pointsColorsFactor)
+        if (points === (colorAddedColors.length - 1) * POINTS_SCALE_FACTOR)
+            setPoints(colorAddedColors.length * POINTS_SCALE_FACTOR)
 
         setColors(colorAddedColors)
     }
@@ -195,8 +179,8 @@ function Home({ theme }) {
     // Full reset of the dashboard -- Updating these two things update
     // everything else that is needed
     const handleColorClear = (event) => {
-        setPoints(defaultGradient.length * pointsColorsFactor)
-        setColors(defaultGradient)
+        setPoints(DEFAULT_GRADIENT.length * POINTS_SCALE_FACTOR)
+        setColors(DEFAULT_GRADIENT)
     }
 
     // Update the domain of the scale as the slider is used
@@ -232,24 +216,15 @@ function Home({ theme }) {
         }))
     }
 
-    const handlePointsModeChange = () => { 
+    const handlePointsModeChange = () => {
         setPointsMode(Math.abs(pointsMode - 1))
     }
 
-    // Control the tooltip for copying the input link
-    const onLinkCopy = () => {
-        setLinkCopied(true)
-        setTimeout(() => {
-            setLinkCopied(false)
-        }, 1500);
-    }
-
-    // Control the tooltip for copying the code of the scale
-    const onCodeCopy = () => {
-        setCodeCopied(true)
-        setTimeout(() => {
-            setCodeCopied(false)
-        }, 1500);
+    const handleCopy = (copyIndex) => { 
+        setCopied(copied.map((copy, idx) => {
+            if(idx === copyIndex) return !copy
+            return copy
+        }))
     }
 
     useEffect(() => {
@@ -307,8 +282,7 @@ function Home({ theme }) {
                 );
 
                 setChromaColors(_chromaColors.map(color => ({ color })))
-                console.log('chroma', _chromaColors.map(color => ({ color })))
-                
+
                 const chromaGradientString = `linear-gradient(\n\t${degree}deg,
 						${_chromaColors} 
 					)
@@ -412,8 +386,6 @@ function Home({ theme }) {
 
         setSaveURL(chromaSaveURL())
         setOGURL(chromaOGURL())
-
-        console.log('standard', colors)
     }, [
         colorMode,
         gradientColorMode,
@@ -455,8 +427,8 @@ function Home({ theme }) {
                     }}>
                         INPUT
                         <span style={{ marginLeft: "auto", display: "grid", alignItems: "center", gridTemplateColumns: "1fr 1fr" }}>
-                            <CopyToClipboard text={saveURL} onCopy={onLinkCopy} leaveDelay={linkCopied ? 1250 : 0}>
-                                <Tooltip title={linkCopied ? "Copied" : "Copy Input Link"}>
+                            <CopyToClipboard text={saveURL} onCopy={() => { handleCopy(0) }} leaveDelay={copied[0] ? 1250 : 0}>
+                                <Tooltip title={copied[0] ? "Copied" : "Copy Input Link"}>
                                     <Button>
                                         <FontAwesomeIcon icon={['fal', 'link']} />
                                     </Button>
@@ -474,7 +446,7 @@ function Home({ theme }) {
                     <label>CUBE COLOR MODE</label>
                     <ColorspaceToggleButtonGroup
                         value={colorMode}
-                        values={cubeColorModes}
+                        values={VISUALIZATION_MODES}
                         exclusive
                         aria-label="cube color mode"
                         onChange={handleColorModeChange}
@@ -524,7 +496,7 @@ function Home({ theme }) {
                             <FontAwesomeIcon icon={['fal', 'plus']} />
                         </Button>
 
-                        {colors.length > 2 ? <Button
+                        {hasMadeChange && <Button
                             onClick={handleColorClear}
                             style={{
                                 float: "right",
@@ -533,7 +505,7 @@ function Home({ theme }) {
                             }}
                         >
                             <FontAwesomeIcon icon={['fal', 'trash']} />
-                        </Button> : null}
+                        </Button>}
                     </div>
                 </div>
 
@@ -569,15 +541,15 @@ function Home({ theme }) {
                     <h3>
                         CODE
                         <span style={{ float: "right", alignContent: "center" }}>
-                            <CopyToClipboard text={code} leaveDelay={codeCopied ? 1250 : 0} onCopy={onCodeCopy}>
-                                <Tooltip title={codeCopied ? "Copied" : "Copy Code"}>
+                            <CopyToClipboard text={code} leaveDelay={copied[1] ? 1250 : 0} onCopy={() => { handleCopy(1) }}>
+                                <Tooltip title={copied[1] ? "Copied" : "Copy Code"}>
                                     <Button>
                                         <FontAwesomeIcon icon={['fal', 'clipboard']} />
                                     </Button>
                                 </Tooltip>
                             </CopyToClipboard>
 
-                            <Tooltip title={pointsMode === 0 ? 'Visualize Code' : 'Visualize Input' }>
+                            <Tooltip title={pointsMode === 0 ? 'Visualize Code' : 'Visualize Input'}>
                                 <Button onClick={handlePointsModeChange}>
                                     <FontAwesomeIcon icon={pointsMode === 0 ? ['fal', 'eye-dropper'] : ['fal', 'droplet']} />
                                 </Button>
@@ -601,7 +573,7 @@ function Home({ theme }) {
                 <div className="color-mode">
                     <ColorspaceToggleButtonGroup
                         value={gradientColorMode}
-                        values={colorsModes}
+                        values={SCALE_MODES}
                         exclusive
                         aria-label="gradient color scale mode"
                         onChange={(event) => { setGradientColorMode(event.target.value) }}
