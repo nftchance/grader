@@ -90,13 +90,31 @@ function Home({ theme }) {
         colors[colors.length - 1]
     ]
 
-
     const shareMessage = `I justed used @trycolorspace and made this ${score > 81 ? "perfect " : " "}pallete - whats your score ?%0A%0A${saveURL}`;
 
     const randomRGBValue = () => { return Math.floor(Math.random() * 255) }
 
     const randomColor = () => {
         return chroma(`rgb(${randomRGBValue()}, ${randomRGBValue()}, ${randomRGBValue()})`).hex();
+    }
+
+    const shuffledColors = () => {
+        return chroma.scale([
+            randomColor(),
+            randomColor(),
+        ]).colors(colors.length);
+    }
+
+    const shuffledGradient = () => {
+        return colors.map((color, i) => {
+            if (color.locked) return color
+
+            // keep the color but update the color.color
+            return {
+                ...color,
+                color: shuffledColors()[i]
+            }
+        })
     }
 
     const fixedEncodeURIComponent = (str) => {
@@ -126,11 +144,11 @@ function Home({ theme }) {
     }
 
     // Update the color when the user changes it 
-    const handleColorChange = (e, colorId) => {
+    const handleColorChange = (event, colorId) => {
         setColors(colors.map((color, idx) => (
             idx !== colorId ? color : {
                 ...color, // keep all the fields the same but color
-                color: e.target.value
+                color: event.target.value
             }
         )))
     }
@@ -183,20 +201,7 @@ function Home({ theme }) {
 
     // Generate a random and new pallete based on scaled anchors points
     const handleShuffle = () => {
-        const shuffledColors = chroma.scale([
-            randomColor(),
-            randomColor(),
-        ]).colors(colors.length);
-
-        setColors(colors.map((color, i) => {
-            if (color.locked) return color
-
-            // keep the color but update the color.color
-            return {
-                ...color,
-                color: shuffledColors[i]
-            }
-        }))
+        setColors(shuffledGradient())
     }
 
     const handlePointsModeChange = () => {
