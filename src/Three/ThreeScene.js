@@ -35,16 +35,18 @@ const ThreeScene = (props) => {
 
     return (
         <Canvas gl={{ antialias: true, alpha: true }}>
-            <ambientLight />
-            <pointLight shadow intensity={1} position={[10, 10, 10]} />
-
-            <OrbitControls makeDefault minDistance={SIZE * 1.25} maxDistance={SIZE * 5} />
-            <PerspectiveCamera makeDefault fov={50} position={[15, 15, 15]} />
-
-            <fog attach="fog" args={['black', 1, 150]} />
-
             <Suspense fallback={null}>
-                <Floor receiveShadow size={SIZE} />
+                <ambientLight />
+                <pointLight shadow intensity={1} position={[10, 10, 10]} />
+
+                <OrbitControls makeDefault minDistance={SIZE * 1.25} maxDistance={SIZE * 5} />
+                <PerspectiveCamera makeDefault fov={50} position={[15, 15, 15]} />
+
+                <fog attach="fog" args={['black', 1, 150]} />
+
+                <Floor
+                    receiveShadow
+                    size={SIZE} />
 
                 <ColorVisualization
                     receiveShadow
@@ -53,12 +55,18 @@ const ThreeScene = (props) => {
                     segments={SEGMENTS * 5} />
 
                 <ColorPoints
+                    receiveShadow
                     points={points}
                     size={SIZE}
                     segments={SEGMENTS} />
 
                 <EffectComposer multisampling={0}>
-                    <SSAO samples={31} radius={5} intensity={50} luminanceInfluence={0.5} color="white" />
+                    <SSAO
+                        samples={31}
+                        radius={5}
+                        intensity={50}
+                        luminanceInfluence={0.5}
+                        color="white" />
                     <SMAA />
                 </EffectComposer>
             </Suspense>
