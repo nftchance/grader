@@ -61,10 +61,13 @@ function Home({ theme }) {
 
     const [activeGradient, setActiveGradient] = useState(defaultGradient);
     const [colors, setColors] = useState(defaultGradient);
+    const [chromaColors, setChromaColors] = useState([]);
     const [points, setPoints] = useState(defaultGradient.length * pointsColorsFactor)
 
     const [colorMode, setColorMode] = useState(cubeColorModes[0])
     const [gradientColorMode, setGradientColorMode] = useState(colorsModes[0])
+    const [pointsMode, setPointsMode] = useState(0);
+
     const [degree, setDegree] = useState(90);
 
     const [score, setScore] = useState(0);
@@ -74,6 +77,7 @@ function Home({ theme }) {
 
     const [saveURL, setSaveURL] = useState("");
     const [ogURL, setOGURL] = useState("");
+
     const [linkCopied, setLinkCopied] = useState(false);
     const [codeCopied, setCodeCopied] = useState(false);
 
@@ -228,6 +232,10 @@ function Home({ theme }) {
         }))
     }
 
+    const handlePointsModeChange = () => { 
+        setPointsMode(Math.abs(pointsMode - 1))
+    }
+
     // Control the tooltip for copying the input link
     const onLinkCopy = () => {
         setLinkCopied(true)
@@ -293,20 +301,23 @@ function Home({ theme }) {
 
         const chromaStringGradient = (gradientColors) => {
             try {
-                const chromaColors = chromaGradient(
+                const _chromaColors = chromaGradient(
                     gradientColors.map(color => color.color),
                     gradientColors.map(color => color.domain)
                 );
 
+                setChromaColors(_chromaColors.map(color => ({ color })))
+                console.log('chroma', _chromaColors.map(color => ({ color })))
+                
                 const chromaGradientString = `linear-gradient(\n\t${degree}deg,
-						${chromaColors} 
+						${_chromaColors} 
 					)
 				`;
 
                 setActiveGradient(chromaGradientString)
-                setCode(chromaGradientCode(chromaColors))
+                setCode(chromaGradientCode(_chromaColors))
 
-                return chromaColors;
+                return _chromaColors;
             } catch (e) {
                 console.log('Failed to update:', e)
             }
@@ -401,6 +412,8 @@ function Home({ theme }) {
 
         setSaveURL(chromaSaveURL())
         setOGURL(chromaOGURL())
+
+        console.log('standard', colors)
     }, [
         colorMode,
         gradientColorMode,
@@ -429,7 +442,10 @@ function Home({ theme }) {
 
             <div className="tool">
                 <div className="step cube">
-                    <ThreeScene colors={colors} colorMode={colorMode} />
+                    <ThreeScene
+                        colors={pointsMode === 0 ? colors : chromaColors}
+                        colorMode={colorMode}
+                    />
                 </div>
 
                 <div className="step input">
@@ -560,6 +576,12 @@ function Home({ theme }) {
                                     </Button>
                                 </Tooltip>
                             </CopyToClipboard>
+
+                            <Tooltip title={pointsMode === 0 ? 'Visualize Code' : 'Visualize Input' }>
+                                <Button onClick={handlePointsModeChange}>
+                                    <FontAwesomeIcon icon={pointsMode === 0 ? ['fal', 'eye-dropper'] : ['fal', 'droplet']} />
+                                </Button>
+                            </Tooltip>
                         </span>
                     </h3>
 
