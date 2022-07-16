@@ -37,40 +37,47 @@ export default class ColorMath {
         return 360 * radians / (2 * Math.PI)
     }
 
+    posToRGB = (color, x, y, z) => {
+        const r = 0.5 + x / this.SIZE;       // R coordinate
+        const g = 0.5 + y / this.SIZE;       // G coordinate
+        const b = 0.5 + z / this.SIZE;       // B coordinate
+
+        color.setRGB(r, g, b);
+    }
+
+    posToHSL = (color, x, y, z) => {
+        // CALCULATE ANCLE AROUND CONE
+        let h = this.toDegrees(this.angle(
+            this.p(5, 0),
+            this.p(0, 0),
+            this.p(x, z)
+        )) / 360;
+
+        let s = 1;
+        let v = 0.5;
+
+        // DETERMINE IF THE POINT IS IN THE CENTER
+        if ((x, Math.abs(y), z) === (0, this.SIZE / 2, 0)) {
+            s = 0;                      // saturation levels of zero
+            v = 0.5 - y / this.SIZE     // set the light levels for the center
+        }
+
+        color.setHSL(h, s, v)
+    }
+
     posToColor = (colorMode, x, y, z) => {
         var color = new THREE.Color(0xffffff);
 
         // CONVERT POSITION TO COLOR
-        if (colorMode === "RGB") {
-            const r = 0.5 + x / this.SIZE;       // R coordinate
-            const g = 0.5 + y / this.SIZE;       // G coordinate
-            const b = 0.5 + z / this.SIZE;       // B coordinate
-
-            color.setRGB(r, g, b);
-        } else if (colorMode === "HSL") {
-            // CALCULATE ANCLE AROUND CONE
-            let h = this.toDegrees(this.angle(
-                this.p(5, 0), 
-                this.p(0, 0), 
-                this.p(x, z)
-            )) / 360;
-
-            let s = 1;
-            let v = 0.5;
-
-            // DETERMINE IF THE POINT IS IN THE CENTER
-            if ((x, Math.abs(y), z) === (0, this.SIZE / 2, 0)) {
-                s = 0;              // saturation levels of zero
-                v = 0.5 - y / this.SIZE  // set the light levels for the center
-            }
-
-            color.setHSL(h, s, v)
-        }
+        if (colorMode === "RGB")
+            this.posToRGB(color, x, y, z)
+        else if (colorMode === "HSL")
+            this.posToHSL(color, x, y, z)
 
         return color
     }
 
-    colorToPos = () => {
-
-    }
+    // hexToPos = (hex) => {
+    //     return new THREE.Vector3(x, y, z)
+    // }
 }
