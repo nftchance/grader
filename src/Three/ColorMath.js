@@ -38,7 +38,7 @@ export default class ColorMath {
         return 360 * radians / (2 * Math.PI)
     }
 
-    posToRGB = (color, x, y, z) => {
+    posToRGB = (color, { x, y, z }) => {
         const r = 0.5 + x / this.SIZE;       // R coordinate
         const g = 0.5 + y / this.SIZE;       // G coordinate
         const b = 0.5 + z / this.SIZE;       // B coordinate
@@ -46,7 +46,7 @@ export default class ColorMath {
         color.setRGB(r, g, b);
     }
 
-    posToHSL = (color, x, y, z) => {
+    posToHSL = (color, { x, y, z }) => {
         // CALCULATE ANCLE AROUND CONE
         let h = this.toDegrees(this.angle(
             this.p(0, 0),
@@ -66,18 +66,19 @@ export default class ColorMath {
         color.setHSL(h, s, v)
     }
 
-    posToColor = (colorMode, x, y, z) => {
+    posToColor = (colorMode, coords) => {
         var color = new THREE.Color(0xffffff);
 
         // CONVERT POSITION TO COLOR
         if (colorMode === "RGB")
-            this.posToRGB(color, x, y, z)
+            this.posToRGB(color, coords)
         else if (colorMode === "HSL")
-            this.posToHSL(color, x, y, z)
+            this.posToHSL(color, coords)
 
         return color
     }
 
+    // PLACING IT WITHIN THE RGB CUBE
     hexToRGBPos = (hex) => {
         const hexRGB = chroma(hex).rgb()
 
@@ -88,31 +89,18 @@ export default class ColorMath {
         return [x, y, z]
     }
 
+    // REBUILDING THE CONE WITH THE EQUATIONS
     hexTOHSLPos = (hex) => {
         const hexHSL = chroma(hex).hsv()
 
-        console.log(hex, 'to', hexHSL)
-
         // (x and z) are determinations of saturation and color rotation
         // (y) left side of the box is lightness (vertical)  
+        const saturation = hexHSL[2] * (hexHSL[1] * this.SIZE / 2);
+        const hue = (hexHSL[0]) * Math.PI / 180
 
-        const hue = (hexHSL[0]) * Math.PI / 180 
-
-        // const lightness = hexHSL[2] * this.SIZE / 2;
-        const saturation = hexHSL[1] * this.SIZE / 2;
-        console.log('distance from center', saturation)
-
-        const x = (saturation * Math.cos(hue))
-        const z = (saturation * Math.sin(hue))
+        const x = saturation * Math.cos(hue)
+        const z = saturation * Math.sin(hue)
         const y = (hexHSL[2] - 0.5) * this.SIZE
-        console.log({x,y,z})
-
-        // const y = 5;
-
-
-        console.log('y', y)
-
-        console.log(x, y, z)
 
         return [x, y, z]
     }
@@ -122,9 +110,4 @@ export default class ColorMath {
             return this.hexToRGBPos(hex)
         return this.hexTOHSLPos(hex);
     }
-
-    // hexToHSL = (hsl) => { 
-    // 
-    // return new THREE.Vector3(x,y,z)
-    // }
 }

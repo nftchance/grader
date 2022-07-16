@@ -49,7 +49,7 @@ export default function ColorVisualization(props) {
             const z = vertexPositions[vertex + 2];  // Z coordinate
 
             // DETERMINE THE PROPER COLOR FOR THIS VERTEX
-            const posColor = colorMath.posToColor(mode, x, y, z)
+            const posColor = colorMath.posToColor(mode, {x, y, z})
 
             // BUILD THE VERTEX COLOR ARRAY 3 VALUES AT A TIME
             colors.push(posColor.r, posColor.g, posColor.b);
