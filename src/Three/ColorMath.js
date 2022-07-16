@@ -110,7 +110,7 @@ export default class ColorMath {
         // (x and z) are determinations of saturation and color rotation
         // (y) left side of the box is lightness (vertical)  
         const saturation = hexHSL[2] * (hexHSL[1] * this.SIZE / 2);
-        const hue = (hexHSL[0]) * Math.PI / 180
+        const hue = isNaN(hexHSL[0]) ? 0 : (hexHSL[0]) * Math.PI / 180
 
         const x = saturation * Math.cos(hue)
         const z = saturation * Math.sin(hue)
