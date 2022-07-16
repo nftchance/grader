@@ -208,11 +208,20 @@ function Home({ theme }) {
         setPointsMode(Math.abs(pointsMode - 1))
     }
 
+    // Update when someone clicks the copy action
     const handleCopy = (copyIndex) => {
         setCopied(copied.map((copy, idx) => {
-            if (idx === copyIndex) return !copy
+            if (idx === copyIndex) return true
             return copy
         }))
+    
+        // flip it back to default after a second
+        setTimeout(() => { 
+            setCopied(copied.map((copy, idx) => {
+                if (idx === copyIndex) return false
+                return copy
+            }))
+        }, 1500)
     }
 
     useEffect(() => {
