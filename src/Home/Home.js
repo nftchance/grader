@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { Button } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
@@ -20,24 +20,31 @@ import ColorspaceTextField from '../Form/ColorspaceTextField';
 import ColorspaceToggleButtonGroup from '../Form/ColorspaceToggleButtonGroup';
 import ColorspaceColor from '../Form/ColorspaceColor';
 import CodeTheme from "../Code/ColorspaceCodeTheme";
+import ColorMath from '../Three/ColorMath';
 
 import logo from "../images/logo.png"
 
 import 'rc-slider/assets/index.css';
 
 import './Home.css';
-import ColorMath from '../Three/ColorMath';
 
 library.add(fab, fal)
 
 function Home({ theme }) {
+    const fixedEncodeURIComponent = (str) => {
+        return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
+            return '%' + c.charCodeAt(0).toString(16);
+        });
+    }
+
     const VISUALIZATION_MODES = ['RGB', 'HSL']
     const SCALE_MODES = ['RGB', 'HSL', 'HSV', 'HCL', 'LAB'];
     const POINTS_SCALE_FACTOR = 3;
 
     const [colorMode, setColorMode] = useState(VISUALIZATION_MODES[0])
 
-    const colorMath = new ColorMath(colorMode, 0, 0)
+    const colorMath = useMemo(() => new ColorMath(colorMode, 0, 0), [colorMode]);
+
     const DEFAULT_GRADIENT = [colorMath.c('#ffffff', 0, true, false), colorMath.c("#000000", 1, true, false)];
 
     const [points, setPoints] = useState(DEFAULT_GRADIENT.length * POINTS_SCALE_FACTOR)
@@ -54,9 +61,6 @@ function Home({ theme }) {
 
     const [gradientColorMode, setGradientColorMode] = useState(SCALE_MODES[0])
     const [activeGradient, setActiveGradient] = useState(DEFAULT_GRADIENT);
-
-    const [saveURL, setSaveURL] = useState(""); // TODO: Remove these from the state
-    const [ogURL, setOGURL] = useState(""); // TODO: Remove this from the state
 
     const [copied, setCopied] = useState([false, false])
 
@@ -90,38 +94,13 @@ function Home({ theme }) {
         colors[colors.length - 1]
     ]
 
-    const shareMessage = `I justed used @trycolorspace and made this ${score > 81 ? "perfect " : " "}pallete - whats your score ?%0A%0A${saveURL}`;
+    const URLTail = fixedEncodeURIComponent(`cm=${colorMode}&gcm=${gradientColorMode}&cs=${colors.map(color => color.color).join("&cs=")}&ds=${colors.map(color => color.domain).join("&ds=")}&d=${degree}&p=${points}&g=${code.replace("background: ", "")}&f=${Math.random() > 0.5 ? true : false}&s=${score}&url=${window.location.href.split("?")[0]}`)
 
-    const randomRGBValue = () => { return Math.floor(Math.random() * 255) }
+    const chromaSaveURL = `${window.location.href.split("?")[0]}?` + URLTail
 
-    const randomColor = () => {
-        return chroma(`rgb(${randomRGBValue()}, ${randomRGBValue()}, ${randomRGBValue()})`).hex();
-    }
+    const shareMessage = `I justed used @trycolorspace and made this ${score > 81 ? "perfect " : " "}pallete - whats your score ?%0A%0A${chromaSaveURL}`;
 
-    const shuffledColors = () => {
-        return chroma.scale([
-            randomColor(),
-            randomColor(),
-        ]).colors(colors.length);
-    }
-
-    const shuffledGradient = () => {
-        return colors.map((color, i) => {
-            if (color.locked) return color
-
-            // keep the color but update the color.color
-            return {
-                ...color,
-                color: shuffledColors()[i]
-            }
-        })
-    }
-
-    const fixedEncodeURIComponent = (str) => {
-        return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
-            return '%' + c.charCodeAt(0).toString(16);
-        });
-    }
+    const chromaOGURL = `${window.location.href.split("?")[0]}.netlify/functions/opengraph/?` + URLTail;
 
     // Flip the state of the active copy index
     const copiedToggled = (copyIndex) => {
@@ -209,6 +188,31 @@ function Home({ theme }) {
 
     // Generate a random and new pallete based on scaled anchors points
     const handleShuffle = () => {
+        const randomRGBValue = () => { return Math.floor(Math.random() * 255) }
+
+        const randomColor = () => {
+            return chroma(`rgb(${randomRGBValue()}, ${randomRGBValue()}, ${randomRGBValue()})`).hex();
+        }
+
+        const shuffledColors = () => {
+            return chroma.scale([
+                randomColor(),
+                randomColor(),
+            ]).colors(colors.length);
+        }
+
+        const shuffledGradient = () => {
+            return colors.map((color, i) => {
+                if (color.locked) return color
+
+                // keep the color but update the color.color
+                return {
+                    ...color,
+                    color: shuffledColors()[i]
+                }
+            })
+        }
+
         setColors(shuffledGradient())
     }
 
@@ -226,6 +230,7 @@ function Home({ theme }) {
         }, 1500)
     }
 
+    // Handle the query params on the first load
     useEffect(() => {
         const queryParams = new URLSearchParams(decodeURIComponent(window.location.search))
 
@@ -246,51 +251,49 @@ function Home({ theme }) {
                 setColors(queryParamsColors);
                 setPoints(queryParams.get('p'));
             }
-
-            return null
         }
 
         if (queryParams.values.length !== 0)
             handleQueryParams();
-    }, [])
+    }, [colorMath])
 
     // Keep tracking of the best score
     useEffect(() => {
-        if (score > best) setBest(score);
-    }, [score, best])
-
-    // Update the gradient when the key values are updated
-    useEffect(() => {
-        const chromaGradient = (gradientColors, gradientDomains) => {
-            return chroma
-                .scale(gradientColors)
-                .domain(gradientDomains)
-                .mode(gradientColorMode.toLowerCase())
-                .colors(points)
+        const handleBest = () => {
+            if (score > best) setBest(score);
         }
 
+        handleBest();
+    }, [score, best])
+
+    // Update the score when the key values are updated
+    useEffect(() => {
         const chromaGradientCode = (colors) => {
             return `background: linear-gradient(\n\t${degree}deg,${colors.map(color => `\n\t${chroma(color).css('hsl')}`)}\n)`;
         }
 
-        const chromaStringGradient = (gradientColors) => {
+        const chromaStringGradient = (incomingColors) => {
             try {
-                const _chromaColors = chromaGradient(
-                    gradientColors.map(color => color.color),
-                    gradientColors.map(color => color.domain)
+                const gradientColors = colorMath.chromaGradient(
+                    incomingColors.map(color => color.color),
+                    incomingColors.map(color => color.domain),
+                    gradientColorMode,
+                    points
                 );
 
-                setChromaColors(_chromaColors.map(color => ({ color })))
+                // Enabling the display of the points in the visualization
+                setChromaColors(gradientColors.map(color => ({ color })))
 
-                const chromaGradientString = `linear-gradient(\n\t${degree}deg,
-						${_chromaColors} 
+                const gradientString = `linear-gradient(\n\t${degree}deg,
+						${gradientColors} 
 					)
 				`;
 
-                setActiveGradient(chromaGradientString)
-                setCode(chromaGradientCode(_chromaColors))
+                // Enables 2D display of gradient
+                setActiveGradient(gradientString)
+                setCode(chromaGradientCode(gradientColors))
 
-                return _chromaColors;
+                return gradientColors;
             } catch (e) {
                 console.log('Failed to update:', e)
             }
@@ -298,108 +301,30 @@ function Home({ theme }) {
             return null
         }
 
-        const chromaLightnessMaxDiff = (chromaLightness) => {
-            const chromeLightnessDeviations = chromaLightness.map((color, idx) => {
-                if (idx > 0)
-                    return Math.floor(Math.abs(chromaLightness[idx] - chromaLightness[idx - 1]))
-                return 0
-            })
-
-            return Math.max.apply(null, chromeLightnessDeviations);
-        }
-
-        const chromaLightnessAverageDiff = (chromaLightness) => {
-            const chromaLightnessSum = chromaLightness.reduce((sum, lightness) => sum + lightness, 0);
-            const chromaLightnessAverage = chromaLightnessSum / chromaLightness.length;
-
-            const chromaLightnessMedian = chromaLightness[Math.ceil((chromaLightness.length - 1) / 2)]
-
-            return Math.abs(chromaLightnessAverage - chromaLightnessMedian);
-        }
-
-        const chromaLightnessBumpiness = (chromaLightness) => {
-            const chromaLightnessDirections = chromaLightness.map((color, idx) => {
-                if (idx === 0) return undefined
-
-                return color >= chromaLightness[idx - 1]
-            })
-
-            const chromaLightnessBumps = chromaLightnessDirections
-                .filter((direction, idx) => {
-                    if (direction === undefined) return false
-                    if (idx <= 1) return false
-
-                    return direction !== chromaLightnessDirections[idx - 1]
-                }).length
-
-
-            return chromaLightnessBumps
-        }
-
-        const chromaGradientScore = (chromaColors) => {
-            let score = 100;
-
-            // Factor in maximum devitation
-            const chromaLightness = chromaColors.map(color => chroma(color).hsl()[2] * 100);
-            const lightnessMaxDiff = chromaLightnessMaxDiff(chromaLightness)
-            score = score - lightnessMaxDiff
-
-            // Factor in the miss from the average
-            const lightnessAverageDiff = chromaLightnessAverageDiff(chromaLightness);
-            score = score - lightnessAverageDiff
-
-            // Handling the 'rollercoaster effect'
-            const lightnessBumpiness = chromaLightnessBumpiness(chromaLightness)
-            score = score - lightnessBumpiness * 5
-
-            return Math.ceil(score)
-        }
-
         if (!colors.every(color => chroma.valid(color.color))) return
 
-        const gradient = chromaStringGradient(colors)
-        const score = chromaGradientScore(gradient)
-
-        setScore(score);
-
-        const chromaSaveURL = () => {
-            const urlColors = colors.map(color => color.color).join("&cs=")
-            const urlDomains = colors.map(color => color.domain).join("&ds=")
-            const url = window.location.href.split("?")[0]
-
-            return `${url}?` + fixedEncodeURIComponent(`cm=${colorMode}&gcm=${gradientColorMode}&cs=${urlColors}&ds=${urlDomains}&d=${degree}&p=${points}&g=${code.replace("background: ", "")}&f=${Math.random() > 0.5 ? true : false}&s=${score}&url=${url}`)
-        }
-
-        const chromaOGURL = () => {
-            const urlColors = colors.map(color => color.color).join("&cs=")
-            const urlDomains = colors.map(color => color.domain).join("&ds=")
-            const url = window.location.href.split("?")[0]
-
-            return `${url}.netlify/functions/opengraph/?` + fixedEncodeURIComponent(`cm=${colorMode}&gcm=${gradientColorMode}&cs=${urlColors}&ds=${urlDomains}&d=${degree}&p=${points}&g=${code.replace("background: ", "")}&f=${Math.random() > 0.5 ? true : false}&s=${score}&url=${url}`)
-        }
+        setScore(colorMath.chromaGradientScore(
+            chromaStringGradient(colors)
+        ))
 
         // update the url so that someone can just copy-paste
         window.history.replaceState({
             additionalInformation: 'Updated when changing colors.'
-        }, 'COLORSPACE', chromaSaveURL())
-
-        setSaveURL(chromaSaveURL())
-        setOGURL(chromaOGURL())
+        }, 'COLORSPACE', chromaSaveURL)
     }, [
-        colorMode,
+        colorMath,
         gradientColorMode,
         points,
         degree,
         colors,
-        code,
-        activeGradient,
+        chromaSaveURL
     ])
 
     return (
         <div className="container">
             <Helmet>
-                <meta property="og:image" content={ogURL} />
-                <meta name="twitter:image" content={ogURL} />
+                <meta property="og:image" content={chromaOGURL} />
+                <meta name="twitter:image" content={chromaOGURL} />
             </Helmet>
 
             <div className="navbar">
@@ -426,7 +351,7 @@ function Home({ theme }) {
                     }}>
                         INPUT
                         <span style={{ marginLeft: "auto", display: "grid", alignItems: "center", gridTemplateColumns: "1fr 1fr" }}>
-                            <CopyToClipboard text={saveURL} onCopy={() => { handleCopy(0) }} leaveDelay={copied[0] ? 1250 : 0}>
+                            <CopyToClipboard text={chromaSaveURL} onCopy={() => { handleCopy(0) }} leaveDelay={copied[0] ? 1250 : 0}>
                                 <Tooltip title={copied[0] ? "Copied" : "Copy Input Link"}>
                                     <Button>
                                         <FontAwesomeIcon icon={['fal', 'link']} />
