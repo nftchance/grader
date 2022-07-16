@@ -49,10 +49,10 @@ export default class ColorMath {
     posToHSL = (color, x, y, z) => {
         // CALCULATE ANCLE AROUND CONE
         let h = this.toDegrees(this.angle(
-            this.p(5, 0),
+            this.p(0, 0),
             this.p(0, 0),
             this.p(x, z)
-        )) / 360;
+        )) / -360;
 
         let s = 1;
         let v = 0.5;
@@ -78,15 +78,60 @@ export default class ColorMath {
         return color
     }
 
-
-    hexToPos = (hex) => {
+    hexToRGBPos = (hex) => {
         const hexRGB = chroma(hex).rgb()
 
         const x = (hexRGB[0] / 255 - 0.5) * this.SIZE;
         const y = (hexRGB[1] / 255 - 0.5) * this.SIZE;
         const z = (hexRGB[2] / 255 - 0.5) * this.SIZE;
 
+        // CALCULATE ANCLE AROUND CONE
+        let h = this.toDegrees(this.angle(
+            this.p(5, 0),
+            this.p(0, 0),
+            this.p(x, z)
+        )) / 360;
+
+        let s = 1;
+        let v = 0.5;
+
+        // DETERMINE IF THE POINT IS IN THE CENTER
+        if ((x, Math.abs(y), z) === (0, this.SIZE / 2, 0)) {
+            s = 0;                      // saturation levels of zero
+            v = 0.5 - y / this.SIZE     // set the light levels for the center
+        }
+
         return [x, y, z]
+    }
+
+    hexTOHSLPos = (hex) => {
+        const hexHSL = chroma(hex).hsl()
+
+        console.log(hex, 'to', hexHSL)
+
+        // (x and z) are determinations of saturation and color rotation
+        // (y) left side of the box is lightness (vertical)  
+
+        const hue = (hexHSL[0]) * Math.PI / 180 
+        const saturation = hexHSL[1] * (this.SIZE / 2);
+        console.log('saturation', saturation)
+
+        const x = (saturation * Math.cos(hue))
+        const z = (saturation * Math.sin(hue))
+
+        const y = 5;
+
+        // const y = (hexHSL[2] + 0.5) * (this.SIZE / 2);
+
+        console.log(x, y, z)
+
+        return [x, y, z]
+    }
+
+    hexToPos = (mode, hex) => {
+        if (mode === "RGB")
+            return this.hexToRGBPos(hex)
+        return this.hexTOHSLPos(hex);
     }
 
     // hexToHSL = (hsl) => { 
