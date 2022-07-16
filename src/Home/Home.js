@@ -173,6 +173,10 @@ function Home({ theme }) {
         setColors(DEFAULT_GRADIENT)
     }
 
+    const handleGradientColorModeChange = (event) => { 
+        setGradientColorMode(event.target.value)
+    }
+
     // Update the domain of the scale as the slider is used
     const handleDomainChange = (domains) => {
         // dont allow users to move the solo base anchors
@@ -500,7 +504,7 @@ function Home({ theme }) {
                         values={SCALE_MODES}
                         exclusive
                         aria-label="gradient color scale mode"
-                        onChange={(event) => { setGradientColorMode(event.target.value) }}
+                        onChange={handleGradientColorModeChange}
                     />
                 </div>
 
