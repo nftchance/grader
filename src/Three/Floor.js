@@ -23,7 +23,10 @@ export default function Floor({ size: SIZE }) {
         ref.current.geometry = geometry
         ref.current.position.set(0, -4.01 * SIZE / 2, 0)
         ref.current.rotation.set(Math.PI / 2, 0, 0)
-    }, [floorTexture])
+    }, [
+        floorTexture,
+        SIZE
+    ])
 
     return <mesh ref={ref} receiveShadow />
 }
