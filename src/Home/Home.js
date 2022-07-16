@@ -123,6 +123,14 @@ function Home({ theme }) {
         });
     }
 
+    // Flip the state of the active copy index
+    const copiedToggled = (copyIndex) => {
+        return copied.map((copy, idx) => {
+            if (idx === copyIndex) return !(copy !== false)
+            return copy
+        })
+    }
+
     // Respond to the change between RGB & HSL viewing mode
     const handleColorModeChange = (event, newColorMode) => {
         if (newColorMode !== null) setColorMode(newColorMode);
@@ -204,23 +212,17 @@ function Home({ theme }) {
         setColors(shuffledGradient())
     }
 
+    // Allow the user to flip the point display mode
     const handlePointsModeChange = () => {
         setPointsMode(Math.abs(pointsMode - 1))
     }
 
     // Update when someone clicks the copy action
     const handleCopy = (copyIndex) => {
-        setCopied(copied.map((copy, idx) => {
-            if (idx === copyIndex) return true
-            return copy
-        }))
-    
-        // flip it back to default after a second
-        setTimeout(() => { 
-            setCopied(copied.map((copy, idx) => {
-                if (idx === copyIndex) return false
-                return copy
-            }))
+        setCopied(copiedToggled(copyIndex))
+
+        setTimeout(() => {
+            setCopied(copiedToggled(copyIndex))
         }, 1500)
     }
 
