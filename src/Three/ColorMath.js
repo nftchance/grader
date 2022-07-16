@@ -21,9 +21,20 @@ export default class ColorMath {
         )
     }
 
+    // MUSHING ARGS INTO COLOR OBJECT
+    c = (color, domain, visible, locked) => (
+        { color, domain, visible, locked }
+    )
+
     // HANDLING THE CONVERSION OF POINTS TO ANGLES
     p = (x, y) => {
         return { x, y }
+    }
+
+    // THE EXPECTED DOMAIN OF A INDEX WITHIN A POSITION
+    indexToDomainPos = (colors, index) => {
+        if (index === 0) return 0
+        return (index / colors.length)
     }
 
     // MAKE SURE OUR ANGLE IS NOT BLOWN OUT 
@@ -124,5 +135,69 @@ export default class ColorMath {
         if (mode === "RGB")
             return this.hexToRGBPos(hex)
         return this.hexTOHSLPos(hex);
+    }
+
+    chromaGradient = (gradientColors, gradientDomains, gradientColorMode, points) => {
+        return chroma
+            .scale(gradientColors)
+            .domain(gradientDomains)
+            .mode(gradientColorMode.toLowerCase())
+            .colors(points)
+    }
+
+    chromaLightnessMaxDiff = (chromaLightness) => {
+        const chromeLightnessDeviations = chromaLightness.map((color, idx) => {
+            if (idx > 0) return Math.floor(Math.abs(chromaLightness[idx] - chromaLightness[idx - 1]))
+            return 0
+        })
+
+        return Math.max.apply(null, chromeLightnessDeviations);
+    }
+
+    chromaLightnessAverageDiff = (chromaLightness) => {
+        const chromaLightnessSum = chromaLightness.reduce((sum, lightness) => sum + lightness, 0);
+        const chromaLightnessAverage = chromaLightnessSum / chromaLightness.length;
+
+        const chromaLightnessMedian = chromaLightness[Math.ceil((chromaLightness.length - 1) / 2)]
+
+        return Math.abs(chromaLightnessAverage - chromaLightnessMedian);
+    }
+
+    chromaLightnessBumpiness = (chromaLightness) => {
+        const chromaLightnessDirections = chromaLightness.map((color, idx) => {
+            if (idx === 0) return undefined
+
+            return color >= chromaLightness[idx - 1]
+        })
+
+        const chromaLightnessBumps = chromaLightnessDirections
+            .filter((direction, idx) => {
+                if (direction === undefined) return false
+                if (idx <= 1) return false
+
+                return direction !== chromaLightnessDirections[idx - 1]
+            }).length
+
+
+        return chromaLightnessBumps
+    }
+
+    chromaGradientScore = (chromaColors) => {
+        let score = 100;
+
+        // Factor in maximum devitation
+        const chromaLightness = chromaColors.map(color => chroma(color).hsl()[2] * 100);
+        const lightnessMaxDiff = this.chromaLightnessMaxDiff(chromaLightness)
+        score -= lightnessMaxDiff
+
+        // Factor in the miss from the average
+        const lightnessAverageDiff = this.chromaLightnessAverageDiff(chromaLightness);
+        score -= lightnessAverageDiff
+
+        // Handling the 'rollercoaster effect'
+        const lightnessBumpiness = this.chromaLightnessBumpiness(chromaLightness)
+        score -= lightnessBumpiness * 5
+
+        return Math.ceil(score)
     }
 }
