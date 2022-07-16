@@ -4,7 +4,7 @@ const CodeTheme = () => {
       "color": "#f8f8f2",
       "background": "none",
       "textShadow": "0 1px rgba(0, 0, 0, 0.3)",
-      "fontFamily": "Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace",
+      "fontFamily": "Work Sans, monospace",
       "textAlign": "left",
       "whiteSpace": "pre",
       "wordSpacing": "normal",
@@ -23,7 +23,7 @@ const CodeTheme = () => {
       "color": "#f8f8f2",
       "background": "#000",
       "textShadow": "0 1px rgba(0, 0, 0, 0.3)",
-      "fontFamily": "Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace",
+      "fontFamily": "Work Sans, monospace",
       "textAlign": "left",
       "whiteSpace": "pre",
       "wordSpacing": "normal",
@@ -67,25 +67,25 @@ const CodeTheme = () => {
       "Opacity": ".7"
     },
     "property": {
-      "color": "#ff79c6"
+      "color": "#ff0093"
     },
     "tag": {
-      "color": "#ff79c6"
+      "color": "#ff0093"
     },
     "constant": {
-      "color": "#ff79c6"
+      "color": "#ff0093"
     },
     "symbol": {
-      "color": "#ff79c6"
+      "color": "#ff0093"
     },
     "deleted": {
-      "color": "#ff79c6"
+      "color": "#ff0093"
     },
     "boolean": {
-      "color": "#bd93f9"
+      "color": "#00ff90"
     },
     "number": {
-      "color": "#bd93f9"
+      "color": "#00ff90"
     },
     "selector": {
       "color": "#50fa7b"
@@ -125,16 +125,16 @@ const CodeTheme = () => {
       "color": "#f8f8f2"
     },
     "atrule": {
-      "color": "#f1fa8c"
+      "color": "#00ffe5"
     },
     "attr-value": {
-      "color": "#f1fa8c"
+      "color": "#00ffe5"
     },
     "function": {
-      "color": "#f1fa8c"
+      "color": "#00ffe5"
     },
     "class-name": {
-      "color": "#f1fa8c"
+      "color": "#00ffe5"
     },
     "keyword": {
       "color": "#8be9fd"
