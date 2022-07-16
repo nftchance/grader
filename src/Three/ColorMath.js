@@ -1,5 +1,6 @@
-import chroma from 'chroma-js';
 import * as THREE from 'three';
+
+import chroma from 'chroma-js';
 
 export default class ColorMath {
     colorMode = null;
@@ -12,11 +13,20 @@ export default class ColorMath {
         this.SEGMENTS = SEGMENTS;
     }
 
+    vectorCoords = (coords) => {
+        return new THREE.Vector3(
+            coords[0],
+            coords[1],
+            coords[2]
+        )
+    }
+
     // HANDLING THE CONVERSION OF POINTS TO ANGLES
     p = (x, y) => {
         return { x, y }
     }
 
+    // MAKE SURE OUR ANGLE IS NOT BLOWN OUT 
     normalizeAngle = (angle) => {
         if (angle < 0)
             angle += (2 * Math.PI)
@@ -24,6 +34,7 @@ export default class ColorMath {
         return angle
     }
 
+    // DETERMINE THE ANGLE BETWEEN TWO POINTS ON THE CONE 
     angle = (p1, center, p2) => {
         const transformedP1 = this.p(p1.x - center.x, p1.y - center.y)
         const transformedP2 = this.p(p2.x - center.x, p2.y - center.y)
@@ -34,10 +45,12 @@ export default class ColorMath {
         return this.normalizeAngle(angleToP2 - angleToP1)
     }
 
+    // CONVERT FROM RADIANS TO DEGREES
     toDegrees = (radians) => {
         return 360 * radians / (2 * Math.PI)
     }
 
+    // FIND CORRESPONDING RGB COLOR TO X,Y,Z
     posToRGB = (color, { x, y, z }) => {
         const r = 0.5 + x / this.SIZE;       // R coordinate
         const g = 0.5 + y / this.SIZE;       // G coordinate
@@ -46,6 +59,7 @@ export default class ColorMath {
         color.setRGB(r, g, b);
     }
 
+    // FIND CORRESPONDING HSL COLOR TO X,Y,Z
     posToHSL = (color, { x, y, z }) => {
         // CALCULATE ANCLE AROUND CONE
         let h = this.toDegrees(this.angle(
@@ -105,6 +119,7 @@ export default class ColorMath {
         return [x, y, z]
     }
 
+    // DETERMINE WHICH MODE TO USE
     hexToPos = (mode, hex) => {
         if (mode === "RGB")
             return this.hexToRGBPos(hex)

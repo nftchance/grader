@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef } from 'react';
 
 import * as THREE from 'three';
+import ColorMath from './ColorMath';
 
 const SEGMENT_FACTOR = 25;
 
@@ -11,15 +12,9 @@ export default function ColorPoint({
 }) {
     const ref = useRef()
 
-    const vectorCoords = (coords) => {
-        return new THREE.Vector3(
-            coords[0],
-            coords[1],
-            coords[2]
-        )
-    }
-
     useLayoutEffect(() => {
+        const colorMath = new ColorMath()
+
         const pointGeometry = new THREE.SphereBufferGeometry(
             SIZE / 40,
             SEGMENTS * SEGMENT_FACTOR,
@@ -27,7 +22,7 @@ export default function ColorPoint({
         )
 
         ref.current.geometry = pointGeometry;
-        ref.current.position.set(...vectorCoords(point))
+        ref.current.position.set(...colorMath.vectorCoords(point))
     }, [
         point,
         SIZE,

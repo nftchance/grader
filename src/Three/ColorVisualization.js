@@ -65,11 +65,10 @@ export default function ColorVisualization(props) {
         ref.current.geometry = boxGeometry
 
         // Flatten the cube and rotate the cone
-        if (mode === "HSL") {
+        if (mode === "HSL")
             ref.current.rotation.x = Math.PI;
-        } else {
+        else
             ref.current.rotation.x = 0;
-        }
     }, [
         mode,
         SIZE,

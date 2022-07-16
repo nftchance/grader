@@ -6,14 +6,12 @@ export default function LightsAndCamera({ size: SIZE }) {
     return (
         <>
             <ambientLight />
-            <pointLight shadow intensity={1} position={[10, 10, 10]} />
+            <pointLight shadow intensity={5} position={[10, 10, 10]} />
 
             <OrbitControls makeDefault minDistance={SIZE * 1.25} maxDistance={SIZE * 5} />
             <PerspectiveCamera makeDefault fov={50} position={[15, 15, 15]} />
 
-            <fog attach="fog" args={['black', 1, 150]} />
-
-            <EffectComposer multisampling={0}>
+            <EffectComposer multisampling={2}>
                 <SSAO
                     samples={31}
                     radius={5}
