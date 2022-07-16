@@ -27,8 +27,8 @@ export default function ColorPoints(props) {
 
     return (
         <group>
-            {points.map((point, idx) => <ColorPointAndLine
-                key={point}
+            {points && points.map((point, idx) => <ColorPointAndLine
+                key={`point-${idx}`}
                 idx={idx}
                 point={point}
                 {...props}

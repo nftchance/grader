@@ -1,3 +1,4 @@
+import chroma from 'chroma-js';
 import * as THREE from 'three';
 
 export default class ColorMath {
@@ -77,7 +78,19 @@ export default class ColorMath {
         return color
     }
 
-    // hexToPos = (hex) => {
-    //     return new THREE.Vector3(x, y, z)
+
+    hexToPos = (hex) => {
+        const hexRGB = chroma(hex).rgb()
+
+        const x = (hexRGB[0] / 255 - 0.5) * this.SIZE;
+        const y = (hexRGB[1] / 255 - 0.5) * this.SIZE;
+        const z = (hexRGB[2] / 255 - 0.5) * this.SIZE;
+
+        return [x, y, z]
+    }
+
+    // hexToHSL = (hsl) => { 
+    // 
+    // return new THREE.Vector3(x,y,z)
     // }
 }

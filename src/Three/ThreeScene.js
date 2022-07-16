@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+import { Suspense, useLayoutEffect, useState } from "react";
 
 import { Canvas } from "@react-three/fiber"
 import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
@@ -9,29 +9,25 @@ import Floor from "./Floor"
 import ColorVisualization from "./ColorVisualization"
 
 import ColorPoints from "./ColorPoints"
-
-const SIZE = 10;
-const SEGMENTS = 1;
+import ColorMath from "./ColorMath";
+import chroma from "chroma-js";
 
 // TODO: On hover make it have an opacity
 // TODO: On hover show the points of the circle
 
-const ThreeScene = (props) => {
-    const { colors, colorMode: mode } = props;
+const ThreeScene = ({ colors, colorMode: mode }) => {
+    const SIZE = 10;
+    const SEGMENTS = 1;
 
-    console.log(colors)
+    const [points, setPoints] = useState([])
 
-    const randomPoint = () => [
-        -5 + Math.random() * 10,
-        -5 + Math.random() * 10,
-        -5 + Math.random() * 10
-    ]
+    useLayoutEffect(() => { 
+        if(!colors.every(color => chroma.valid(color.color))) return
 
-    const points = [
-        randomPoint(),
-        randomPoint(),
-        randomPoint()
-    ]
+        const colorMath = new ColorMath(mode, SIZE, SEGMENTS)
+
+        setPoints(colors.map(color => colorMath.hexToPos(color.color)))
+    }, [colors, mode])
 
     return (
         <Canvas gl={{ antialias: true, alpha: true }}>
@@ -57,6 +53,7 @@ const ThreeScene = (props) => {
                 <ColorPoints
                     receiveShadow
                     points={points}
+                    mode={mode}
                     size={SIZE}
                     segments={SEGMENTS} />
 
