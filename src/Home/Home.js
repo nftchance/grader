@@ -30,14 +30,13 @@ import './Home.css';
 library.add(fab, fal)
 
 function Home({ theme }) {
-    const buildColor = (color, domain, visible, locked) => ({ color, domain, visible, locked })
+    const c = (color, domain, visible, locked) => ({ color, domain, visible, locked })
 
-    // CONSTANT VARIABLES
     const VISUALIZATION_MODES = ['RGB', 'HSL']
     const SCALE_MODES = ['RGB', 'HSL', 'HSV', 'HCL', 'LAB'];
     const POINTS_SCALE_FACTOR = 3;
 
-    const DEFAULT_GRADIENT = [buildColor('#ffffff', 0, true, false), buildColor("#000000", 1, true, false)];
+    const DEFAULT_GRADIENT = [c('#ffffff', 0, true, false), c("#000000", 1, true, false)];
 
     const [points, setPoints] = useState(DEFAULT_GRADIENT.length * POINTS_SCALE_FACTOR)
     const [pointsMode, setPointsMode] = useState(0); // 0 = input | 1 = scale
@@ -55,9 +54,9 @@ function Home({ theme }) {
     const [gradientColorMode, setGradientColorMode] = useState(SCALE_MODES[0])
     const [activeGradient, setActiveGradient] = useState(DEFAULT_GRADIENT);
 
-    const [saveURL, setSaveURL] = useState("");
-    const [ogURL, setOGURL] = useState("");
- 
+    const [saveURL, setSaveURL] = useState(""); // TODO: Remove these from the state
+    const [ogURL, setOGURL] = useState(""); // TODO: Remove this from the state
+
     const [copied, setCopied] = useState([false, false])
 
     const hasMadeChange = !colors.every((color, idx) => {
@@ -65,26 +64,31 @@ function Home({ theme }) {
         return color.color === defaultColor.color && color.domain === defaultColor.domain && color.locked === defaultColor.locked
     })
 
+    const shareMessage = `I justed used @trycolorspace and made this ${score > 81 ? "perfect " : " "}pallete - whats your score ?%0A%0A${saveURL}`;
+
+    const randomRGBValue = () => { return Math.floor(Math.random() * 255) }
+
+    const randomColor = () => {
+        return chroma(`rgb(${randomRGBValue()}, ${randomRGBValue()}, ${randomRGBValue()})`).hex();
+    }
+
     const fixedEncodeURIComponent = (str) => {
         return encodeURIComponent(str).replace(/[!'()*]/g, function (c) {
             return '%' + c.charCodeAt(0).toString(16);
         });
     }
 
-    const shareMessage = () => {
-        return `I justed used @trycolorspace and made this ${score > 81 ? "perfect " : " "}pallete - whats your score ?%0A%0A${saveURL}`
-    }
-
-    const randomColor = () => {
-        return chroma(`rgb(${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)}, ${Math.floor(Math.random() * 255)})`).hex();
-    }
-
     // Respond to the change between RGB & HSL viewing mode
     const handleColorModeChange = (event, newColorMode) => {
-        if (newColorMode !== null) {
-            setColorMode(newColorMode);
-        }
+        if (newColorMode !== null) setColorMode(newColorMode);
     };
+
+    // Check when the user updates the number of Domain Points
+    const handlePointsChange = (event) => {
+        if (event.target.value > colors.length * 10) return
+
+        setPoints(event.target.value)
+    }
 
     // Control the change of the gradient degree (within 0 - 360)
     const handleDegreeChange = (event) => {
@@ -94,36 +98,23 @@ function Home({ theme }) {
         setDegree(event.target.value);
     }
 
-    // Make sure the user cannot add an insane amount of points
-    const handlePointsChange = (event) => {
-        if (event.target.value > colors.length * 10) return
-
-        setPoints(event.target.value)
-    }
-
-    // Make sure we are updating the full dataset of colors when
-    // any piece is being edited
+    // Update the color when the user changes it 
     const handleColorChange = (e, colorId) => {
-        const _colors = colors.map((color, idx) => (
-            idx !== colorId ? color : buildColor(
-                e.target.value,
-                color.domain,
-                color.visible,
-                color.locked
-            )
-        ))
-
-        setColors(_colors)
-    }
-
-    const chromaScaleDomainPosition = (colors, index) => {
-        if (index === 0) return 0
-
-        return (index / colors.length)
+        setColors(colors.map((color, idx) => (
+            idx !== colorId ? color : {
+                ...color, // keep all the fields the same but color
+                color: e.target.value
+            }
+        )))
     }
 
     // Handle everything when a new color is added to the mix
-    const handleColorAddition = (event) => {
+    const handleColorAddition = () => {
+        const chromaScaleDomainPosition = (colors, index) => {
+            if (index === 0) return 0
+            return (index / colors.length)
+        }
+
         const trimmedColors = [...colors.slice(1, colors.length)];
 
         const usingDefaultScale = trimmedColors.every((color, idx) => {
@@ -162,7 +153,7 @@ function Home({ theme }) {
     // Update the locked state of a color
     const handleColorLock = (event, colorId) => {
         setColors(colors.map((color, idx) => {
-            return buildColor(
+            return c(
                 color.color,
                 color.domain,
                 color.visible,
@@ -220,9 +211,9 @@ function Home({ theme }) {
         setPointsMode(Math.abs(pointsMode - 1))
     }
 
-    const handleCopy = (copyIndex) => { 
+    const handleCopy = (copyIndex) => {
         setCopied(copied.map((copy, idx) => {
-            if(idx === copyIndex) return !copy
+            if (idx === copyIndex) return !copy
             return copy
         }))
     }
@@ -237,7 +228,7 @@ function Home({ theme }) {
             if (queryParams.get('cs') && queryParams.get('ds')) {
                 const queryParamsColors = queryParams
                     .getAll('cs')
-                    .map((color, colorIdx) => buildColor(
+                    .map((color, colorIdx) => c(
                         color,
                         queryParams.getAll('ds')[colorIdx],
                         true,
@@ -514,7 +505,7 @@ function Home({ theme }) {
                         SCORE
                         <span style={{ float: "right", alignContent: "center" }}>
                             <Tooltip title="Share on Twitter">
-                                <a target="_blank" rel="noreferrer" href={`https://twitter.com/intent/tweet?text=${shareMessage()}`} style={{
+                                <a target="_blank" rel="noreferrer" href={`https://twitter.com/intent/tweet?text=${shareMessage}`} style={{
                                     display: "inline",
                                     justifySelf: "center"
                                 }}>
