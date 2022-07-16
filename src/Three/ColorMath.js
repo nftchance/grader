@@ -98,15 +98,14 @@ export default class ColorMath {
 
         const hue = (hexHSL[0]) * Math.PI / 180 
 
-        // const y = (hexHSL[2] * this.SIZE / 2);
-        const y = 5;
-
+        // const lightness = hexHSL[2] * this.SIZE / 2;
         const saturation = hexHSL[1] * this.SIZE / 2;
         console.log('distance from center', saturation)
 
-        const x = ((saturation) * Math.cos(hue))
-        const z = ((saturation) * Math.sin(hue))
-        console.log({x,z})
+        const x = (saturation * Math.cos(hue))
+        const z = (saturation * Math.sin(hue))
+        const y = (hexHSL[2] - 0.5) * this.SIZE
+        console.log({x,y,z})
 
         // const y = 5;
 
