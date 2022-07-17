@@ -238,7 +238,8 @@ const Tool = () => {
             setColorMode(queryParams.get('cm'));
             setGradientColorMode(queryParams.get('gcm'))
 
-            if (queryParams.get('cs') && queryParams.get('ds')) {
+            console.log(queryParams.getAll('cs'))
+            if (queryParams.getAll('cs').length !== 0 && queryParams.getAll('ds').length !== 0) {
                 const queryParamsColors = queryParams
                     .getAll('cs')
                     .map((color, colorIdx) => colorMath.c(
@@ -253,7 +254,7 @@ const Tool = () => {
             }
         }
 
-        if (queryParams.values.length !== 0)
+        if(queryParams.getAll('cs').length !== 0 )
             handleQueryParams();
     }, [colorMath])
 
@@ -308,9 +309,9 @@ const Tool = () => {
         ))
 
         // update the url so that someone can just copy-paste
-        window.history.replaceState({
-            additionalInformation: 'Updated when changing colors.'
-        }, 'COLORSPACE', chromaSaveURL)
+        // window.history.replaceState({
+        //     additionalInformation: 'Updated when changing colors.'
+        // }, 'COLORSPACE', chromaSaveURL)
     }, [
         colorMath,
         gradientColorMode,
