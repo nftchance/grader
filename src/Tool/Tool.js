@@ -147,6 +147,8 @@ const Tool = () => {
 
     // Handle everything when a new color is added to the mix
     const handleColorAddition = () => {
+        if(colors >= 10) return
+
         // if the default points value is being used, continue using it
         if (points === (colorAddedColors.length - 1) * POINTS_SCALE_FACTOR)
             setPoints(colorAddedColors.length * POINTS_SCALE_FACTOR)
@@ -435,11 +437,11 @@ const Tool = () => {
                     <div style={{ marginTop: 40 }}>
                         <label>COLORS</label>
 
-                        <Tooltip title="Add">
+                        {colors.length < 10 && <Tooltip title="Add">
                             <Button onClick={handleColorAddition} style={{ float: "right" }}>
                                 <FontAwesomeIcon icon={['fal', 'plus']} />
                             </Button>
-                        </Tooltip>
+                        </Tooltip>}
 
                         <Tooltip title="Shuffle">
                             <Button onClick={handleShuffle} style={{ float: "right" }}>
