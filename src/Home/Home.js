@@ -18,18 +18,6 @@ function Home() {
 
             <Tool />
 
-            <div className="grey">
-                <div className="step">
-                    <h2>YOUR GRADIENTS DON'T HAVE TO SUCK SO BAD.</h2>
-                    <p className="lead">Combining the power of visual fidelity and actual proven fact, the ability to create a gradient that stands the ability to backstop a brand is suddenly a possibility. Instead of being a <strong><em>Gradient God</em></strong>, just hop over here and do a little gradient-generating cheating.</p>
-
-                    <p className="lead">You can still tell your boss and friends you came up with it. Who cares? Not me! Let's get you that raise you deserve.</p>
-                </div>
-                <div className="goo">
-                    <div className="step"></div>
-                </div>
-            </div>
-
             <div className="footer">
                 <a href="/">
                     <img src={logo} alt="footer logo" />
