@@ -15,6 +15,7 @@
     display: grid;
     grid-template: 'cube cube input score'
                     'cube cube input code';
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: 30px;
     margin-bottom: 240px;
     margin-top: 60px;
@@ -35,7 +36,6 @@
 
 .cube {
     grid-area: cube;
-    min-width: 500px;
     padding: 0px;
 }
 
@@ -45,12 +45,10 @@
 
 .score {
     grid-area: score;
-    min-width: 300px;
 }
 
 .code {
     grid-area: code;
-    min-width: 300px;
     font-variant: tabular-nums;
 }
 
