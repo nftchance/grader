@@ -18,10 +18,7 @@ const Egg = () => {
             </Helmet>
 
             <div className="content animated">
-                <h1>"His conclusion is that the complexity of the problem
-                    of color harmony is such that any attempt to
-                    explain it by a single principle, seems foredoomed
-                    to failure."</h1>
+                <h1>"His (Dr.Parry) conclusion is that the complexity of the problem of color harmony is such that any attempt to explain it by a single principle, seems foredoomed to failure."</h1>
 
                 <h2><em>- Milton Bond (1942)</em></h2>
             </div>
