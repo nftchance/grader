@@ -104,6 +104,13 @@ const Tool = () => {
 
     const chromaSaveURL = `${window.location.href.split("?")[0]}?` + URLTail
 
+    if (hasMadeChange) {
+        // update the url so that someone can just copy-paste
+        window.history.replaceState({
+            additionalInformation: 'Updated when changing colors.'
+        }, 'COLORSPACE', chromaSaveURL)
+    }
+
     const shareMessage = `I justed used @trycolorspace and made this ${score > 81 ? "perfect " : " "}pallete - whats your score ?%0A%0A${chromaSaveURL}`;
 
     const chromaOGURL = `${window.location.href.split("?")[0]}.netlify/functions/opengraph/?` + URLTail;
@@ -316,11 +323,6 @@ const Tool = () => {
         setScore(colorMath.chromaGradientScore(
             chromaStringGradient(colors)
         ))
-
-        // update the url so that someone can just copy-paste
-        // window.history.replaceState({
-        //     additionalInformation: 'Updated when changing colors.'
-        // }, 'COLORSPACE', chromaSaveURL)
     }, [
         colorMath,
         gradientColorMode,
