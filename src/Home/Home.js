@@ -13,8 +13,8 @@ function Home() {
                 {/* <div className={`theme-controls ${theme}`} /> */}
             </div>
 
-            <h1>BUILD THE PERFECT GRADIENT. WITH EASE.</h1>
-            <p className="lead">Finding an objectively good gradient is an actual science. Tired of having grey-filled gradients that look like they were chosen by a color-blind person? Scroll down and make that perfect gradient.</p>
+            {/* <h1>BUILD THE PERFECT GRADIENT. WITH EASE.</h1>
+            <p className="lead">Finding an objectively good gradient is an actual science. Tired of having grey-filled gradients that look like they were chosen by a color-blind person? Scroll down and make that perfect gradient.</p> */}
 
             <Tool />
 

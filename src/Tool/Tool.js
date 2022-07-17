@@ -352,7 +352,7 @@ const Tool = () => {
                         display: "flex",
                         alignItems: "center"
                     }}>
-                        INPUT
+                        SETUP
                         <span style={{ marginLeft: "auto" }}>
                             <CopyToClipboard text={chromaSaveURL} onCopy={() => { handleCopy(0) }} leaveDelay={copied[0] ? 1250 : 0}>
                                 <Tooltip title={copied[0] ? "Copied" : "Copy Input Link"}>
@@ -361,95 +361,7 @@ const Tool = () => {
                                     </Button>
                                 </Tooltip>
                             </CopyToClipboard>
-                        </span>
-                    </h3>
 
-                    <label>CUBE COLOR MODE</label>
-                    <ColorspaceToggleButtonGroup
-                        value={colorMode}
-                        values={VISUALIZATION_MODES}
-                        exclusive
-                        aria-label="cube color mode"
-                        onChange={handleColorModeChange}
-                    />
-
-                    <ColorspaceTextField
-                        label="Domain Points"
-                        value={points}
-                        aria-label="color scale points of separation"
-                        id="points-of-separation"
-                        type="number"
-                        inputProps={{
-                            inputMode: 'numeric',
-                            pattern: '/^-?d+(?:.d+)?$/g',
-                            min: colors.length,
-                            max: colors.length * 10
-                        }}
-                        onChange={handlePointsChange}
-                    />
-
-                    <ColorspaceTextField
-                        label="Angle"
-                        aria-label="angle of rotation on gradient"
-                        id="degree"
-                        type="number"
-                        inputProps={{
-                            inputMode: 'numeric',
-                            pattern: '/^-?d+(?:.d+)?$/g',
-                            min: 0,
-                            max: 360
-                        }}
-                        value={degree}
-                        onChange={handleDegreeChange}
-                    />
-
-                    <div style={{ marginTop: 40 }}>
-                        <label>COLORS</label>
-
-                        <Tooltip title="Add">
-                            <Button style={{ fontWeight: 900, float: "right" }}
-                                onClick={handleColorAddition}
-                            >
-                                <FontAwesomeIcon icon={['fal', 'plus']} />
-                            </Button>
-                        </Tooltip>
-
-
-                        <Tooltip title="Shuffle">
-                            <Button onClick={handleShuffle} style={{ float: "right" }}>
-                                <FontAwesomeIcon icon={['fal', 'shuffle']} />
-                            </Button>
-                        </Tooltip>
-
-
-
-                        {hasMadeChange && <Tooltip title="Clear">
-                            <Button
-                                onClick={handleColorClear}
-                                style={{
-                                    float: "right",
-                                    color: "red",
-                                    fontWeight: 900
-                                }}
-                            >
-                                <FontAwesomeIcon icon={['fal', 'trash']} />
-                            </Button>
-                        </Tooltip>
-                        }
-                    </div>
-
-                    <ColorspaceColor
-                        colors={colors}
-                        handleColorChange={handleColorChange}
-                        handleColorLock={handleColorLock}
-                        handleColorRemove={handleColorRemove}
-                    />
-                </div>
-
-                <div className="step result">
-                    <h3>
-                        SCORE
-                        <span style={{ float: "right", alignContent: "center" }}>
                             <Tooltip title="Share on Twitter">
                                 <a target="_blank" rel="noreferrer" href={`https://twitter.com/intent/tweet?text=${shareMessage}`} style={{
                                     display: "inline",
@@ -463,14 +375,98 @@ const Tool = () => {
                         </span>
                     </h3>
 
-                    <p>
-                        <strong>SCORE:</strong>
-                        <span style={{ float: "right" }}>{score} / 100</span>
-                    </p>
-                    <p>
-                        <strong>BEST:</strong>
-                        <span style={{ float: "right" }}>{best} / 100</span>
-                    </p>
+                    <div style={{ marginTop: 10, marginBottom: 20 }}>
+                        <p>
+                            <strong>SCORE:</strong>
+                            <span style={{ float: "right" }}>{score} / 100</span>
+                        </p>
+                        <p>
+                            <strong>BEST:</strong>
+                            <span style={{ float: "right" }}>{best} / 100</span>
+                        </p>
+                    </div>
+
+
+                    <label>CUBE COLOR MODE</label>
+                    <ColorspaceToggleButtonGroup
+                        value={colorMode}
+                        values={VISUALIZATION_MODES}
+                        exclusive
+                        aria-label="cube color mode"
+                        onChange={handleColorModeChange}
+                    />
+
+                    <div style={{
+                        display: "grid",
+                        gridTemplateColumns: "1fr 1fr",
+                        gap: 10
+                    }}>
+                        <ColorspaceTextField
+                            label="Domain Points"
+                            value={points}
+                            aria-label="color scale points of separation"
+                            id="points-of-separation"
+                            type="number"
+                            inputProps={{
+                                inputMode: 'numeric',
+                                pattern: '/^-?d+(?:.d+)?$/g',
+                                min: colors.length,
+                                max: colors.length * 10
+                            }}
+                            onChange={handlePointsChange}
+                        />
+
+                        <ColorspaceTextField
+                            label="Angle"
+                            aria-label="angle of rotation on gradient"
+                            id="degree"
+                            type="number"
+                            inputProps={{
+                                inputMode: 'numeric',
+                                pattern: '/^-?d+(?:.d+)?$/g',
+                                min: 0,
+                                max: 360
+                            }}
+                            value={degree}
+                            onChange={handleDegreeChange}
+                        />
+                    </div>
+
+                    <div style={{ marginTop: 40 }}>
+                        <label>COLORS</label>
+
+                        <Tooltip title="Add">
+                            <Button onClick={handleColorAddition} style={{ float: "right" }}>
+                                <FontAwesomeIcon icon={['fal', 'plus']} />
+                            </Button>
+                        </Tooltip>
+
+                        <Tooltip title="Shuffle">
+                            <Button onClick={handleShuffle} style={{ float: "right" }}>
+                                <FontAwesomeIcon icon={['fal', 'shuffle']} />
+                            </Button>
+                        </Tooltip>
+
+                        {hasMadeChange && <Tooltip title="Clear">
+                            <Button
+                                onClick={handleColorClear}
+                                style={{
+                                    float: "right",
+                                    color: "red",
+                                    fontWeight: 900
+                                }}
+                            >
+                                <FontAwesomeIcon icon={['fal', 'trash']} />
+                            </Button>
+                        </Tooltip>}
+                    </div>
+
+                    <ColorspaceColor
+                        colors={colors}
+                        handleColorChange={handleColorChange}
+                        handleColorLock={handleColorLock}
+                        handleColorRemove={handleColorRemove}
+                    />
                 </div>
 
                 {/* Formatted Code Output of Active Gradient */}
@@ -494,7 +490,7 @@ const Tool = () => {
                         </span>
                     </h3>
 
-                    <pre>
+                    <pre style={{ maxHeight: 500, overflowY: "scroll" }}>
                         <SyntaxHighlighter
                             language="css"
                             style={CodeTheme()}
@@ -521,6 +517,8 @@ const Tool = () => {
                     gradient={activeGradient}
                     onChange={handleDomainChange}
                 />
+
+
             </div>
         </>
     )

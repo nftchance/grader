@@ -13,12 +13,13 @@
 
 .tool {
     display: grid;
-    grid-template: 'cube cube input score'
-                    'cube cube input code';
+    grid-template: 'cube cube input code'
+                   'cube cube input code'
+                   'cube cube input code';
     grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: 30px;
     margin-bottom: 240px;
-    margin-top: 60px;
+    margin-top: 40px;
     min-height: 650px;
 }
 

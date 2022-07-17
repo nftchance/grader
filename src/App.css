@@ -59,6 +59,10 @@ pre div {
   padding-left: 0px !important;
 }
 
+strong { 
+  color: var(--white);
+}
+
 .code {
   color: var(--white-85);
 }
