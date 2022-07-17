@@ -351,12 +351,6 @@ const Tool = () => {
                                     </Button>
                                 </Tooltip>
                             </CopyToClipboard>
-
-                            <Tooltip title="Shuffle">
-                                <Button onClick={handleShuffle}>
-                                    <FontAwesomeIcon icon={['fal', 'shuffle']} />
-                                </Button>
-                            </Tooltip>
                         </span>
                     </h3>
 
@@ -399,20 +393,21 @@ const Tool = () => {
                         onChange={handleDegreeChange}
                     />
 
-                    <ColorspaceColor
-                        colors={colors}
-                        handleColorChange={handleColorChange}
-                        handleColorLock={handleColorLock}
-                        handleColorRemove={handleColorRemove}
-                    />
+                    <div style={{ marginTop: 40 }}>
+                        <label>COLORS</label>
 
-                    <div style={{ marginTop: 10 }}>
-                        <Button style={{ fontWeight: 900 }}
+                        <Button style={{ fontWeight: 900, float: "right" }}
                             onClick={handleColorAddition}
                         >
                             <FontAwesomeIcon icon={['fal', 'plus']} />
                         </Button>
-
+                        
+                        <Tooltip title="Shuffle">
+                            <Button onClick={handleShuffle} style={{ float: "right" }}>
+                                <FontAwesomeIcon icon={['fal', 'shuffle']} />
+                            </Button>
+                        </Tooltip>
+                        
                         {hasMadeChange && <Button
                             onClick={handleColorClear}
                             style={{
@@ -424,6 +419,13 @@ const Tool = () => {
                             <FontAwesomeIcon icon={['fal', 'trash']} />
                         </Button>}
                     </div>
+
+                    <ColorspaceColor
+                        colors={colors}
+                        handleColorChange={handleColorChange}
+                        handleColorLock={handleColorLock}
+                        handleColorRemove={handleColorRemove}
+                    />
                 </div>
 
                 <div className="step result">
