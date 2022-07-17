@@ -65,7 +65,7 @@ const Tool = () => {
         return color.color === defaultColor.color && color.domain === defaultColor.domain && color.locked === defaultColor.locked
     }), [colors, DEFAULT_GRADIENT])
 
-    const trimmedColors = useMemo(() => ([...colors.slice(1, colors.length)]), [colors]);
+    const trimmedColors = [...colors.slice(1, colors.length)]
 
     const usingDefaultScale = useMemo(() => {
         return trimmedColors.every((color, idx) => {
@@ -73,7 +73,7 @@ const Tool = () => {
         })
     }, [colorMath, trimmedColors])
 
-    const colorSquishedDomain = useMemo(() => ((1 + colors[colors.length - 2].domain) / 2), [colors])
+    const colorSquishedDomain = useMemo(() => ((1 + colors[colors.length - 2].domain) / 2), [colors]);
 
     // Building the color scale with the proper domain
     const joiningColors = useMemo(() => trimmedColors.map((color, idx) => ({
@@ -104,12 +104,12 @@ const Tool = () => {
 
     const chromaSaveURL = `${window.location.href.split("?")[0]}?` + URLTail
 
-    if (hasMadeChange) {
-        // update the url so that someone can just copy-paste
-        window.history.replaceState({
-            additionalInformation: 'Updated when changing colors.'
-        }, 'COLORSPACE', chromaSaveURL)
-    }
+    // if (hasMadeChange) {
+    //     // update the url so that someone can just copy-paste
+    //     window.history.replaceState({
+    //         additionalInformation: 'Updated when changing colors.'
+    //     }, 'COLORSPACE', chromaSaveURL)
+    // }
 
     const shareMessage = `I justed used @trycolorspace and made this ${score > 81 ? "perfect " : " "}pallete - whats your score ?%0A%0A${chromaSaveURL}`;
 
@@ -147,7 +147,7 @@ const Tool = () => {
 
     // Handle everything when a new color is added to the mix
     const handleColorAddition = () => {
-        if(colors >= 10) return
+        if(colors.length >= 10) return
 
         // if the default points value is being used, continue using it
         if (points === (colorAddedColors.length - 1) * POINTS_SCALE_FACTOR)
@@ -236,7 +236,6 @@ const Tool = () => {
     const handleCopy = (copyIndex) => {
         // Flip the state of the active copy index
         const copiedToggled = (copyIndex, val) => {
-            console.log('toggling', copied, copyIndex, copied[copyIndex])
             return copied.map((copy, idx) => {
                 if (idx === copyIndex) return val
 
@@ -262,13 +261,13 @@ const Tool = () => {
                     .getAll('cs')
                     .map((color, colorIdx) => colorMath.c(
                         color,
-                        queryParams.getAll('ds')[colorIdx],
+                        parseFloat(queryParams.getAll('ds')[colorIdx]),
                         true,
                         false // when loaded by query parameters all are locked
                     ));
 
-                setColors(queryParamsColors);
                 setPoints(queryParams.get('p'));
+                setColors(queryParamsColors);
             }
         }
 
