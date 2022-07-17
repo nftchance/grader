@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button } from "@mui/material";
+import { Button, Tooltip } from "@mui/material";
 import ColorspaceColorpickerBox from "./ColorspaceColorpickerBox";
 
 const ColorspaceColor = (props) => {
@@ -44,13 +44,15 @@ const ColorspaceColor = (props) => {
                         idx={idx}
                     />
 
-                    <Button style={{ marginTop: 10 }}
-                        onClick={(event) => {
-                            handleColorLock(idx)
-                        }}
-                    >
-                        {color.locked ? <FontAwesomeIcon icon={['fal', 'lock']} /> : <FontAwesomeIcon icon={['fal', 'lock-open']} />}
-                    </Button>
+                    <Tooltip title="Lock">
+                        <Button style={{ marginTop: 10 }}
+                            onClick={(event) => {
+                                handleColorLock(idx)
+                            }}
+                        >
+                            {color.locked ? <FontAwesomeIcon icon={['fal', 'lock']} /> : <FontAwesomeIcon icon={['fal', 'lock-open']} />}
+                        </Button>
+                    </Tooltip>
                 </div>
             ))}
         </div>

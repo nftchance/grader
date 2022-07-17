@@ -404,11 +404,14 @@ const Tool = () => {
                     <div style={{ marginTop: 40 }}>
                         <label>COLORS</label>
 
-                        <Button style={{ fontWeight: 900, float: "right" }}
-                            onClick={handleColorAddition}
-                        >
-                            <FontAwesomeIcon icon={['fal', 'plus']} />
-                        </Button>
+                        <Tooltip title="Add">
+                            <Button style={{ fontWeight: 900, float: "right" }}
+                                onClick={handleColorAddition}
+                            >
+                                <FontAwesomeIcon icon={['fal', 'plus']} />
+                            </Button>
+                        </Tooltip>
+
 
                         <Tooltip title="Shuffle">
                             <Button onClick={handleShuffle} style={{ float: "right" }}>
@@ -416,16 +419,21 @@ const Tool = () => {
                             </Button>
                         </Tooltip>
 
-                        {hasMadeChange && <Button
-                            onClick={handleColorClear}
-                            style={{
-                                float: "right",
-                                color: "red",
-                                fontWeight: 900
-                            }}
-                        >
-                            <FontAwesomeIcon icon={['fal', 'trash']} />
-                        </Button>}
+
+
+                        {hasMadeChange && <Tooltip title="Clear">
+                            <Button
+                                onClick={handleColorClear}
+                                style={{
+                                    float: "right",
+                                    color: "red",
+                                    fontWeight: 900
+                                }}
+                            >
+                                <FontAwesomeIcon icon={['fal', 'trash']} />
+                            </Button>
+                        </Tooltip>
+                        }
                     </div>
 
                     <ColorspaceColor
