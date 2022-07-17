@@ -9,6 +9,7 @@ import './App.css';
 
 const LoadableOpenGraph = loadable(() => import("./OpenGraph/OpenGraph"), { fallback: "Loading..." })
 const LoadableHome = loadable(() => import("./Home/Home"), { fallback: "Loading..." })
+const LoadableEgg = loadable(() => import("./Egg/Egg"), { fallback: "Loading..." })
 
 const theme = createTheme({
 	palette: {
@@ -39,8 +40,9 @@ function App() {
 
 				<Router>
 					<Routes>
-						<Route path="opengraph/" element={<LoadableOpenGraph />} />
 						<Route exact path="/" element={<LoadableHome />} />
+						<Route path="opengraph/" element={<LoadableOpenGraph />} />
+						<Route path="egg/" element={<LoadableEgg />} />
 					</Routes>
 				</Router>
 			</ThemeProvider >

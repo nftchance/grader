@@ -1,0 +1,61 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    display: grid;
+    margin: 90px;
+    min-height: 500px;
+}
+
+.content {
+    margin: auto;
+    max-width: 750px;
+}
+
+h2 {
+    margin-top: 40px;
+    color: var(--white-65);
+}
+
+.animated {
+    background-repeat: no-repeat;
+    background-position: left top;
+    padding-top: 95px;
+    margin-bottom: 60px;
+    -webkit-animation-duration: 10s;
+    animation-duration: 3s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    transform: translate(0px)
+}
+
+@-webkit-keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateX(100px)
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0px)
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(100px)
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0px)
+    }
+}
+
+.fadeIn {
+    -webkit-animation-name: fadeIn;
+    animation-name: fadeIn;
+}
