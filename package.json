@@ -19,8 +19,6 @@
     "babel-plugin-glsl": "^1.0.0",
     "chroma-js": "^2.4.2",
     "chrome-aws-lambda": "^10.1.0",
-    "glsl-noise": "^0.0.0",
-    "glslify": "^7.1.1",
     "puppeteer-core": "^10.1.0",
     "rc-slider": "^10.0.1",
     "react": "^18.2.0",
