@@ -67,7 +67,7 @@ const Tool = () => {
 
     const trimmedColors = useMemo(() => ([...colors.slice(1, colors.length)]), [colors]);
 
-    const usingDefaultScale = useMemo(() => { 
+    const usingDefaultScale = useMemo(() => {
         return trimmedColors.every((color, idx) => {
             return color.domain === colorMath.indexToDomainPos(trimmedColors, idx + 1);
         })
@@ -83,7 +83,7 @@ const Tool = () => {
             : idx !== trimmedColors.length - 1
                 ? color.domain
                 : colorSquishedDomain
-    })), [ 
+    })), [
         colorMath,
         colors,
         trimmedColors,
@@ -92,7 +92,7 @@ const Tool = () => {
     ])
 
     // Make sure that the color is added in the right spot 
-    const colorAddedColors = useMemo(() => ( 
+    const colorAddedColors = useMemo(() => (
         [
             ...[colors[0]],
             ...joiningColors,
@@ -226,18 +226,18 @@ const Tool = () => {
     // Update when someone clicks the copy action
     const handleCopy = (copyIndex) => {
         // Flip the state of the active copy index
-        const copiedToggled = (copyIndex) => {
+        const copiedToggled = (copyIndex, val) => {
+            console.log('toggling', copied, copyIndex, copied[copyIndex])
             return copied.map((copy, idx) => {
-                if (idx === copyIndex) return !(copy !== false)
+                if (idx === copyIndex) return val
+
                 return copy
             })
         }
 
-        setCopied(copiedToggled(copyIndex))
-
-        setTimeout(() => {
-            setCopied(copiedToggled(copyIndex))
-        }, 1500)
+        setCopied(copiedToggled(copyIndex, true), setTimeout(() => {
+            setCopied(copiedToggled(copyIndex, false))
+        }, 2500))
     }
 
     // Handle the query params on the first load
@@ -263,7 +263,7 @@ const Tool = () => {
             }
         }
 
-        if(queryParams.getAll('cs').length !== 0 )
+        if (queryParams.getAll('cs').length !== 0)
             handleQueryParams();
     }, [colorMath])
 
@@ -409,13 +409,13 @@ const Tool = () => {
                         >
                             <FontAwesomeIcon icon={['fal', 'plus']} />
                         </Button>
-                        
+
                         <Tooltip title="Shuffle">
                             <Button onClick={handleShuffle} style={{ float: "right" }}>
                                 <FontAwesomeIcon icon={['fal', 'shuffle']} />
                             </Button>
                         </Tooltip>
-                        
+
                         {hasMadeChange && <Button
                             onClick={handleColorClear}
                             style={{
