@@ -490,7 +490,7 @@ const Tool = () => {
                         </span>
                     </h3>
 
-                    <pre style={{ maxHeight: "100%", overflowY: "scroll" }}>
+                    <pre style={{ maxHeight: 500, overflowY: "scroll" }}>
                         <SyntaxHighlighter
                             language="css"
                             style={CodeTheme()}
