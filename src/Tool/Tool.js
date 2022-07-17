@@ -337,8 +337,6 @@ const Tool = () => {
                 <meta name="twitter:image" content={chromaOGURL} />
             </Helmet>
 
-
-
             <div className="tool">
                 <div className="step cube">
                     <ThreeScene
