@@ -344,7 +344,7 @@ const Tool = () => {
                         alignItems: "center"
                     }}>
                         INPUT
-                        <span style={{ marginLeft: "auto", display: "grid", alignItems: "center", gridTemplateColumns: "1fr 1fr" }}>
+                        <span style={{ marginLeft: "auto" }}>
                             <CopyToClipboard text={chromaSaveURL} onCopy={() => { handleCopy(0) }} leaveDelay={copied[0] ? 1250 : 0}>
                                 <Tooltip title={copied[0] ? "Copied" : "Copy Input Link"}>
                                     <Button>
