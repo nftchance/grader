@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useState, useRef } from "react";
 
 import { useFrame } from "react-three-fiber";
 import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
@@ -8,12 +8,13 @@ import { EffectComposer, SSAO, SMAA } from "@react-three/postprocessing"
 export default function LightsAndCamera({ size: SIZE }) {
     const ref = useRef();
 
-    let frame = 0;
+    const [frame, setFrame] = useState(0);
+
     useFrame(() => {
         if (frame > 200) return
 
         ref.current.position.z += 0.05
-        frame += 1
+        setFrame(frame + 1)
     })
 
     return (

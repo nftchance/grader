@@ -41,7 +41,7 @@ const Tool = () => {
 
     const colorMath = useMemo(() => new ColorMath(colorMode, 0, 0), [colorMode]);
 
-    const DEFAULT_GRADIENT = [colorMath.c('#ffffff', 0, true, false), colorMath.c("#000000", 1, true, false)];
+    const DEFAULT_GRADIENT = useMemo(() => ([colorMath.c('#ffffff', 0, true, false), colorMath.c("#000000", 1, true, false)]), [colorMath]);
 
     const [points, setPoints] = useState(DEFAULT_GRADIENT.length * POINTS_SCALE_FACTOR)
     const [pointsMode, setPointsMode] = useState(0); // 0 = input | 1 = scale
@@ -60,35 +60,45 @@ const Tool = () => {
 
     const [copied, setCopied] = useState([false, false])
 
-    const hasMadeChange = !colors.every((color, idx) => {
+    const hasMadeChange = useMemo(() => !colors.every((color, idx) => {
         const defaultColor = DEFAULT_GRADIENT[idx]
         return color.color === defaultColor.color && color.domain === defaultColor.domain && color.locked === defaultColor.locked
-    })
+    }), [colors, DEFAULT_GRADIENT])
 
-    const trimmedColors = [...colors.slice(1, colors.length)];
+    const trimmedColors = useMemo(() => ([...colors.slice(1, colors.length)]), [colors]);
 
-    const usingDefaultScale = trimmedColors.every((color, idx) => {
-        return color.domain === colorMath.indexToDomainPos(trimmedColors, idx + 1);
-    })
+    const usingDefaultScale = useMemo(() => { 
+        return trimmedColors.every((color, idx) => {
+            return color.domain === colorMath.indexToDomainPos(trimmedColors, idx + 1);
+        })
+    }, [colorMath, trimmedColors])
 
-    const colorSquishedDomain = (1 + colors[colors.length - 2].domain) / 2
+    const colorSquishedDomain = useMemo(() => ((1 + colors[colors.length - 2].domain) / 2), [colors])
 
     // Building the color scale with the proper domain
-    const joiningColors = trimmedColors.map((color, idx) => ({
+    const joiningColors = useMemo(() => trimmedColors.map((color, idx) => ({
         ...color,
         domain: usingDefaultScale
             ? colorMath.indexToDomainPos(colors, idx + 1)
             : idx !== trimmedColors.length - 1
                 ? color.domain
                 : colorSquishedDomain
-    }))
+    })), [ 
+        colorMath,
+        colors,
+        trimmedColors,
+        colorSquishedDomain,
+        usingDefaultScale
+    ])
 
     // Make sure that the color is added in the right spot 
-    const colorAddedColors = [
-        ...[colors[0]],
-        ...joiningColors,
-        colors[colors.length - 1]
-    ]
+    const colorAddedColors = useMemo(() => ( 
+        [
+            ...[colors[0]],
+            ...joiningColors,
+            colors[colors.length - 1]
+        ]
+    ), [colors, joiningColors])
 
     const URLTail = fixedEncodeURIComponent(`cm=${colorMode}&gcm=${gradientColorMode}&cs=${colors.map(color => color.color).join("&cs=")}&ds=${colors.map(color => color.domain).join("&ds=")}&d=${degree}&p=${points}&g=${code.replace("background: ", "")}&f=${Math.random() > 0.5 ? true : false}&s=${score}&url=${window.location.href.split("?")[0]}`)
 
@@ -238,7 +248,6 @@ const Tool = () => {
             setColorMode(queryParams.get('cm'));
             setGradientColorMode(queryParams.get('gcm'))
 
-            console.log(queryParams.getAll('cs'))
             if (queryParams.getAll('cs').length !== 0 && queryParams.getAll('ds').length !== 0) {
                 const queryParamsColors = queryParams
                     .getAll('cs')
