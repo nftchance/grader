@@ -65,7 +65,7 @@ const Tool = () => {
         return color.color === defaultColor.color && color.domain === defaultColor.domain && color.locked === defaultColor.locked
     }), [colors, DEFAULT_GRADIENT])
 
-    const trimmedColors = [...colors.slice(1, colors.length)]
+    const trimmedColors = useMemo(() => ([...colors.slice(1, colors.length)]), [colors])
 
     const usingDefaultScale = useMemo(() => {
         return trimmedColors.every((color, idx) => {
