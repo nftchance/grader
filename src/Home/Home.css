@@ -13,13 +13,13 @@
 
 .tool {
     display: grid;
-    grid-template: 'cube cube cube input'
-                   'cube cube cube input'
-                   'cube cube cube score';
+    grid-template: 'cube cube input code'
+                   'cube cube input code'
+                   'cube cube input code';
     grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: 30px;
     margin-bottom: 240px;
-    margin-top: 60px;
+    margin-top: 40px;
     min-height: 650px;
 }
 
@@ -46,7 +46,6 @@
 
 .score {
     grid-area: score;
-    grid-column: 4;
 }
 
 .code {

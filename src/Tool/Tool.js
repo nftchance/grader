@@ -352,7 +352,7 @@ const Tool = () => {
                         display: "flex",
                         alignItems: "center"
                     }}>
-                        SETUP 
+                        SETUP
                         <span style={{ marginLeft: "auto" }}>
                             <CopyToClipboard text={chromaSaveURL} onCopy={() => { handleCopy(0) }} leaveDelay={copied[0] ? 1250 : 0}>
                                 <Tooltip title={copied[0] ? "Copied" : "Copy Input Link"}>
@@ -374,6 +374,18 @@ const Tool = () => {
                             </Tooltip>
                         </span>
                     </h3>
+
+                    <div style={{ marginTop: 10, marginBottom: 20 }}>
+                        <p>
+                            <strong>SCORE:</strong>
+                            <span style={{ float: "right" }}>{score} / 100</span>
+                        </p>
+                        <p>
+                            <strong>BEST:</strong>
+                            <span style={{ float: "right" }}>{best} / 100</span>
+                        </p>
+                    </div>
+
 
                     <label>CUBE COLOR MODE</label>
                     <ColorspaceToggleButtonGroup
@@ -457,21 +469,8 @@ const Tool = () => {
                     />
                 </div>
 
-                <div className="step score">
-                    <h3>SCORE</h3>
-
-                    <p>
-                        <strong>SCORE:</strong>
-                        <span style={{ float: "right" }}>{score} / 100</span>
-                    </p>
-                    <p>
-                        <strong>BEST:</strong>
-                        <span style={{ float: "right" }}>{best} / 100</span>
-                    </p>
-                </div>
-
                 {/* Formatted Code Output of Active Gradient */}
-                {/* <div className="step code">
+                <div className="step code">
                     <h3>
                         CODE
                         <span style={{ float: "right", alignContent: "center" }}>
@@ -499,7 +498,7 @@ const Tool = () => {
                             children={code}
                         />
                     </pre>
-                </div> */}
+                </div>
 
                 {/* Gradient Color Mode Control */}
                 <div className="color-mode">
@@ -518,6 +517,8 @@ const Tool = () => {
                     gradient={activeGradient}
                     onChange={handleDomainChange}
                 />
+
+
             </div>
         </>
     )
