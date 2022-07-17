@@ -2,14 +2,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button } from "@mui/material";
 import ColorspaceColorpickerBox from "./ColorspaceColorpickerBox";
 
-import ColorspaceTextField from "./ColorspaceTextField";
-
 const ColorspaceColor = (props) => {
     const {
         colors,
         handleColorChange,
-        handleColorLock,
-        handleColorRemove
+        handleColorLock
     } = props;
 
     return (
