@@ -142,6 +142,10 @@ input {
     grid-column: 1 / span 4;
 }
 
+.color-container {
+    grid-template-rows: 1fr 1fr;
+}
+
 @media only screen and (max-width: 1200px) {
     .container {
         margin-inline: 10px;
@@ -173,5 +177,9 @@ input {
 
     .scale {
         margin-bottom: 40px;
+    }
+
+    .color-container { 
+        grid-template-rows: 1fr;
     }
 }
