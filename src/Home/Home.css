@@ -14,8 +14,8 @@
 .tool {
     display: grid;
     grid-template: 'cube cube input code'
-                   'cube cube input code'
-                   'cube cube input code';
+        'cube cube input code'
+        'cube cube input code';
     grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: 30px;
     margin-bottom: 240px;
@@ -136,14 +136,23 @@ input {
 }
 
 @media only screen and (max-width: 1200px) {
+    .container {
+        margin-inline: 10px;
+    }
+
+    .navbar {
+        margin-top: 10px;
+    }
+
     .tool {
         grid-template-columns: 1fr;
         grid-template: 'cube'
-                       'input'
-                       'code';
+            'input'
+            'code';
+        margin-top: 20px;
     }
 
-    .cube { 
+    .cube {
         min-height: 500px;
     }
 
