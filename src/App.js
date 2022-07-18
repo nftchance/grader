@@ -17,6 +17,7 @@ const LoadableTool = loadable(() => import("./Tool/Tool"), { fallback: "Loading.
 const LoadableFAQ = loadable(() => import("./FAQ/FAQ"), { fallback: "Loading...." })
 const LoadableOpenGraph = loadable(() => import("./OpenGraph/OpenGraph"), { fallback: "Loading..." })
 const LoadableEgg = loadable(() => import("./Egg/Egg"), { fallback: "Loading..." })
+const LoadableRanker = loadable(() => import("./Ranker/Ranker"), { fallback: "Loading..." })
 
 const theme = createTheme({
 	palette: {
@@ -61,6 +62,7 @@ function App() {
 				<Routes>
 					<Route exact path="/" element={<LoadableTool />} />
 					<Route path="faq/" element={<LoadableFAQ />} />
+					<Route path="ranker/" element={<LoadableRanker />} />
 					<Route path="opengraph/" element={<LoadableOpenGraph />} />
 					<Route path="egg/" element={<LoadableEgg />} />
 				</Routes>
