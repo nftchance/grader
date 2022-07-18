@@ -1,4 +1,3 @@
-import { Suspense } from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
