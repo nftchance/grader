@@ -3,11 +3,11 @@ import Slider from 'rc-slider';
 import "./Colorspace2DGradient.css";
 
 const Colorspace2DGradient = (props) => {
-    const { colors, onChange, gradient } = props;
+    const { colors, onChange, gradient, viewingBlocks } = props;
 
     return (
         <div className="step gradient" style={{
-            background: gradient,
+            background: !viewingBlocks ? gradient[0] : gradient[1],
         }}>
             <Slider
                 range
