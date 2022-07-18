@@ -14,8 +14,9 @@
 .tool {
     display: grid;
     grid-template: 'cube cube input code'
-                   'cube cube input code'
-                   'cube cube input code';
+        'cube cube input code'
+        'cube cube input code'
+        'scale scale scale scale';
     grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: 30px;
     margin-bottom: 240px;
@@ -51,6 +52,12 @@
 .code {
     grid-area: code;
     font-variant: tabular-nums;
+}
+
+.scale {
+    grid-column: 1 / span 4;
+    row-gap: 20px;
+    display: grid;
 }
 
 h1 {
@@ -133,4 +140,47 @@ input {
 
 .gradient-slider {
     grid-column: 1 / span 4;
+}
+
+.color-container {
+    grid-template-rows: 1fr 1fr;
+}
+
+@media only screen and (max-width: 1200px) {
+    .container {
+        margin-inline: 10px;
+    }
+
+    .navbar {
+        margin-top: 10px;
+    }
+
+    .tool {
+        grid-template-columns: 1fr;
+        grid-template: 'cube'
+            'input'
+            'scale'
+            'code';
+        margin-top: 20px;
+    }
+
+    .cube {
+        width: 100%;
+        min-height: 350px;
+        max-width: calc(100vw - 20px);
+    }
+
+    .color-mode,
+    .gradient,
+    .scale {
+        grid-column: 1;
+    }
+
+    .scale {
+        margin-bottom: 40px;
+    }
+
+    .color-container { 
+        grid-template-rows: 1fr;
+    }
 }

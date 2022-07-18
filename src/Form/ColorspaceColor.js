@@ -10,10 +10,9 @@ const ColorspaceColor = (props) => {
     } = props;
 
     return (
-        <div style={{
+        <div className="color-container" style={{
             display: "grid",
             gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
-            gridTemplateRows: "1fr 1fr",
             gap: 10,
             marginTop: 20,
             overflowY: "scroll"

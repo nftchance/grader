@@ -407,13 +407,17 @@ const Tool = () => {
                         onChange={handleColorModeChange}
                     />
 
+                    <div style={{ marginTop: 20 }}>
+                        <label>SCALE</label>
+                    </div>
+
                     <div style={{
                         display: "grid",
                         gridTemplateColumns: "1fr 1fr",
                         gap: 10
                     }}>
                         <ColorspaceTextField
-                            label="Domain Points"
+                            label="Points"
                             value={points}
                             aria-label="color scale points of separation"
                             id="points-of-separation"
@@ -443,8 +447,13 @@ const Tool = () => {
                         />
                     </div>
 
-                    <div style={{ marginTop: 40 }}>
-                        <label>COLORS</label>
+                    <div style={{ marginTop: 20 }}>
+                        <div style={{
+                            display: "inline-grid",
+                            marginTop: 5
+                        }}>
+                            <label>COLORS</label>
+                        </div>
 
                         {colors.length < 10 && <Tooltip title="Add">
                             <Button onClick={handleColorAddition} style={{ float: "right" }}>
@@ -511,25 +520,25 @@ const Tool = () => {
                     </pre>
                 </div>
 
-                {/* Gradient Color Mode Control */}
-                <div className="color-mode">
-                    <ColorspaceToggleButtonGroup
-                        value={gradientColorMode}
-                        values={SCALE_MODES}
-                        exclusive
-                        aria-label="gradient color scale mode"
-                        onChange={handleGradientColorModeChange}
+                <div className="scale">
+                    {/* Gradient Color Mode Control */}
+                    <div className="color-mode">
+                        <ColorspaceToggleButtonGroup
+                            value={gradientColorMode}
+                            values={SCALE_MODES}
+                            exclusive
+                            aria-label="gradient color scale mode"
+                            onChange={handleGradientColorModeChange}
+                        />
+                    </div>
+
+                    {/* 2D Gradient Visualization */}
+                    <Colorspace2DGradient
+                        colors={colors}
+                        gradient={activeGradient}
+                        onChange={handleDomainChange}
                     />
                 </div>
-
-                {/* 2D Gradient Visualization */}
-                <Colorspace2DGradient
-                    colors={colors}
-                    gradient={activeGradient}
-                    onChange={handleDomainChange}
-                />
-
-
             </div>
         </>
     )
