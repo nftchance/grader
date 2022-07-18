@@ -120,6 +120,15 @@ input {
     height: 30px;
 }
 
+.sidebar-toggle {
+    display: none;
+    margin-left: auto;
+}
+
+.sidebar { 
+    margin-left: auto;
+}
+
 .container {
     margin-inline: 90px;
 }
@@ -155,6 +164,28 @@ input {
 }
 
 @media only screen and (max-width: 992px) {
+    .navbar {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto 1fr;
+        align-items: center;
+    }
+
+    .sidebar {
+        display: none;
+    }
+
+    .sidebar-toggle {
+        display: block;
+    }
+
+    .sidebar.open {
+        display: grid;
+        width: 100%;
+        grid-column: 1 / span 2;
+        border: 1px solid #fff;
+    }
+    
     .header {
         margin-block: 20px;
     }
