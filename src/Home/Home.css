@@ -167,6 +167,7 @@ input {
     .cube {
         width: 100%;
         min-height: 350px;
+        max-width: calc(100vw - 20px);
     }
 
     .color-mode,
