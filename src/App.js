@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -9,15 +10,17 @@ import loadable from "@loadable/component";
 
 import logo from "./images/logo.png";
 
+import Loading from "./Loading/Loading";
+
 import SEO_CONSTANTS from "./SEO/constants";
 
 import './App.css';
 
-const LoadableTool = loadable(() => import("./Tool/Tool"), { fallback: "Loading..." })
-const LoadableFAQ = loadable(() => import("./FAQ/FAQ"), { fallback: "Loading...." })
-const LoadableOpenGraph = loadable(() => import("./OpenGraph/OpenGraph"), { fallback: "Loading..." })
-const LoadableEgg = loadable(() => import("./Egg/Egg"), { fallback: "Loading..." })
-const LoadableRanker = loadable(() => import("./Ranker/Ranker"), { fallback: "Loading..." })
+const LoadableTool = loadable(() => import("./Tool/Tool"), { fallback: <Loading /> })
+const LoadableFAQ = loadable(() => import("./FAQ/FAQ"), { fallback: <Loading /> })
+const LoadableOpenGraph = loadable(() => import("./OpenGraph/OpenGraph"), { fallback: <Loading /> })
+const LoadableEgg = loadable(() => import("./Egg/Egg"), { fallback: <Loading /> })
+const LoadableRanker = loadable(() => import("./Ranker/Ranker"), { fallback: <Loading /> })
 
 const theme = createTheme({
 	palette: {

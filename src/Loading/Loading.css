@@ -1,0 +1,53 @@
+.loading.container { 
+    background: #000;
+    border: 1px solid #fff;
+    height: 80vh;
+    display: grid;
+    align-content: center;
+    text-align: center;
+    margin-top: 50px;
+    padding: 50px;
+}
+
+.progress {
+    position: relative;
+    height: 15px;
+    width: 30%;
+    border: 10px solid #f4a261;
+    border: 1px solid #fff;
+    margin: auto;
+    margin-top: 30px;
+}
+
+.progress .color {
+    position: absolute;
+    background-color: #ffffff;
+    width: 0px;
+    height: 10px;
+    margin: 1px;
+    animation: progress 4s infinite linear;
+}
+
+@keyframes progress {
+    0% {
+        width: 0%;
+    }
+
+    25% {
+        width: 50%;
+    }
+
+    50% {
+        width: 75%;
+    }
+
+    75% {
+        width: 85%;
+    }
+
+    100% {
+        width: 100%;
+    }
+}
+
+;
