@@ -134,3 +134,21 @@ input {
 .gradient-slider {
     grid-column: 1 / span 4;
 }
+
+@media only screen and (max-width: 1200px) {
+    .tool {
+        grid-template-columns: 1fr;
+        grid-template: 'cube'
+                       'input'
+                       'code';
+    }
+
+    .cube { 
+        min-height: 500px;
+    }
+
+    .color-mode,
+    .gradient {
+        grid-column: 1;
+    }
+}
