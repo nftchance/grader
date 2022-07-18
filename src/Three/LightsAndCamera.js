@@ -2,7 +2,7 @@ import { useRef } from "react";
 
 import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 
-// import { EffectComposer, SSAO, SMAA } from "@react-three/postprocessing"
+import { EffectComposer, SSAO, SMAA } from "@react-three/postprocessing"
 
 export default function LightsAndCamera({ size: SIZE }) {
     const ref = useRef();
@@ -33,7 +33,7 @@ export default function LightsAndCamera({ size: SIZE }) {
 
             {/* <fog attach="fog" args={['black', 15, 150]} /> */}
 
-            {/* <EffectComposer multisampling={2}>
+            <EffectComposer multisampling={0}>
                 <SSAO
                     samples={31}
                     radius={5}
@@ -41,7 +41,7 @@ export default function LightsAndCamera({ size: SIZE }) {
                     luminanceInfluence={0.5}
                     color="white" />
                 <SMAA />
-            </EffectComposer> */}
+            </EffectComposer>
         </>
     )
 }
