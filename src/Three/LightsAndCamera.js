@@ -10,12 +10,12 @@ export default function LightsAndCamera({ size: SIZE }) {
 
     const [frame, setFrame] = useState(0);
 
-    useFrame(() => {
-        if (frame > 200) return
+    // useFrame(() => {
+    //     if (frame > 200) return
 
-        ref.current.position.z += 0.05
-        setFrame(frame + 1)
-    })
+    //     ref.current.position.z += 0.05
+    //     setFrame(frame + 1)
+    // })
 
     return (
         <>
