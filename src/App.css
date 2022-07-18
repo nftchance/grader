@@ -14,7 +14,7 @@
 }
 
 body {
-    background: var(--black);
+    background: #000;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -32,7 +32,7 @@ h5 {
 
 p,
 span {
-    color: var(--white-85);
+    color: rgba(255, 255, 255, 0.85);
 }
 
 p,
@@ -58,7 +58,7 @@ label {
 a:hover,
 a:focus,
 a:active {
-    color: var(--white-85);
+    color: rgba(255, 255, 255, 0.85);
 }
 
 pre,
@@ -67,7 +67,7 @@ pre div {
 }
 
 strong {
-    color: var(--white);
+    color: #fff;
 }
 
 button,
@@ -76,7 +76,7 @@ button,
 }
 
 .code {
-    color: var(--white-85);
+    color: rgba(255, 255, 255, 0.85);
 }
 
 /* Scrollbar */
@@ -87,18 +87,18 @@ button,
 
 /* Track */
 ::-webkit-scrollbar-track {
-    background: var(--black);
+    background: #000;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: var(--white-65);
+    background: rgba(255, 255, 255, .65);
     border-radius: 2px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--white);
+    background: #fff;
 }
 
 input {
@@ -150,11 +150,11 @@ input {
 
     .navbar {
         margin-top: 10px;
-		margin-bottom: 20px;
+        margin-bottom: 20px;
     }
 }
 
-@media only screen and (max-width: 992px) { 
+@media only screen and (max-width: 992px) {
     .header {
         margin-block: 20px;
     }
@@ -163,7 +163,7 @@ input {
         grid-template-columns: 1fr;
     }
 
-    .footer p { 
+    .footer p {
         text-align: left;
     }
 }

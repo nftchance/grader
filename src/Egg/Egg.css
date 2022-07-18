@@ -11,7 +11,7 @@
 
 h2 {
     margin-top: 40px;
-    color: var(--white-65);
+    color: rgba(255, 255, 255, .65);
 }
 
 .animated {
