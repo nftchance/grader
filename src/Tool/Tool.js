@@ -353,7 +353,7 @@ const Tool = () => {
                 <meta name="twitter:image" content={chromaOGURL} />
             </Helmet>
 
-            <div className="tool">
+            <div className="tool container">
                 <div className="step cube">
                     <ThreeScene
                         colors={pointsMode === 0 ? colors : chromaColors}

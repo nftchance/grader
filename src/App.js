@@ -7,6 +7,8 @@ import loadable from "@loadable/component";
 
 import logo from "./images/logo.png";
 
+import SEO_CONSTANTS from "./SEO/constants";
+
 import './App.css';
 
 const LoadableTool = loadable(() => import("./Tool/Tool"), { fallback: "Loading..." })
@@ -22,21 +24,18 @@ const theme = createTheme({
 	shape: { borderRadius: 0 }
 });
 
-const META_TITLE = "COLORSPACE"
-const META_DESCRIPTION = "Explore color palletes in a 2022-focused 3D visualization."
-
 function App() {
 	return (
 		<HelmetProvider>
 			<ThemeProvider theme={theme}>
 				<Helmet>
-					<title>{META_TITLE}</title>
-					<meta name="og:title" content={META_TITLE} />
-					<meta name="og:description" content={META_TITLE} />
+					<title>{SEO_CONSTANTS.home.title}</title>
+					<meta name="og:title" content={SEO_CONSTANTS.home.title} />
+					<meta name="og:description" content={SEO_CONSTANTS.home.title} />
 
-					<meta name="description" content={META_DESCRIPTION} />
-					<meta name="og:description" content={META_DESCRIPTION} />
-					<meta name="twitter:description" content={META_DESCRIPTION} />
+					<meta name="description" content={SEO_CONSTANTS.home.description} />
+					<meta name="og:description" content={SEO_CONSTANTS.home.description} />
+					<meta name="twitter:description" content={SEO_CONSTANTS.home.description} />
 
 					<meta property="og:url" content={`${window.location.href}`} />
 				</Helmet>

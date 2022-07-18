@@ -1,6 +1,15 @@
-import { Accordion, AccordionDetails, AccordionSummary, Link, Typography } from "@mui/material";
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
+
+import { 
+    Accordion, 
+    AccordionDetails, 
+    AccordionSummary, 
+    Link, 
+    Typography 
+} from "@mui/material";
+
+import SEO_CONSTANTS from "../SEO/constants";
 
 const FAQ = () => {
     const faqs = [
@@ -89,13 +98,13 @@ const FAQ = () => {
     return (
         <>
             <Helmet>
-                <title>FAQS | SCOOPER</title>
-                <meta property="og:title" content="FAQS | SCOOPER" />
-                <meta name="twitter:title" content="FAQS | SCOOPER" />
+                <title>{SEO_CONSTANTS.faq.title}</title>
+                <meta property="og:title" content={SEO_CONSTANTS.faq.title} />
+                <meta name="twitter:title" content={SEO_CONSTANTS.faq.title} />
 
-                <meta name="description" content="Have a question about SCOOPER? Browse the frequently asked questions and all the answers you may need!" />
-                <meta property="og:description" content="Have a question about SCOOPER? Browse the frequently asked questions and all the answers you may need!" />
-                <meta name="twitter:description" content="Have a question about SCOOPER? Browse the frequently asked questions and all the answers you may need!" />
+                <meta name="description" content={SEO_CONSTANTS.faq.description} />
+                <meta property="og:description" content={SEO_CONSTANTS.faq.description} />
+                <meta name="twitter:description" content={SEO_CONSTANTS.faq.description} />
             </Helmet>
 
             <div className="container">
