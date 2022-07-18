@@ -30,5 +30,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm ci
+    - run: |
+        npm config set '//npm.fontawesome.com/:_authToken' "${{ secrets.FONT_AWESOME_AUTH_TOKEN }}"
+        npm ci
     - run: npm run build --if-present
