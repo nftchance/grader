@@ -29,6 +29,7 @@ const Ranker = () => {
                 <Button
                     component={Link}
                     to="/"
+                    variant="contained"
                 >Head Home</Button>
             </div>
         </div>

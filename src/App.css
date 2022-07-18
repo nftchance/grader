@@ -155,6 +155,10 @@ input {
 }
 
 @media only screen and (max-width: 992px) { 
+    .header {
+        margin-block: 20px;
+    }
+
     .footer {
         grid-template-columns: 1fr;
     }

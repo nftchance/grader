@@ -353,193 +353,200 @@ const Tool = () => {
                 <meta name="twitter:image" content={chromaOGURL} />
             </Helmet>
 
-            <div className="tool container">
-                <div className="step cube">
-                    <ThreeScene
-                        colors={pointsMode === 0 ? colors : chromaColors}
-                        colorMode={colorMode} />
+            <div className="container">
+                <div className="header">
+                    <h1>BUILD THE PERFECT GRADIENT. WITH EASE.</h1>
+                    <p className="lead">Finding an objectively good digital palette is an actual science. Tired of having grey-filled color scales that look like they were chosen by a color-blind person? Scroll down and make that perfect combination.</p>
                 </div>
 
-                <div className="step input">
-                    <h3 style={{
-                        display: "flex",
-                        alignItems: "center"
-                    }}>
-                        SETUP
-                        <span style={{ marginLeft: "auto" }}>
-                            <CopyToClipboard text={chromaSaveURL} onCopy={() => { handleCopy(0) }} leaveDelay={copied[0] ? 1250 : 0}>
-                                <Tooltip title={copied[0] ? "Copied" : "Copy Input Link"}>
-                                    <Button>
-                                        <FontAwesomeIcon icon={['fal', 'link']} />
-                                    </Button>
-                                </Tooltip>
-                            </CopyToClipboard>
-
-                            <Tooltip title="Share on Twitter">
-                                <a target="_blank" rel="noreferrer" href={`https://twitter.com/intent/tweet?text=${shareMessage}`} style={{
-                                    display: "inline",
-                                    justifySelf: "center"
-                                }}>
-                                    <Button>
-                                        <FontAwesomeIcon icon={['fab', 'twitter']} />
-                                    </Button>
-                                </a>
-                            </Tooltip>
-                        </span>
-                    </h3>
-
-                    <div style={{ marginTop: 10, marginBottom: 20 }}>
-                        <p>
-                            <strong>SCORE:</strong>
-                            <span style={{ float: "right" }}>{score} / 100</span>
-                        </p>
-                        <p>
-                            <strong>BEST:</strong>
-                            <span style={{ float: "right" }}>{best} / 100</span>
-                        </p>
+                <div className="tool">
+                    <div className="step cube">
+                        <ThreeScene
+                            colors={pointsMode === 0 ? colors : chromaColors}
+                            colorMode={colorMode} />
                     </div>
 
-
-                    <label>CUBE COLOR MODE</label>
-                    <ColorspaceToggleButtonGroup
-                        value={colorMode}
-                        values={VISUALIZATION_MODES}
-                        exclusive
-                        aria-label="cube color mode"
-                        onChange={handleColorModeChange}
-                    />
-
-                    <div style={{ marginTop: 20 }}>
-                        <label>SCALE</label>
-                    </div>
-
-                    <div style={{
-                        display: "grid",
-                        gridTemplateColumns: "1fr 1fr",
-                        gap: 10
-                    }}>
-                        <ColorspaceTextField
-                            label="Points"
-                            value={points}
-                            aria-label="color scale points of separation"
-                            id="points-of-separation"
-                            type="number"
-                            inputProps={{
-                                inputMode: 'numeric',
-                                pattern: '/^-?d+(?:.d+)?$/g',
-                                min: colors.length,
-                                max: colors.length * 10
-                            }}
-                            onChange={handlePointsChange}
-                        />
-
-                        <ColorspaceTextField
-                            label="Angle"
-                            aria-label="angle of rotation on gradient"
-                            id="degree"
-                            type="number"
-                            inputProps={{
-                                inputMode: 'numeric',
-                                pattern: '/^-?d+(?:.d+)?$/g',
-                                min: 0,
-                                max: 360
-                            }}
-                            value={degree}
-                            onChange={handleDegreeChange}
-                        />
-                    </div>
-
-                    <div style={{ marginTop: 20 }}>
-                        <div style={{
-                            display: "inline-grid",
-                            marginTop: 5
+                    <div className="step input">
+                        <h3 style={{
+                            display: "flex",
+                            alignItems: "center"
                         }}>
-                            <label>COLORS</label>
+                            SETUP
+                            <span style={{ marginLeft: "auto" }}>
+                                <CopyToClipboard text={chromaSaveURL} onCopy={() => { handleCopy(0) }} leaveDelay={copied[0] ? 1250 : 0}>
+                                    <Tooltip title={copied[0] ? "Copied" : "Copy Input Link"}>
+                                        <Button>
+                                            <FontAwesomeIcon icon={['fal', 'link']} />
+                                        </Button>
+                                    </Tooltip>
+                                </CopyToClipboard>
+
+                                <Tooltip title="Share on Twitter">
+                                    <a target="_blank" rel="noreferrer" href={`https://twitter.com/intent/tweet?text=${shareMessage}`} style={{
+                                        display: "inline",
+                                        justifySelf: "center"
+                                    }}>
+                                        <Button>
+                                            <FontAwesomeIcon icon={['fab', 'twitter']} />
+                                        </Button>
+                                    </a>
+                                </Tooltip>
+                            </span>
+                        </h3>
+
+                        <div style={{ marginTop: 10, marginBottom: 20 }}>
+                            <p>
+                                <strong>SCORE:</strong>
+                                <span style={{ float: "right" }}>{score} / 100</span>
+                            </p>
+                            <p>
+                                <strong>BEST:</strong>
+                                <span style={{ float: "right" }}>{best} / 100</span>
+                            </p>
                         </div>
 
-                        {colors.length < 10 && <Tooltip title="Add">
-                            <Button onClick={handleColorAddition} style={{ float: "right" }}>
-                                <FontAwesomeIcon icon={['fal', 'plus']} />
-                            </Button>
-                        </Tooltip>}
 
-                        <Tooltip title="Shuffle">
-                            <Button onClick={handleShuffle} style={{ float: "right" }}>
-                                <FontAwesomeIcon icon={['fal', 'shuffle']} />
-                            </Button>
-                        </Tooltip>
+                        <label>CUBE COLOR MODE</label>
+                        <ColorspaceToggleButtonGroup
+                            value={colorMode}
+                            values={VISUALIZATION_MODES}
+                            exclusive
+                            aria-label="cube color mode"
+                            onChange={handleColorModeChange}
+                        />
 
-                        {hasMadeChange && <Tooltip title="Clear">
-                            <Button
-                                onClick={handleColorClear}
-                                style={{
-                                    float: "right",
-                                    color: "red",
-                                    fontWeight: 900
+                        <div style={{ marginTop: 20 }}>
+                            <label>SCALE</label>
+                        </div>
+
+                        <div style={{
+                            display: "grid",
+                            gridTemplateColumns: "1fr 1fr",
+                            gap: 10
+                        }}>
+                            <ColorspaceTextField
+                                label="Points"
+                                value={points}
+                                aria-label="color scale points of separation"
+                                id="points-of-separation"
+                                type="number"
+                                inputProps={{
+                                    inputMode: 'numeric',
+                                    pattern: '/^-?d+(?:.d+)?$/g',
+                                    min: colors.length,
+                                    max: colors.length * 10
                                 }}
-                            >
-                                <FontAwesomeIcon icon={['fal', 'trash']} />
-                            </Button>
-                        </Tooltip>}
-                    </div>
+                                onChange={handlePointsChange}
+                            />
 
-                    <ColorspaceColor
-                        colors={colors}
-                        handleColorChange={handleColorChange}
-                        handleColorLock={handleColorLock}
-                        handleColorRemove={handleColorRemove}
-                    />
-                </div>
+                            <ColorspaceTextField
+                                label="Angle"
+                                aria-label="angle of rotation on gradient"
+                                id="degree"
+                                type="number"
+                                inputProps={{
+                                    inputMode: 'numeric',
+                                    pattern: '/^-?d+(?:.d+)?$/g',
+                                    min: 0,
+                                    max: 360
+                                }}
+                                value={degree}
+                                onChange={handleDegreeChange}
+                            />
+                        </div>
 
-                {/* Formatted Code Output of Active Gradient */}
-                <div className="step code">
-                    <h3>
-                        CODE
-                        <span style={{ float: "right", alignContent: "center" }}>
-                            <CopyToClipboard text={code} leaveDelay={copied[1] ? 1250 : 0} onCopy={() => { handleCopy(1) }}>
-                                <Tooltip title={copied[1] ? "Copied" : "Copy Code"}>
-                                    <Button>
-                                        <FontAwesomeIcon icon={['fal', 'clipboard']} />
-                                    </Button>
-                                </Tooltip>
-                            </CopyToClipboard>
+                        <div style={{ marginTop: 20 }}>
+                            <div style={{
+                                display: "inline-grid",
+                                marginTop: 5
+                            }}>
+                                <label>COLORS</label>
+                            </div>
 
-                            <Tooltip title={pointsMode === 0 ? 'Visualize Code' : 'Visualize Input'}>
-                                <Button onClick={handlePointsModeChange}>
-                                    <FontAwesomeIcon icon={pointsMode === 0 ? ['fal', 'eye-dropper'] : ['fal', 'droplet']} />
+                            {colors.length < 10 && <Tooltip title="Add">
+                                <Button onClick={handleColorAddition} style={{ float: "right" }}>
+                                    <FontAwesomeIcon icon={['fal', 'plus']} />
+                                </Button>
+                            </Tooltip>}
+
+                            <Tooltip title="Shuffle">
+                                <Button onClick={handleShuffle} style={{ float: "right" }}>
+                                    <FontAwesomeIcon icon={['fal', 'shuffle']} />
                                 </Button>
                             </Tooltip>
-                        </span>
-                    </h3>
 
-                    <pre style={{ maxHeight: 500, overflowY: "scroll" }}>
-                        <SyntaxHighlighter
-                            language="css"
-                            style={CodeTheme()}
-                            PreTag="div"
-                            children={code}
-                        />
-                    </pre>
-                </div>
+                            {hasMadeChange && <Tooltip title="Clear">
+                                <Button
+                                    onClick={handleColorClear}
+                                    style={{
+                                        float: "right",
+                                        color: "red",
+                                        fontWeight: 900
+                                    }}
+                                >
+                                    <FontAwesomeIcon icon={['fal', 'trash']} />
+                                </Button>
+                            </Tooltip>}
+                        </div>
 
-                <div className="scale">
-                    {/* Gradient Color Mode Control */}
-                    <div className="color-mode">
-                        <ColorspaceToggleButtonGroup
-                            value={gradientColorMode}
-                            values={SCALE_MODES}
-                            exclusive
-                            aria-label="gradient color scale mode"
-                            onChange={handleGradientColorModeChange}
+                        <ColorspaceColor
+                            colors={colors}
+                            handleColorChange={handleColorChange}
+                            handleColorLock={handleColorLock}
+                            handleColorRemove={handleColorRemove}
                         />
                     </div>
 
-                    {/* 2D Gradient Visualization */}
-                    <Colorspace2DGradient
-                        colors={colors}
-                        gradient={activeGradient}
-                        onChange={handleDomainChange}
-                    />
+                    {/* Formatted Code Output of Active Gradient */}
+                    <div className="step code">
+                        <h3>
+                            CODE
+                            <span style={{ float: "right", alignContent: "center" }}>
+                                <CopyToClipboard text={code} leaveDelay={copied[1] ? 1250 : 0} onCopy={() => { handleCopy(1) }}>
+                                    <Tooltip title={copied[1] ? "Copied" : "Copy Code"}>
+                                        <Button>
+                                            <FontAwesomeIcon icon={['fal', 'clipboard']} />
+                                        </Button>
+                                    </Tooltip>
+                                </CopyToClipboard>
+
+                                <Tooltip title={pointsMode === 0 ? 'Visualize Code' : 'Visualize Input'}>
+                                    <Button onClick={handlePointsModeChange}>
+                                        <FontAwesomeIcon icon={pointsMode === 0 ? ['fal', 'eye-dropper'] : ['fal', 'droplet']} />
+                                    </Button>
+                                </Tooltip>
+                            </span>
+                        </h3>
+
+                        <pre style={{ maxHeight: 500, overflowY: "scroll" }}>
+                            <SyntaxHighlighter
+                                language="css"
+                                style={CodeTheme()}
+                                PreTag="div"
+                                children={code}
+                            />
+                        </pre>
+                    </div>
+
+                    <div className="scale">
+                        {/* Gradient Color Mode Control */}
+                        <div className="color-mode">
+                            <ColorspaceToggleButtonGroup
+                                value={gradientColorMode}
+                                values={SCALE_MODES}
+                                exclusive
+                                aria-label="gradient color scale mode"
+                                onChange={handleGradientColorModeChange}
+                            />
+                        </div>
+
+                        {/* 2D Gradient Visualization */}
+                        <Colorspace2DGradient
+                            colors={colors}
+                            gradient={activeGradient}
+                            onChange={handleDomainChange}
+                        />
+                    </div>
                 </div>
             </div>
         </>
