@@ -63,6 +63,11 @@ strong {
     color: var(--white);
 }
 
+button,
+.MuiButton-root {
+    font-weight: 900 !important;
+}
+
 .code {
     color: var(--white-85);
 }
@@ -96,13 +101,17 @@ input {
 
 .navbar {
     margin-top: 20px;
+    display: flex;
+}
+
+.navbar .brand {
+    margin-right: 30px;
 }
 
 .navbar img,
 .footer img {
     height: 30px;
 }
-
 
 .container {
     margin-inline: 90px;

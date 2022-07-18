@@ -6,7 +6,7 @@
         'scale scale scale scale';
     grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: 30px;
-    margin-bottom: 240px;
+    margin-bottom: 80px;
     margin-top: 40px;
     min-height: 650px;
 }

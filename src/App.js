@@ -1,5 +1,7 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Link, Route, Routes } from 'react-router-dom';
+
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { Button } from '@mui/material';
 
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 
@@ -42,20 +44,26 @@ function App() {
 
 				<div className="container">
 					<div className="navbar">
-						<a href="/"><img src={logo} alt="navbar logo" /></a>
+						<Link to="/" className="brand"><img src={logo} alt="navbar logo" /></Link>
 
+						<Button
+							component={Link}
+							to="faq/"
+						>FAQ</Button>
+						<Button
+							component={Link}
+							to="ranker/"
+						>Ranker</Button>
 						{/* <div className={`theme-controls ${theme}`} /> */}
 					</div>
 				</div>
 
-				<Router>
-					<Routes>
-						<Route exact path="/" element={<LoadableTool />} />
-						<Route path="faq/" element={<LoadableFAQ />} />
-						<Route path="opengraph/" element={<LoadableOpenGraph />} />
-						<Route path="egg/" element={<LoadableEgg />} />
-					</Routes>
-				</Router>
+				<Routes>
+					<Route exact path="/" element={<LoadableTool />} />
+					<Route path="faq/" element={<LoadableFAQ />} />
+					<Route path="opengraph/" element={<LoadableOpenGraph />} />
+					<Route path="egg/" element={<LoadableEgg />} />
+				</Routes>
 
 				<div className="container">
 					<div className="footer">
