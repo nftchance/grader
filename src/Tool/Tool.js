@@ -10,9 +10,7 @@ import { Helmet } from 'react-helmet-async';
 import chroma from "chroma-js"
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { fab } from '@fortawesome/free-brands-svg-icons'
-import { fal } from '@fortawesome/pro-light-svg-icons'
+
 
 import ThreeScene from "../Three/ThreeScene";
 
@@ -26,8 +24,6 @@ import ColorMath from '../Three/ColorMath';
 import 'rc-slider/assets/index.css';
 
 import "./Tool.css";
-
-library.add(fab, fal)
 
 const Tool = () => {
     const fixedEncodeURIComponent = (str) => {

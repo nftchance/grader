@@ -1,16 +1,31 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Helmet } from 'react-helmet-async';
 
 import { Button } from '@mui/material';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fab } from '@fortawesome/free-brands-svg-icons'
+import { fal } from '@fortawesome/pro-light-svg-icons'
+
 import Router from "./Router/Router";
 import SEO_CONSTANTS from "./SEO/constants";
 
 import logo from "./images/logo.png";
+
 import './App.css';
 
+library.add(fab, fal)
+
 function App() {
+	const [navbarOpen, setNavbarOpen] = useState(false);
+
+	const handleNavbarOpenChange = () => {
+		setNavbarOpen(!navbarOpen);
+	}
+
 	return (
 		<>
 			<Helmet>
@@ -29,14 +44,23 @@ function App() {
 				<div className="navbar">
 					<Link to="/" className="brand"><img src={logo} alt="navbar logo" /></Link>
 
-					<Button
-						component={Link}
-						to="faq/"
-					>FAQ</Button>
-					<Button
-						component={Link}
-						to="ranker/"
-					>Ranker</Button>
+					<div className="sidebar-toggle">
+						<Button sx={{ marginLeft: "auto" }} onClick={handleNavbarOpenChange}>
+							<FontAwesomeIcon icon={['fal', 'bars']} />
+						</Button>
+					</div>
+
+					<div className={navbarOpen ? 'sidebar open' : 'sidebar'}>
+						<Button
+							component={Link}
+							to="faq/"
+						>FAQ</Button>
+						<Button
+							component={Link}
+							to="ranker/"
+						>Ranker</Button>
+					</div>
+
 					{/* <div className={`theme-controls ${theme}`} /> */}
 				</div>
 			</div>
