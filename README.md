@@ -40,13 +40,18 @@ Colorspace can be used a lot of ways and the most ideal use will depend entirely
 
 In the project directory, you can run:
 
-### `npm start`
+### `npm run dev`
 
 Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Open [http://localhost:8888](http://localhost:8888) to view it in your browser.
 
 The page will reload when you make changes.\
-You may also see any lint errors in the console.
+You may also see any lint errors in the console. \
+Running the project any other way will prevent OpenGraph images from working.
+
+### `npm start`
+Runs the app in the production mode.
+
 
 ### `npm run build`
 
