@@ -1,16 +1,3 @@
-.navbar {
-    margin-top: 20px;
-}
-
-.navbar img,
-.footer img {
-    height: 30px;
-}
-
-.container {
-    margin-inline: 90px;
-}
-
 .tool {
     display: grid;
     grid-template: 'cube cube input code'
@@ -81,57 +68,9 @@ h3 {
     max-width: 850px;
 }
 
-.grey {
-    display: grid;
-    grid-template-columns: 3fr 6fr;
-    min-height: 750px;
-}
-
-.grey .step {
-    height: fit-content;
-    margin-top: 80px;
-    z-index: 1;
-    position: relative;
-}
-
-.grey .step p:nth-child(3) {
-    margin-top: 20px;
-}
-
-.grey .goo {
-    position: relative;
-}
-
-.grey .goo .step {
-    position: absolute;
-    right: 0;
-    top: 0%;
-    bottom: 50%;
-    left: -30%;
-    height: 100%;
-    margin-top: 0px;
-    z-index: 0;
-}
-
-.footer {
-    display: grid;
-    grid-template-columns: 6fr 6fr;
-    margin-bottom: 20px;
-    margin-top: 120px;
-}
-
-.footer p {
-    text-align: right;
-}
-
 .colors {
     max-height: 175px;
     overflow-y: scroll;
-}
-
-input {
-    color: white;
-    text-transform: uppercase;
 }
 
 .color-mode {
@@ -147,14 +86,6 @@ input {
 }
 
 @media only screen and (max-width: 1200px) {
-    .container {
-        margin-inline: 10px;
-    }
-
-    .navbar {
-        margin-top: 10px;
-    }
-
     .tool {
         grid-template-columns: 1fr;
         grid-template: 'cube'
@@ -180,7 +111,7 @@ input {
         margin-bottom: 40px;
     }
 
-    .color-container { 
+    .color-container {
         grid-template-rows: 1fr;
     }
 }

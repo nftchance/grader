@@ -25,6 +25,8 @@ import ColorMath from '../Three/ColorMath';
 
 import 'rc-slider/assets/index.css';
 
+import "./Tool.css";
+
 library.add(fab, fal)
 
 const Tool = () => {

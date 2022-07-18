@@ -5,10 +5,13 @@ import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 import loadable from "@loadable/component";
 
+import logo from "./images/logo.png";
+
 import './App.css';
 
+const LoadableTool = loadable(() => import("./Tool/Tool"), { fallback: "Loading..." })
+const LoadableFAQ = loadable(() => import("./FAQ/FAQ"), { fallback: "Loading...." })
 const LoadableOpenGraph = loadable(() => import("./OpenGraph/OpenGraph"), { fallback: "Loading..." })
-const LoadableHome = loadable(() => import("./Home/Home"), { fallback: "Loading..." })
 const LoadableEgg = loadable(() => import("./Egg/Egg"), { fallback: "Loading..." })
 
 const theme = createTheme({
@@ -38,13 +41,37 @@ function App() {
 					<meta property="og:url" content={`${window.location.href}`} />
 				</Helmet>
 
+				<div className="container">
+					<div className="navbar">
+						<a href="/"><img src={logo} alt="navbar logo" /></a>
+
+						{/* <div className={`theme-controls ${theme}`} /> */}
+					</div>
+				</div>
+
 				<Router>
 					<Routes>
-						<Route exact path="/" element={<LoadableHome />} />
+						<Route exact path="/" element={<LoadableTool />} />
+						<Route path="faq/" element={<LoadableFAQ />} />
 						<Route path="opengraph/" element={<LoadableOpenGraph />} />
 						<Route path="egg/" element={<LoadableEgg />} />
 					</Routes>
 				</Router>
+
+				<div className="container">
+					<div className="footer">
+						<a href="/">
+							<img src={logo} alt="footer logo" />
+						</a>
+
+						<p>
+							A solution by <a
+								href="https://twitter.com/nftchance/"
+								target="_blank"
+								rel="noreferrer">CHANCE</a>.
+						</p>
+					</div>
+				</div>
 			</ThemeProvider >
 		</HelmetProvider>
 	);
