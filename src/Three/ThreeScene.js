@@ -1,6 +1,6 @@
-import { Suspense, useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 
-import { Canvas, useFrame } from "@react-three/fiber"
+import { Canvas } from "@react-three/fiber"
 
 import chroma from "chroma-js";
 
