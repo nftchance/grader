@@ -101,23 +101,28 @@ const Tool = () => {
         ]
     ), [colors, joiningColors])
 
+    const URLHead = `${window.location.href.split("?")[0]}`
     const URLTail = fixedEncodeURIComponent(`cm=${colorMode}&gcm=${gradientColorMode}&cs=${colors.map(color => color.color).join("&cs=")}&ds=${colors.map(color => color.domain).join("&ds=")}&d=${degree}&p=${points}&g=${code.replace("background: ", "")}&f=${Math.random() > 0.5 ? true : false}&s=${score}&url=${window.location.href.split("?")[0]}`)
 
-    const chromaSaveURL = `${window.location.href.split("?")[0]}?` + URLTail
-
-    // if (hasMadeChange) {
-    //     // update the url so that someone can just copy-paste
-    //     window.history.replaceState({
-    //         additionalInformation: 'Updated when changing colors.'
-    //     }, 'COLORSPACE', chromaSaveURL)
-    // }
+    const chromaSaveURL = `${URLHead}?` + URLTail
 
     const shareMessage = `I justed used @trycolorspace and made this ${score > 81 ? "perfect " : " "}pallete - whats your score ?%0A%0A${chromaSaveURL}`;
 
-    const chromaOGURL = `${window.location.href.split("?")[0]}.netlify/functions/opengraph/?` + URLTail;
+    const chromaOGURL = `${URLHead}.netlify/functions/opengraph/?` + URLTail;
+
+    const handleURLUpdate = () => {
+        // update the url so that someone can just copy-paste
+        window.history.replaceState({
+            additionalInformation: 'Updated when changing colors.'
+        }, 'COLORSPACE', chromaSaveURL)
+    }
+
+    if (hasMadeChange)
+        handleURLUpdate()
 
     // Respond to the change between RGB & HSL viewing mode
     const handleColorModeChange = (event, newColorMode) => {
+        console.log('changing color mode to', newColorMode)
         if (newColorMode !== null) setColorMode(newColorMode);
     };
 
@@ -177,6 +182,10 @@ const Tool = () => {
     // Full reset of the dashboard -- Updating these two things update
     // everything else that is needed
     const handleColorClear = () => {
+        // update the url so that someone can just copy-paste
+        window.history.replaceState({
+            additionalInformation: 'Updated when changing colors.'
+        }, 'COLORSPACE', URLHead)
         setPoints(DEFAULT_GRADIENT.length * POINTS_SCALE_FACTOR)
         setColors(DEFAULT_GRADIENT)
     }
@@ -254,6 +263,7 @@ const Tool = () => {
         const queryParams = new URLSearchParams(decodeURIComponent(window.location.search))
 
         const handleQueryParams = () => {
+            console.log('using query params')
             setColorMode(queryParams.get('cm'));
             setGradientColorMode(queryParams.get('gcm'))
 
@@ -264,8 +274,8 @@ const Tool = () => {
                         color,
                         parseFloat(queryParams.getAll('ds')[colorIdx]),
                         true,
-                        false // when loaded by query parameters all are locked
-                    ));
+                        false
+                    )) // when loaded by query parameters all are locked
 
                 setPoints(queryParams.get('p'));
                 setColors(queryParamsColors);
