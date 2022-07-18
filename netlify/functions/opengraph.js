@@ -44,7 +44,7 @@ async function getScreenshot(url, isDev) {
 exports.handler = async (event, context) => { 
     try {
         const url = `http://${event.headers.host}/opengraph/?${event.rawQuery}`
-        const photoBuffer = await getScreenshot(url, true)
+        const photoBuffer = await getScreenshot(url, false)
         
         return {
             statusCode: 200,
