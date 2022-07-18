@@ -41,6 +41,13 @@ span {
     font-weight: 400;
 }
 
+p.lead {
+    font-size: 18px;
+    max-width: 650px;
+    margin-bottom: 40px;
+    margin-top: 10px;
+}
+
 a,
 label {
     color: #fff;
@@ -126,6 +133,14 @@ input {
 
 .footer p {
     text-align: right;
+}
+
+.header {
+    margin-block: 40px;
+}
+
+.Mui-expanded {
+    margin: 0 !important;
 }
 
 @media only screen and (max-width: 1200px) {

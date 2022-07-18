@@ -20,16 +20,16 @@ const Ranker = () => {
                 <meta name="twitter:description" content={SEO_CONSTANTS.ranker.description} />
             </Helmet>
 
-            <div className="content animated">
-                <h1>COMING SOON</h1>
-                <p style={{ marginBottom: 40, marginTop: 10 }}>This section of COLORSPACE has not been revealed. Check back soon.</p>
+            <div className="header">
+                <h1>RANKER COMING SOON</h1>
+                <p className="lead">This section of COLORSPACE has not been revealed. Check back soon.</p>
+            </div>
 
-                <div>
-                    <Button
-                        component={Link}
-                        to="/"
-                    >Head Home</Button>
-                </div>
+            <div>
+                <Button
+                    component={Link}
+                    to="/"
+                >Head Home</Button>
             </div>
         </div>
     )
