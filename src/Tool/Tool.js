@@ -63,6 +63,8 @@ const Tool = () => {
 
     const [copied, setCopied] = useState([false, false])
 
+    const [viewingBlocks, setViewingBlocks] = useState(false);
+
     const hasMadeChange = useMemo(() => !colors.every((color, idx) => {
         const defaultColor = DEFAULT_GRADIENT[idx]
         return color.color === defaultColor.color && color.domain === defaultColor.domain && color.locked === defaultColor.locked
@@ -162,6 +164,10 @@ const Tool = () => {
             setPoints(colorAddedColors.length * POINTS_SCALE_FACTOR)
 
         setColors(colorAddedColors)
+    }
+
+    const handleViewingBlocksChange = () => {
+        setViewingBlocks(!viewingBlocks)
     }
 
     // Update the locked state of a color
@@ -303,7 +309,7 @@ const Tool = () => {
             return `background: linear-gradient(\n\t${degree}deg,${colors.map(color => `\n\t${chroma(color).css('hsl')}`)}\n)`;
         }
 
-        const chromaStringGradient = (incomingColors) => {
+        const chromaStringGradient = (incomingColors, incomingPoints) => {
             try {
                 const gradientColors = colorMath.chromaGradient(
                     incomingColors.map(color => color.color),
@@ -320,11 +326,20 @@ const Tool = () => {
 					)
 				`;
 
-                // Enables 2D display of gradient
-                setActiveGradient(gradientString)
-                setCode(chromaGradientCode(gradientColors))
+                console.log(gradientColors)
 
-                return gradientColors;
+                const gradientStringBlocks = `linear-gradient(\n\t${degree}deg, ${incomingColors.map((color, idx) => {
+                    if(idx < incomingColors.length - 2)
+                        return `
+                            ${gradientColors[idx]} ${incomingColors[idx + 1].domain * 100}%
+                        `
+                    return `${gradientColors[idx]} ${incomingColors[idx].domain * 100}%`
+                })})`;
+
+
+                console.log(gradientStringBlocks)
+
+                return { gradientColors, gradientString, gradientStringBlocks };
             } catch (e) {
                 console.log('Failed to update:', e)
             }
@@ -334,9 +349,13 @@ const Tool = () => {
 
         if (!colors.every(color => chroma.valid(color.color))) return
 
-        setScore(colorMath.chromaGradientScore(
-            chromaStringGradient(colors)
-        ))
+        const { gradientColors, gradientString, gradientStringBlocks } = chromaStringGradient(colors, points);
+
+        // Enables 2D display of gradient
+        setActiveGradient([gradientString, gradientStringBlocks])
+        setCode(chromaGradientCode(gradientColors))
+
+        setScore(colorMath.chromaGradientScore(gradientColors))
     }, [
         colorMath,
         gradientColorMode,
@@ -469,6 +488,12 @@ const Tool = () => {
                                 </Button>
                             </Tooltip>}
 
+                            <Tooltip title="View Blocks">
+                                <Button onClick={handleViewingBlocksChange} style={{ float: "right" }}>
+                                    <FontAwesomeIcon icon={['fal', 'eye']} />
+                                </Button>
+                            </Tooltip>
+
                             <Tooltip title="Shuffle">
                                 <Button onClick={handleShuffle} style={{ float: "right" }}>
                                     <FontAwesomeIcon icon={['fal', 'shuffle']} />
@@ -544,6 +569,7 @@ const Tool = () => {
                         <Colorspace2DGradient
                             colors={colors}
                             gradient={activeGradient}
+                            viewingBlocks={viewingBlocks}
                             onChange={handleDomainChange}
                         />
                     </div>
