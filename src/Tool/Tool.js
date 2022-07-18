@@ -110,18 +110,6 @@ const Tool = () => {
 
     const chromaOGURL = `${URLHead}.netlify/functions/opengraph/?` + URLTail;
 
-    const getQueryParams = (queryParams) => {
-        return queryParams
-            .getAll('cs')
-            .map((color, colorIdx) => colorMath.c(
-                color,
-                parseFloat(queryParams.getAll('ds')[colorIdx]),
-                true,
-                false
-            ))
-    }
-
-
     const handleURLUpdate = () => {
         // update the url so that someone can just copy-paste
         window.history.replaceState({
@@ -280,7 +268,14 @@ const Tool = () => {
             setGradientColorMode(queryParams.get('gcm'))
 
             if (queryParams.getAll('cs').length !== 0 && queryParams.getAll('ds').length !== 0) {
-                const queryParamsColors = getQueryParams(queryParams) // when loaded by query parameters all are locked
+                const queryParamsColors = queryParams
+                    .getAll('cs')
+                    .map((color, colorIdx) => colorMath.c(
+                        color,
+                        parseFloat(queryParams.getAll('ds')[colorIdx]),
+                        true,
+                        false
+                    )) // when loaded by query parameters all are locked
 
                 setPoints(queryParams.get('p'));
                 setColors(queryParamsColors);
@@ -289,7 +284,7 @@ const Tool = () => {
 
         if (queryParams.getAll('cs').length !== 0)
             handleQueryParams();
-    }, [])
+    }, [colorMath])
 
     // Keep tracking of the best score
     useEffect(() => {
