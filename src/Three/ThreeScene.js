@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from "react";
+import { Suspense, useLayoutEffect, useState } from "react";
 
 import { Canvas } from "@react-three/fiber"
 
@@ -27,26 +27,28 @@ const ThreeScene = ({ colors, colorMode: mode }) => {
     return (
         <>
             <Canvas gl={{ antialias: true, alpha: true }}>
-                <LightsAndCamera
-                    size={SIZE}
-                />
+                <Suspense fallback={null}>
+                    <LightsAndCamera
+                        size={SIZE}
+                    />
 
-                <Floor
-                    receiveShadow
-                    size={SIZE} />
+                    <Floor
+                        receiveShadow
+                        size={SIZE} />
 
-                <ColorVisualization
-                    receiveShadow
-                    mode={mode}
-                    size={SIZE}
-                    segments={SEGMENTS * 5} />
+                    <ColorVisualization
+                        receiveShadow
+                        mode={mode}
+                        size={SIZE}
+                        segments={SEGMENTS * 5} />
 
-                <ColorPoints
-                    receiveShadow
-                    points={points}
-                    mode={mode}
-                    size={SIZE}
-                    segments={SEGMENTS} />
+                    <ColorPoints
+                        receiveShadow
+                        points={points}
+                        mode={mode}
+                        size={SIZE}
+                        segments={SEGMENTS} />
+                </Suspense>
             </Canvas>
         </>
     )
