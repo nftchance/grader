@@ -118,6 +118,7 @@ const Tool = () => {
 
     // Respond to the change between RGB & HSL viewing mode
     const handleColorModeChange = (event, newColorMode) => {
+        console.log('changing color mode to', newColorMode)
         if (newColorMode !== null) setColorMode(newColorMode);
     };
 
@@ -249,23 +250,27 @@ const Tool = () => {
         }, 2500))
     }
 
+    const getQueryParams = (queryParams) => {
+        return queryParams
+            .getAll('cs')
+            .map((color, colorIdx) => colorMath.c(
+                color,
+                parseFloat(queryParams.getAll('ds')[colorIdx]),
+                true,
+                false
+            ))
+    }
     // Handle the query params on the first load
     useEffect(() => {
         const queryParams = new URLSearchParams(decodeURIComponent(window.location.search))
 
         const handleQueryParams = () => {
+            console.log('using query params')
             setColorMode(queryParams.get('cm'));
             setGradientColorMode(queryParams.get('gcm'))
 
             if (queryParams.getAll('cs').length !== 0 && queryParams.getAll('ds').length !== 0) {
-                const queryParamsColors = queryParams
-                    .getAll('cs')
-                    .map((color, colorIdx) => colorMath.c(
-                        color,
-                        parseFloat(queryParams.getAll('ds')[colorIdx]),
-                        true,
-                        false // when loaded by query parameters all are locked
-                    ));
+                const queryParamsColors = getQueryParams(queryParams) // when loaded by query parameters all are locked
 
                 setPoints(queryParams.get('p'));
                 setColors(queryParamsColors);
@@ -274,7 +279,7 @@ const Tool = () => {
 
         if (queryParams.getAll('cs').length !== 0)
             handleQueryParams();
-    }, [colorMath])
+    }, [])
 
     // Keep tracking of the best score
     useEffect(() => {
