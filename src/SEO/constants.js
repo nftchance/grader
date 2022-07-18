@@ -6,9 +6,15 @@ const SEO_CONSTANTS = {
     faq: { 
         title: "FAQ | COLORSPACE",
         description: "Have a question about COLORSPACE? Browse the frequently asked questions and all the answers you may need!"
+    },
+    ranker: {
+        title: "RANKER | COLORSPACE",
+        description: "Choose between two color palettes and help train the dataset of COLORSPACE!"
+    },
+    egg: { 
+        title: "EASTER EGG | COLORSPACE",
+        description: "His conclusion is that the complexity of the problem of color harmony is such that any attempt to explain it by a single principle, seems foredoomed to failure."
     }
 }
 
-module.exports = Object.freeze({
-    ...SEO_CONSTANTS
-})
+export default SEO_CONSTANTS;

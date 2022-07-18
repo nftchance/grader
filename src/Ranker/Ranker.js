@@ -3,22 +3,21 @@ import { Helmet } from "react-helmet-async"
 
 import { Button } from "@mui/material"
 
-import "./Ranker.css"
+import SEO_CONSTANTS from "../SEO/constants";
 
-const META_TITLE = "RANKER | COLORSPACE"
-const META_DESCRIPTION = "Choose between two color palettes and help train the dataset of COLORSPACE!"
+import "./Ranker.css"
 
 const Ranker = () => {
     return (
         <div className="container">
             <Helmet>
-                <title>{META_TITLE}</title>
-                <meta name="og:title" content={META_TITLE} />
-                <meta name="og:description" content={META_TITLE} />
+                <title>{SEO_CONSTANTS.ranker.title}</title>
+                <meta name="og:title" content={SEO_CONSTANTS.ranker.title} />
+                <meta name="og:description" content={SEO_CONSTANTS.ranker.title} />
 
-                <meta name="description" content={META_DESCRIPTION} />
-                <meta name="og:description" content={META_DESCRIPTION} />
-                <meta name="twitter:description" content={META_DESCRIPTION} />
+                <meta name="description" content={SEO_CONSTANTS.ranker.description} />
+                <meta name="og:description" content={SEO_CONSTANTS.ranker.description} />
+                <meta name="twitter:description" content={SEO_CONSTANTS.ranker.description} />
             </Helmet>
 
             <div className="content animated">
