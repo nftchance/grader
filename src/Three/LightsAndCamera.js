@@ -16,8 +16,8 @@ export default function LightsAndCamera({ size: SIZE }) {
 
     return (
         <>
-            {/* <ambientLight />
-            <pointLight shadow intensity={5} position={[10, 10, 10]} /> */}
+            <ambientLight />
+            <pointLight shadow intensity={5} position={[10, 10, 10]} />
 
             <OrbitControls 
                 makeDefault 
