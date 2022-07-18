@@ -1,6 +1,9 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Tooltip } from "@mui/material";
+
 import ColorspaceColorpickerBox from "./ColorspaceColorpickerBox";
+
+import "./ColorspaceColor.css";
 
 const ColorspaceColor = (props) => {
     const {
@@ -10,13 +13,7 @@ const ColorspaceColor = (props) => {
     } = props;
 
     return (
-        <div className="color-container" style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
-            gap: 10,
-            marginTop: 20,
-            overflowY: "scroll"
-        }} >
+        <div className="color-container">
             {colors.map((color, idx) => (
                 <div key={`color:${idx}`} style={{
                     display: "grid",
