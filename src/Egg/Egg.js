@@ -1,20 +1,20 @@
 import { Helmet } from "react-helmet-async"
-import "./Egg.css"
 
-const META_TITLE = "EGG | COLORSPACE"
-const META_DESCRIPTION = "His conclusion is that the complexity of the problem of color harmony is such that any attempt to explain it by a single principle, seems foredoomed to failure."
+import SEO_CONSTANTS from "../SEO/constants"
+
+import "./Egg.css"
 
 const Egg = () => {
     return (
         <div className="container">
             <Helmet>
-                <title>{META_TITLE}</title>
-                <meta name="og:title" content={META_TITLE} />
-                <meta name="og:description" content={META_TITLE} />
+                <title>{SEO_CONSTANTS.egg.title}</title>
+                <meta name="og:title" content={SEO_CONSTANTS.egg.title} />
+                <meta name="og:description" content={SEO_CONSTANTS.egg.title} />
 
-                <meta name="description" content={META_DESCRIPTION} />
-                <meta name="og:description" content={META_DESCRIPTION} />
-                <meta name="twitter:description" content={META_DESCRIPTION} />
+                <meta name="description" content={SEO_CONSTANTS.egg.description} />
+                <meta name="og:description" content={SEO_CONSTANTS.egg.description} />
+                <meta name="twitter:description" content={SEO_CONSTANTS.egg.description} />
             </Helmet>
 
             <div className="content animated">

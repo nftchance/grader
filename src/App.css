@@ -1,23 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100;0,400;0,900;1,100;1,400;1,900&display=swap');
 
 :root {
-  --black: rgba(0, 0, 0);
-  --white-65: rgba(255, 255, 255, 0.65);
-  --white-85: rgba(255, 255, 255, 0.85);
-  --white: rgba(255, 255, 255);
+    --black: rgba(0, 0, 0);
+    --white-65: rgba(255, 255, 255, 0.65);
+    --white-85: rgba(255, 255, 255, 0.85);
+    --white: rgba(255, 255, 255);
 }
 
 * {
-  box-sizing: border-box;
-  font-family: 'Work Sans', sans-serif;
-  margin: 0;
+    box-sizing: border-box;
+    font-family: 'Work Sans', sans-serif;
+    margin: 0;
 }
 
 body {
-  background: var(--black);
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    background: var(--black);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 h1,
@@ -25,66 +25,145 @@ h2,
 h3,
 h4,
 h5 {
-  color: #ffffff;
-  font-weight: 900;
-  text-transform: uppercase;
+    color: #ffffff;
+    font-weight: 900;
+    text-transform: uppercase;
 }
 
 p,
 span {
-  color: var(--white-85);
+    color: var(--white-85);
 }
 
 p,
 a,
 span {
-  font-weight: 400;
+    font-weight: 400;
+}
+
+p.lead {
+    font-size: 18px;
+    max-width: 650px;
+    margin-bottom: 40px;
+    margin-top: 10px;
 }
 
 a,
 label {
-  color: #fff;
-  font-weight: 900;
-  text-decoration: none;
+    color: #fff;
+    font-weight: 900;
+    text-decoration: none;
 }
 
 a:hover,
 a:focus,
 a:active {
-  color: var(--white-85);
+    color: var(--white-85);
 }
 
-pre, 
+pre,
 pre div {
-  padding-left: 0px !important;
+    padding-left: 0px !important;
 }
 
-strong { 
-  color: var(--white);
+strong {
+    color: var(--white);
+}
+
+button,
+.MuiButton-root {
+    font-weight: 900 !important;
 }
 
 .code {
-  color: var(--white-85);
+    color: var(--white-85);
 }
 
 /* Scrollbar */
 ::-webkit-scrollbar {
-  height: 4px;
-  width: 4px;
+    height: 4px;
+    width: 4px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: var(--black);
+    background: var(--black);
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: var(--white-65);
-  border-radius: 2px;
+    background: var(--white-65);
+    border-radius: 2px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--white);
+    background: var(--white);
+}
+
+input {
+    color: white;
+    text-transform: uppercase;
+}
+
+.navbar {
+    margin-top: 20px;
+    display: flex;
+}
+
+.navbar .brand {
+    margin-right: 30px;
+}
+
+.navbar img,
+.footer img {
+    height: 30px;
+}
+
+.container {
+    margin-inline: 90px;
+}
+
+.footer {
+    display: grid;
+    grid-template-columns: 6fr 6fr;
+    margin-bottom: 20px;
+    margin-top: 120px;
+}
+
+.footer p {
+    text-align: right;
+}
+
+.header {
+    margin-block: 40px;
+}
+
+.Mui-expanded {
+    margin: 0 !important;
+}
+
+@media only screen and (max-width: 1200px) {
+    .container {
+        margin-inline: 10px;
+    }
+
+    .navbar {
+        margin-top: 10px;
+		margin-bottom: 20px;
+    }
+}
+
+@media only screen and (max-width: 992px) { 
+    .header {
+        margin-block: 20px;
+    }
+
+    .footer {
+        grid-template-columns: 1fr;
+    }
+
+    .footer p { 
+        text-align: left;
+    }
 }

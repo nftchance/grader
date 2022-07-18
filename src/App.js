@@ -1,15 +1,23 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Link, Route, Routes } from 'react-router-dom';
+
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { Button } from '@mui/material';
 
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 import loadable from "@loadable/component";
 
+import logo from "./images/logo.png";
+
+import SEO_CONSTANTS from "./SEO/constants";
+
 import './App.css';
 
+const LoadableTool = loadable(() => import("./Tool/Tool"), { fallback: "Loading..." })
+const LoadableFAQ = loadable(() => import("./FAQ/FAQ"), { fallback: "Loading...." })
 const LoadableOpenGraph = loadable(() => import("./OpenGraph/OpenGraph"), { fallback: "Loading..." })
-const LoadableHome = loadable(() => import("./Home/Home"), { fallback: "Loading..." })
 const LoadableEgg = loadable(() => import("./Egg/Egg"), { fallback: "Loading..." })
+const LoadableRanker = loadable(() => import("./Ranker/Ranker"), { fallback: "Loading..." })
 
 const theme = createTheme({
 	palette: {
@@ -19,32 +27,60 @@ const theme = createTheme({
 	shape: { borderRadius: 0 }
 });
 
-const META_TITLE = "COLORSPACE"
-const META_DESCRIPTION = "Explore color palletes in a 2022-focused 3D visualization."
-
 function App() {
 	return (
 		<HelmetProvider>
 			<ThemeProvider theme={theme}>
 				<Helmet>
-					<title>{META_TITLE}</title>
-					<meta name="og:title" content={META_TITLE} />
-					<meta name="og:description" content={META_TITLE} />
+					<title>{SEO_CONSTANTS.home.title}</title>
+					<meta name="og:title" content={SEO_CONSTANTS.home.title} />
+					<meta name="og:description" content={SEO_CONSTANTS.home.title} />
 
-					<meta name="description" content={META_DESCRIPTION} />
-					<meta name="og:description" content={META_DESCRIPTION} />
-					<meta name="twitter:description" content={META_DESCRIPTION} />
+					<meta name="description" content={SEO_CONSTANTS.home.description} />
+					<meta name="og:description" content={SEO_CONSTANTS.home.description} />
+					<meta name="twitter:description" content={SEO_CONSTANTS.home.description} />
 
 					<meta property="og:url" content={`${window.location.href}`} />
 				</Helmet>
 
-				<Router>
-					<Routes>
-						<Route exact path="/" element={<LoadableHome />} />
-						<Route path="opengraph/" element={<LoadableOpenGraph />} />
-						<Route path="egg/" element={<LoadableEgg />} />
-					</Routes>
-				</Router>
+				<div className="container">
+					<div className="navbar">
+						<Link to="/" className="brand"><img src={logo} alt="navbar logo" /></Link>
+
+						<Button
+							component={Link}
+							to="faq/"
+						>FAQ</Button>
+						<Button
+							component={Link}
+							to="ranker/"
+						>Ranker</Button>
+						{/* <div className={`theme-controls ${theme}`} /> */}
+					</div>
+				</div>
+
+				<Routes>
+					<Route exact path="/" element={<LoadableTool />} />
+					<Route path="faq/" element={<LoadableFAQ />} />
+					<Route path="ranker/" element={<LoadableRanker />} />
+					<Route path="opengraph/" element={<LoadableOpenGraph />} />
+					<Route path="egg/" element={<LoadableEgg />} />
+				</Routes>
+
+				<div className="container">
+					<div className="footer">
+						<a href="/">
+							<img src={logo} alt="footer logo" />
+						</a>
+
+						<p>
+							A solution by <a
+								href="https://twitter.com/nftchance/"
+								target="_blank"
+								rel="noreferrer">CHANCE</a>.
+						</p>
+					</div>
+				</div>
 			</ThemeProvider >
 		</HelmetProvider>
 	);

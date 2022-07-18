@@ -3,15 +3,10 @@
     box-sizing: border-box;
 }
 
-.container {
-    display: grid;
-    margin: 90px;
-    min-height: 500px;
-}
-
 .content {
     margin: auto;
     max-width: 750px;
+    min-height: 70vh;
 }
 
 h2 {
@@ -28,7 +23,9 @@ h2 {
     animation-duration: 3s;
     -webkit-animation-fill-mode: both;
     animation-fill-mode: both;
-    transform: translate(0px)
+    transform: translate(0px);
+    display: grid;
+    align-content: center;
 }
 
 @-webkit-keyframes fadeIn {
