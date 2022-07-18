@@ -1,14 +1,14 @@
 import { Suspense, useLayoutEffect, useState } from "react";
 
-import { Canvas } from "@react-three/fiber"
+import { Canvas, useFrame } from "@react-three/fiber"
 
+import chroma from "chroma-js";
+
+import ColorMath from "./ColorMath";
+import LightsAndCamera from "./LightsAndCamera";
 import Floor from "./Floor"
 import ColorVisualization from "./ColorVisualization"
-
 import ColorPoints from "./ColorPoints"
-import ColorMath from "./ColorMath";
-import chroma from "chroma-js";
-import LightsAndCamera from "./LightsAndCamera";
 
 const ThreeScene = ({ colors, colorMode: mode }) => {
     const SIZE = 10;
@@ -25,8 +25,8 @@ const ThreeScene = ({ colors, colorMode: mode }) => {
     }, [colors, mode])
 
     return (
-        <Canvas gl={{ antialias: true, alpha: true }}>
-            <Suspense fallback={null}>
+        <>
+            <Canvas gl={{ antialias: true, alpha: true }}>
                 <LightsAndCamera
                     size={SIZE}
                 />
@@ -47,8 +47,8 @@ const ThreeScene = ({ colors, colorMode: mode }) => {
                     mode={mode}
                     size={SIZE}
                     segments={SEGMENTS} />
-            </Suspense>
-        </Canvas>
+            </Canvas>
+        </>
     )
 }
 

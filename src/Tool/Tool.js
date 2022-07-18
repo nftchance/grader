@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 
 import { Button } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
@@ -15,6 +15,7 @@ import { fab } from '@fortawesome/free-brands-svg-icons'
 import { fal } from '@fortawesome/pro-light-svg-icons'
 
 import ThreeScene from "../Three/ThreeScene";
+
 import Colorspace2DGradient from '../Two/Colorspace2DGradient';
 import ColorspaceTextField from '../Form/ColorspaceTextField';
 import ColorspaceToggleButtonGroup from '../Form/ColorspaceToggleButtonGroup';
@@ -147,7 +148,7 @@ const Tool = () => {
 
     // Handle everything when a new color is added to the mix
     const handleColorAddition = () => {
-        if(colors.length >= 10) return
+        if (colors.length >= 10) return
 
         // if the default points value is being used, continue using it
         if (points === (colorAddedColors.length - 1) * POINTS_SCALE_FACTOR)
@@ -344,8 +345,7 @@ const Tool = () => {
                 <div className="step cube">
                     <ThreeScene
                         colors={pointsMode === 0 ? colors : chromaColors}
-                        colorMode={colorMode}
-                    />
+                        colorMode={colorMode} />
                 </div>
 
                 <div className="step input">
