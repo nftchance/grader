@@ -31,7 +31,7 @@ export default function LightsAndCamera({ size: SIZE }) {
                 ref={ref} 
             />
 
-            {/* <fog attach="fog" args={['black', 15, 150]} /> */}
+            <fog attach="fog" args={['black', 15, 150]} />
 
             <EffectComposer multisampling={0}>
                 <SSAO
