@@ -16,8 +16,8 @@ export default function LightsAndCamera({ size: SIZE }) {
 
     return (
         <>
-            <ambientLight />
-            <pointLight shadow intensity={5} position={[10, 10, 10]} />
+            {/* <ambientLight />
+            <pointLight shadow intensity={5} position={[10, 10, 10]} /> */}
 
             <OrbitControls 
                 makeDefault 
@@ -31,9 +31,9 @@ export default function LightsAndCamera({ size: SIZE }) {
                 ref={ref} 
             />
 
-            <fog attach="fog" args={['black', 15, 150]} />
+            {/* <fog attach="fog" args={['black', 15, 150]} /> */}
 
-            <EffectComposer multisampling={2}>
+            {/* <EffectComposer multisampling={2}>
                 <SSAO
                     samples={31}
                     radius={5}
@@ -41,7 +41,7 @@ export default function LightsAndCamera({ size: SIZE }) {
                     luminanceInfluence={0.5}
                     color="white" />
                 <SMAA />
-            </EffectComposer>
+            </EffectComposer> */}
         </>
     )
 }
