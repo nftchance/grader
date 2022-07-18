@@ -15,7 +15,8 @@
     display: grid;
     grid-template: 'cube cube input code'
         'cube cube input code'
-        'cube cube input code';
+        'cube cube input code'
+        'scale scale scale scale';
     grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: 30px;
     margin-bottom: 240px;
@@ -51,6 +52,12 @@
 .code {
     grid-area: code;
     font-variant: tabular-nums;
+}
+
+.scale {
+    grid-column: 1 / span 4;
+    row-gap: 20px;
+    display: grid;
 }
 
 h1 {
@@ -148,6 +155,7 @@ input {
         grid-template-columns: 1fr;
         grid-template: 'cube'
             'input'
+            'scale'
             'code';
         margin-top: 20px;
     }
@@ -158,7 +166,12 @@ input {
     }
 
     .color-mode,
-    .gradient {
+    .gradient,
+    .scale {
         grid-column: 1;
+    }
+
+    .scale {
+        margin-bottom: 40px;
     }
 }

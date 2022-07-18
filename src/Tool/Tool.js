@@ -520,25 +520,25 @@ const Tool = () => {
                     </pre>
                 </div>
 
-                {/* Gradient Color Mode Control */}
-                <div className="color-mode">
-                    <ColorspaceToggleButtonGroup
-                        value={gradientColorMode}
-                        values={SCALE_MODES}
-                        exclusive
-                        aria-label="gradient color scale mode"
-                        onChange={handleGradientColorModeChange}
+                <div className="scale">
+                    {/* Gradient Color Mode Control */}
+                    <div className="color-mode">
+                        <ColorspaceToggleButtonGroup
+                            value={gradientColorMode}
+                            values={SCALE_MODES}
+                            exclusive
+                            aria-label="gradient color scale mode"
+                            onChange={handleGradientColorModeChange}
+                        />
+                    </div>
+
+                    {/* 2D Gradient Visualization */}
+                    <Colorspace2DGradient
+                        colors={colors}
+                        gradient={activeGradient}
+                        onChange={handleDomainChange}
                     />
                 </div>
-
-                {/* 2D Gradient Visualization */}
-                <Colorspace2DGradient
-                    colors={colors}
-                    gradient={activeGradient}
-                    onChange={handleDomainChange}
-                />
-
-
             </div>
         </>
     )
