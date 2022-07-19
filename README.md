@@ -8,7 +8,7 @@ Even the largest companies in the industry have been teaching and leading a meth
 
 * Define a general idea.
 
-* Get close within the desired pallete.
+* Get close within the desired palette.
 
 * Adjust the hue of the color slowing meshing around to find a color that "works".
 

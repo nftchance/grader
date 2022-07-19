@@ -207,7 +207,7 @@ const Tool = () => {
         setColors(domainedColors)
     }
 
-    // Generate a random and new pallete based on scaled anchors points
+    // Generate a random and new palette based on scaled anchors points
     const handleShuffle = () => {
         const randomRGBValue = () => { return Math.floor(Math.random() * 255) }
 
