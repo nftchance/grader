@@ -11,7 +11,7 @@ import chroma from "chroma-js"
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-
+import ToolIntro from "./ToolIntro";
 import ThreeScene from "../Three/ThreeScene";
 
 import Colorspace2DGradient from '../Two/Colorspace2DGradient';
@@ -59,6 +59,8 @@ const Tool = () => {
     const [activeGradient, setActiveGradient] = useState(DEFAULT_GRADIENT);
 
     const [copied, setCopied] = useState([false, false])
+
+    const [introEnabled, setIntroEnabled] = useState(false);
 
     const hasMadeChange = useMemo(() => !colors.every((color, idx) => {
         const defaultColor = DEFAULT_GRADIENT[idx]
@@ -109,6 +111,14 @@ const Tool = () => {
     const shareMessage = `I just used @trycolorspace and made this${score > 81 ? " perfect " : " "}palette - what's your score ?%0A%0A${chromaSaveURL}`;
 
     const chromaOGURL = `${URLHead}.netlify/functions/opengraph/?` + URLTail;
+
+    const handleIntroEnter = () => {
+        setIntroEnabled(true)
+    }
+
+    const handleIntroExit = () => {
+        setIntroEnabled(false)
+    }
 
     const handleURLUpdate = () => {
         // update the url so that someone can just copy-paste
@@ -351,10 +361,23 @@ const Tool = () => {
                 <meta name="twitter:image" content={chromaOGURL} />
             </Helmet>
 
+            <ToolIntro
+                introEnabled={introEnabled}
+                handleIntroExit={handleIntroExit}
+            />
+
             <div className="container">
                 <div className="header">
-                    <h1>BUILD THE PERFECT GRADIENT. WITH EASE.</h1>
+                    <h1>BUILD THE PERFECT COLOR PALETTE. WITH EASE.</h1>
                     <p className="lead">Finding an objectively good digital palette is an actual science. Tired of having grey-filled color scales that look like they were chosen by a color-blind person? Scroll down and make that perfect combination.</p>
+                </div>
+
+                <div style={{ height: 60, width: "100%" }}>
+                    <Tooltip title="Help">
+                        <Button onClick={introEnabled ? handleIntroExit : handleIntroEnter} style={{ float: "right", border: "1px solid #fff" }}>
+                            HELP
+                        </Button>
+                    </Tooltip>
                 </div>
 
                 <div className="tool">
@@ -392,25 +415,45 @@ const Tool = () => {
                             </span>
                         </h3>
 
-                        <div style={{ marginTop: 10, marginBottom: 20 }}>
-                            <p>
-                                <strong>SCORE:</strong>
-                                <span style={{ float: "right" }}>{score} / 100</span>
-                            </p>
-                            <p>
-                                <strong>BEST:</strong>
-                                <span style={{ float: "right" }}>{best} / 100</span>
-                            </p>
+                        <div style={{ marginTop: 20 }}>
+                            <div style={{
+                                display: "inline-grid",
+                                marginTop: 5
+                            }}>
+                                <label>COLORS</label>
+                            </div>
+
+                            {colors.length < 10 && <Tooltip title="Add">
+                                <Button onClick={handleColorAddition} style={{ float: "right" }}>
+                                    <FontAwesomeIcon icon={['fal', 'plus']} />
+                                </Button>
+                            </Tooltip>}
+
+                            <Tooltip title="Shuffle">
+                                <Button onClick={handleShuffle} style={{ float: "right" }}>
+                                    <FontAwesomeIcon icon={['fal', 'shuffle']} />
+                                </Button>
+                            </Tooltip>
+
+                            {hasMadeChange && <Tooltip title="Clear">
+                                <Button
+                                    onClick={handleColorClear}
+                                    style={{
+                                        float: "right",
+                                        color: "red",
+                                        fontWeight: 900
+                                    }}
+                                >
+                                    <FontAwesomeIcon icon={['fal', 'trash']} />
+                                </Button>
+                            </Tooltip>}
                         </div>
 
-
-                        <label>CUBE COLOR MODE</label>
-                        <ColorspaceToggleButtonGroup
-                            value={colorMode}
-                            values={VISUALIZATION_MODES}
-                            exclusive
-                            aria-label="cube color mode"
-                            onChange={handleColorModeChange}
+                        <ColorspaceColor
+                            colors={colors}
+                            handleColorChange={handleColorChange}
+                            handleColorLock={handleColorLock}
+                            handleColorRemove={handleColorRemove}
                         />
 
                         <div style={{ marginTop: 20 }}>
@@ -454,45 +497,27 @@ const Tool = () => {
                         </div>
 
                         <div style={{ marginTop: 20 }}>
-                            <div style={{
-                                display: "inline-grid",
-                                marginTop: 5
-                            }}>
-                                <label>COLORS</label>
-                            </div>
-
-                            {colors.length < 10 && <Tooltip title="Add">
-                                <Button onClick={handleColorAddition} style={{ float: "right" }}>
-                                    <FontAwesomeIcon icon={['fal', 'plus']} />
-                                </Button>
-                            </Tooltip>}
-
-                            <Tooltip title="Shuffle">
-                                <Button onClick={handleShuffle} style={{ float: "right" }}>
-                                    <FontAwesomeIcon icon={['fal', 'shuffle']} />
-                                </Button>
-                            </Tooltip>
-
-                            {hasMadeChange && <Tooltip title="Clear">
-                                <Button
-                                    onClick={handleColorClear}
-                                    style={{
-                                        float: "right",
-                                        color: "red",
-                                        fontWeight: 900
-                                    }}
-                                >
-                                    <FontAwesomeIcon icon={['fal', 'trash']} />
-                                </Button>
-                            </Tooltip>}
+                            <label>VISUALIZATION MODE</label>
                         </div>
 
-                        <ColorspaceColor
-                            colors={colors}
-                            handleColorChange={handleColorChange}
-                            handleColorLock={handleColorLock}
-                            handleColorRemove={handleColorRemove}
+                        <ColorspaceToggleButtonGroup
+                            value={colorMode}
+                            values={VISUALIZATION_MODES}
+                            exclusive
+                            aria-label="cube color mode"
+                            onChange={handleColorModeChange}
                         />
+
+                        <div style={{ marginTop: 20 }} className="score">
+                            <p>
+                                <strong>SCORE:</strong>
+                                <span style={{ float: "right" }}>{score} / 100</span>
+                            </p>
+                            <p>
+                                <strong>BEST:</strong>
+                                <span style={{ float: "right" }}>{best} / 100</span>
+                            </p>
+                        </div>
                     </div>
 
                     {/* Formatted Code Output of Active Gradient */}
@@ -538,12 +563,16 @@ const Tool = () => {
                             />
                         </div>
 
-                        {/* 2D Gradient Visualization */}
-                        <Colorspace2DGradient
-                            colors={colors}
-                            gradient={activeGradient}
-                            onChange={handleDomainChange}
-                        />
+                        <div className="scale-gradient" style={{
+                            gridColumn: "1 / span 4"
+                        }}>
+                            {/* 2D Gradient Visualization */}
+                            <Colorspace2DGradient
+                                colors={colors}
+                                gradient={activeGradient}
+                                onChange={handleDomainChange}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
