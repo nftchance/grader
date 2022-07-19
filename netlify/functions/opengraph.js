@@ -21,7 +21,8 @@ async function getOptions(isDev) {
         options = {
             args: chrome.args,
             executablePath: await chrome.executablePath,
-            headless: true 
+            headless: true,
+            ignoreDefaultArgs: ['–disable-extensions'] 
         };
     }
 
