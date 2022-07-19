@@ -101,7 +101,8 @@ const Tool = () => {
     ), [colors, joiningColors])
 
     const URLHead = `${window.location.href.split("?")[0]}`
-    const URLTail = fixedEncodeURIComponent(`cm=${colorMode}&gcm=${gradientColorMode}&cs=${colors.map(color => color.color).join("&cs=")}&ds=${colors.map(color => color.domain).join("&ds=")}&d=${degree}&p=${points}&g=${code.replace("background: ", "")}&f=${Math.random() > 0.5 ? true : false}&s=${score}&url=${window.location.href.split("?")[0]}`)
+
+    const URLTail = fixedEncodeURIComponent(`cm=${colorMode}&gcm=${gradientColorMode}&cs=${colors.map(color => color.color).join("&cs=")}&ds=${colors.map(color => color.domain).join("&ds=")}&d=${degree}&p=${points}&g=${code.replace(/[\r\n\t]/gm, '').replace("background: ", "")}&f=${Math.random() > 0.5 ? true : false}&s=${score}&url=${window.location.href.split("?")[0]}`.trim())
 
     const chromaSaveURL = `${URLHead}?` + URLTail
 
