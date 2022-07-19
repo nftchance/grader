@@ -6,7 +6,8 @@ for: IntroJs (https://github.com/usablica/intro.js)
 .introjs-overlay {
     position: absolute;
     z-index: 999999;
-    background: #000;
+    background-color: #000;
+    opacity: 0.95 !important;
 
     -webkit-transition: all 0.3s ease-out;
     -moz-transition: all 0.3s ease-out;

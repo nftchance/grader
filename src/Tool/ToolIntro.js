@@ -42,7 +42,7 @@ const ToolIntro = ({ introEnabled, handleIntroExit }) => {
                 showProgress: true,
                 showBullets: false,
                 scrollToElement: true,
-                overlayOpacity: 1,
+                overlayOpacity: 0,
                 scrollPadding: 50
             }}
         />
