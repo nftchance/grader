@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 
 import SEO_CONSTANTS from "../SEO/constants";
+import Page from "../Page/Page";
 
 const FAQ = () => {
     const faqs = [
@@ -48,7 +49,7 @@ const FAQ = () => {
     };
 
     return (
-        <>
+        <Page>
             <Helmet>
                 <title>{SEO_CONSTANTS.faq.title}</title>
                 <meta property="og:title" content={SEO_CONSTANTS.faq.title} />
@@ -95,7 +96,7 @@ const FAQ = () => {
                     </Accordion>
                 ))}
             </div>
-        </>
+        </Page>
     )
 }
 

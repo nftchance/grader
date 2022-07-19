@@ -24,6 +24,7 @@ import ColorMath from '../Three/ColorMath';
 import 'rc-slider/assets/index.css';
 
 import "./Tool.css";
+import Page from '../Page/Page';
 
 const Tool = () => {
     const fixedEncodeURIComponent = (str) => {
@@ -343,7 +344,7 @@ const Tool = () => {
     ])
 
     return (
-        <>
+        <Page>
             <Helmet>
                 <meta property="og:image" content={chromaOGURL} />
                 <meta name="twitter:image" content={chromaOGURL} />
@@ -545,7 +546,7 @@ const Tool = () => {
                     </div>
                 </div>
             </div>
-        </>
+        </Page>
     )
 }
 
