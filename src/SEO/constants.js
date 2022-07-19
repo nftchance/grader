@@ -1,7 +1,7 @@
 const SEO_CONSTANTS = {
     home: { 
         title: "COLORSPACE",
-        description: "Explore color palletes in a 2022-focused 3D visualization."
+        description: "Explore color palettes in a 2022-focused 3D visualization."
     },
     faq: { 
         title: "FAQ | COLORSPACE",
