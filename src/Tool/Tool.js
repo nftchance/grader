@@ -106,7 +106,7 @@ const Tool = () => {
 
     const chromaSaveURL = `${URLHead}?` + URLTail
 
-    const shareMessage = `I justed used @trycolorspace and made this ${score > 81 ? "perfect " : " "}pallete - whats your score ?%0A%0A${chromaSaveURL}`;
+    const shareMessage = `I justed used @trycolorspace and made this ${score > 81 ? "perfect " : " "}palette - whats your score ?%0A%0A${chromaSaveURL}`;
 
     const chromaOGURL = `${URLHead}.netlify/functions/opengraph/?` + URLTail;
 
@@ -207,7 +207,7 @@ const Tool = () => {
         setColors(domainedColors)
     }
 
-    // Generate a random and new pallete based on scaled anchors points
+    // Generate a random and new palette based on scaled anchors points
     const handleShuffle = () => {
         const randomRGBValue = () => { return Math.floor(Math.random() * 255) }
 
