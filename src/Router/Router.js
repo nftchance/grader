@@ -16,8 +16,8 @@ const Router = () => {
             <Route exact path="/" element={<LoadableTool />} />
             <Route path="faq/" element={<LoadableFAQ />} />
             <Route path="ranker/" element={<LoadableRanker />} />
-            <Route path="opengraph/" element={<LoadableOpenGraph />} />
             <Route path="egg/" element={<LoadableEgg />} />
+            <Route path="opengraph/" element={<LoadableOpenGraph />} />
         </Routes>
     )
 }
