@@ -21,7 +21,7 @@ async function getOptions(isDev) {
         options = {
             args: chrome.args,
             executablePath: await chrome.executablePath,
-            headless: chrome.headless
+            headless: true 
         };
     }
 
@@ -37,7 +37,10 @@ async function getScreenshot(url, isDev) {
     await page.setViewport({ width: 1200, height: 630 });
     await page.goto(url, { waitUntil: 'networkidle0' });
 
-    return page.screenshot({ type: "jpeg", quality: 100 });
+    screenshot = page.screenshot({ type: "jpeg", quality: 100 });
+    await browser.close()
+    
+    return screenshot
 }
 
 // send it to netlify
