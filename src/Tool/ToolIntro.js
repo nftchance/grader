@@ -1,4 +1,4 @@
-import { Steps, Hints } from 'intro.js-react';
+import { Steps } from 'intro.js-react';
 import { useState } from 'react';
 
 import "intro.js/introjs.css"

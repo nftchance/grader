@@ -19,6 +19,7 @@
     "babel-plugin-glsl": "^1.0.0",
     "chroma-js": "^2.4.2",
     "chrome-aws-lambda": "^10.1.0",
+    "intro.js": "^6.0.0",
     "intro.js-react": "^0.6.0",
     "puppeteer-core": "^10.1.0",
     "rc-slider": "^10.0.1",
