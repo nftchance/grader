@@ -39,7 +39,6 @@ async function getScreenshot(url, isDev) {
     await page.goto(url, { waitUntil: 'networkidle0' });
 
     screenshot = page.screenshot({ type: "jpeg", quality: 100 });
-    await browser.close()
     
     return screenshot
 }
