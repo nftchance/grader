@@ -112,8 +112,12 @@ const Tool = () => {
 
     const chromaOGURL = `${URLHead}.netlify/functions/opengraph/?` + URLTail;
 
-    const handleIntroChange = () => {
-        setIntroEnabled(!introEnabled)
+    const handleIntroEnter = () => {
+        setIntroEnabled(true)
+    }
+
+    const handleIntroExit = () => {
+        setIntroEnabled(false)
     }
 
     const handleURLUpdate = () => {
@@ -359,7 +363,7 @@ const Tool = () => {
 
             <ToolIntro
                 introEnabled={introEnabled}
-                handleIntroExit={handleIntroChange}
+                handleIntroExit={handleIntroExit}
             />
 
             <div className="container">
@@ -368,10 +372,10 @@ const Tool = () => {
                     <p className="lead">Finding an objectively good digital palette is an actual science. Tired of having grey-filled color scales that look like they were chosen by a color-blind person? Scroll down and make that perfect combination.</p>
                 </div>
 
-                <div style={{ height: 40, width: "100%" }}>
+                <div style={{ height: 60, width: "100%" }}>
                     <Tooltip title="Help">
-                        <Button onClick={handleIntroChange} style={{ float: "right", border: "1px solid #fff" }}>
-                            <FontAwesomeIcon icon={['fal', 'question']} />
+                        <Button onClick={introEnabled ? handleIntroExit : handleIntroEnter} style={{ float: "right", border: "1px solid #fff" }}>
+                            HELP
                         </Button>
                     </Tooltip>
                 </div>
