@@ -1,11 +1,10 @@
 import { Steps } from 'intro.js-react';
-import { useState } from 'react';
 
 import "intro.js/introjs.css"
 
 import "./ToolIntro.css";
 
-const ToolIntro = () => {
+const ToolIntro = ({ introEnabled, handleIntroExit }) => {
     const steps = [
         {
             element: '.cube',
@@ -30,18 +29,12 @@ const ToolIntro = () => {
         }
     ];
 
-    const [introEnabled, setIntroEnabled] = useState(false);
-
-    const handleExit = () => { 
-        setIntroEnabled(!introEnabled)
-    }
-
     return (
         <Steps
             enabled={introEnabled}
             initialStep={0}
             steps={steps}
-            onExit={handleExit}
+            onExit={handleIntroExit}
             options={{
                 doneLabel: "GO", 
                 hideNext: false,

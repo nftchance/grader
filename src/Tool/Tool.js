@@ -60,6 +60,8 @@ const Tool = () => {
 
     const [copied, setCopied] = useState([false, false])
 
+    const [introEnabled, setIntroEnabled] = useState(false);
+
     const hasMadeChange = useMemo(() => !colors.every((color, idx) => {
         const defaultColor = DEFAULT_GRADIENT[idx]
         return color.color === defaultColor.color && color.domain === defaultColor.domain && color.locked === defaultColor.locked
@@ -109,6 +111,10 @@ const Tool = () => {
     const shareMessage = `I just used @trycolorspace and made this${score > 81 ? " perfect " : " "}palette - what's your score ?%0A%0A${chromaSaveURL}`;
 
     const chromaOGURL = `${URLHead}.netlify/functions/opengraph/?` + URLTail;
+
+    const handleIntroChange = () => {
+        setIntroEnabled(!introEnabled)
+    }
 
     const handleURLUpdate = () => {
         // update the url so that someone can just copy-paste
@@ -351,12 +357,23 @@ const Tool = () => {
                 <meta name="twitter:image" content={chromaOGURL} />
             </Helmet>
 
-            <ToolIntro />
+            <ToolIntro
+                introEnabled={introEnabled}
+                handleIntroExit={handleIntroChange}
+            />
 
             <div className="container">
                 <div className="header">
                     <h1>BUILD THE PERFECT COLOR PALETTE. WITH EASE.</h1>
                     <p className="lead">Finding an objectively good digital palette is an actual science. Tired of having grey-filled color scales that look like they were chosen by a color-blind person? Scroll down and make that perfect combination.</p>
+                </div>
+
+                <div style={{ height: 40, width: "100%" }}>
+                    <Tooltip title="Help">
+                        <Button onClick={handleIntroChange} style={{ float: "right", border: "1px solid #fff" }}>
+                            <FontAwesomeIcon icon={['fal', 'question']} />
+                        </Button>
+                    </Tooltip>
                 </div>
 
                 <div className="tool">
