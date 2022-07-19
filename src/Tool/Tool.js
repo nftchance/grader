@@ -106,7 +106,7 @@ const Tool = () => {
 
     const chromaSaveURL = `${URLHead}?` + URLTail
 
-    const shareMessage = `I justed used @trycolorspace and made this ${score > 81 ? "perfect " : " "}pallete - whats your score ?%0A%0A${chromaSaveURL}`;
+    const shareMessage = `I just used @trycolorspace and made this ${score > 81 ? "perfect " : " "}pallet - what's your score?%0A%0A${chromaSaveURL}`;
 
     const chromaOGURL = `${URLHead}.netlify/functions/opengraph/?` + URLTail;
 
