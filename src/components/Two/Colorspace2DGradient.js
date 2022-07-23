@@ -8,6 +8,7 @@ const Colorspace2DGradient = (props) => {
     return (
         <div className="step gradient" style={{
             background: gradient,
+            padding: 5
         }}>
             <Slider
                 range

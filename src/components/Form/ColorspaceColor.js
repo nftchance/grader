@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Tooltip } from "@mui/material";
 
+import ColorspaceTextField from "@components/Form/ColorspaceTextField";
 import ColorspaceColorpickerBox from "@components/Form/ColorspaceColorpickerBox";
 
 import "./ColorspaceColor.css";
@@ -9,7 +10,8 @@ const ColorspaceColor = (props) => {
     const {
         colors,
         handleColorChange,
-        handleColorLock
+        handleColorLock,
+        handleColorRemove
     } = props;
 
     return (
@@ -17,40 +19,52 @@ const ColorspaceColor = (props) => {
             {colors.map((color, idx) => (
                 <div key={`color:${idx}`} style={{
                     display: "grid",
-                    marginTop: 10,
-                    justifyContent: "center"
+                    gridTemplateColumns: "8fr 2fr 2fr",
+                    alignItems: "center",
+                    borderLeft: "none"
                 }}>
-                    {/* COMMENTING THIS OUT REMOVES THE REMOVAL FUNCTIONALITY
-                        {idx > 1
-                        ? <Button
-                            style={{
-                                color: "red",
-                                marginLeft: "auto"
-                            }}
-                            onClick={(event) => {
-                                handleColorRemove(idx)
-                            }}
-                        >
-                            <FontAwesomeIcon icon={['fal', 'close']} />
-                        </Button>
-                        : null
-                    } */}
+                    {/* COMMENTING THIS OUT REMOVES THE REMOVAL FUNCTIONALITY */}
 
-                    <ColorspaceColorpickerBox
-                        color={color}
-                        handleColorChange={handleColorChange}
-                        idx={idx}
+                    <ColorspaceTextField
+                        colorspaceColor={color}
+                        onChange={handleColorChange}
+                        label={`Color #${idx}`}
+                        className="color"
                     />
 
-                    <Tooltip title="Lock">
-                        <Button style={{ marginTop: 10 }}
-                            onClick={(event) => {
-                                handleColorLock(idx)
-                            }}
-                        >
-                            {color.locked ? <FontAwesomeIcon icon={['fal', 'lock']} /> : <FontAwesomeIcon icon={['fal', 'lock-open']} />}
-                        </Button>
-                    </Tooltip>
+                    <div style={{
+                        border: "1px solid #fff",
+                        borderLeft: "none",
+                        height: "100%",
+                        width: "100%",
+                        display: "grid",
+                        alignItems: "center",
+                    }}>
+                        <ColorspaceColorpickerBox
+                            color={color}
+                            handleColorChange={handleColorChange}
+                            idx={idx}
+                        />
+                    </div>
+
+                    <div style={{ marginLeft: 10 }}>
+                        <Tooltip title="Lock">
+                            <Button onClick={() => { handleColorLock(idx) }}>
+                                {color.locked
+                                    ? <FontAwesomeIcon icon={['fal', 'lock']} />
+                                    : <FontAwesomeIcon icon={['fal', 'lock-open']} />
+                                }
+                            </Button>
+                        </Tooltip>
+
+                        {/* {idx > 1 && <div style={{ marginLeft: "auto " }}>
+                            <Tooltip title="Remove">
+                                <Button style={{ color: "red" }} onClick={() => { handleColorRemove(idx) }}>
+                                    <FontAwesomeIcon icon={['fal', 'close']} />
+                                </Button>
+                            </Tooltip>
+                        </div>} */}
+                    </div>
                 </div>
             ))}
         </div>

@@ -23,9 +23,10 @@ const ColorspaceColorpickerBox = (props) => {
                     background: `${color.color}`,
                     border: '1px solid #fff',
                     borderRadius: "50%",
-                    height: 50,
-                    width: 50,
-                    margin: "auto"
+                    height: 40,
+                    width: 40,
+                    margin: "auto",
+                    marginRight: 10
                 }}
             />
 

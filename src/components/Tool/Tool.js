@@ -157,6 +157,7 @@ const Tool = () => {
 
     // Update the color when the user changes it 
     const handleColorChange = (event, colorId) => {
+        console.log('updating')
         setColors(colors.map((color, idx) => (
             idx !== colorId ? color : {
                 ...color, // keep all the fields the same but color
@@ -167,7 +168,7 @@ const Tool = () => {
 
     // Handle everything when a new color is added to the mix
     const handleColorAddition = () => {
-        if (colors.length >= 10) return
+        if (colors.length >= 5) return
 
         // if the default points value is being used, continue using it
         if (points === (colorAddedColors.length - 1) * POINTS_SCALE_FACTOR)
@@ -376,7 +377,7 @@ const Tool = () => {
                     <p className="lead">Finding an objectively good digital palette is an actual science. Tired of having grey-filled color scales that look like they were chosen by a color-blind person? Scroll down and make that perfect combination.</p>
                 </div> */}
 
-                <div style={{ height: 60, width: "100%" }}>
+                <div className="tool-bar">
                     <Tooltip title="Help">
                         <Button onClick={introEnabled ? handleIntroExit : handleIntroEnter} style={{ float: "right", border: "1px solid #fff" }}>
                             <FontAwesomeIcon icon={['fal', 'question']} />
@@ -405,7 +406,7 @@ const Tool = () => {
                             COLORS
 
                             <span style={{ marginLeft: "auto " }}>
-                                {colors.length < 10 && <Tooltip title="Add">
+                                {colors.length < 5 && <Tooltip title="Add">
                                     <Button onClick={handleColorAddition} style={{ float: "right" }}>
                                         <FontAwesomeIcon icon={['fal', 'plus']} />
                                     </Button>
@@ -453,22 +454,16 @@ const Tool = () => {
                             </span> */}
                         </h3>
 
-                        <div style={{ marginTop: 20 }}>
-                            <div style={{
-                                display: "inline-grid",
-                                marginTop: 5
-                            }}>
-                            </div>
-
-
-                        </div>
-
                         <ColorspaceColor
                             colors={colors}
                             handleColorChange={handleColorChange}
                             handleColorLock={handleColorLock}
                             handleColorRemove={handleColorRemove}
                         />
+
+                        <div style={{ marginBottom: 10, marginTop: 20 }}>
+                            <label>POSITION SCALE</label>
+                        </div>
 
                         <div className="scale">
                             <div className="scale-gradient" style={{
@@ -485,16 +480,9 @@ const Tool = () => {
                     </div>
 
                     <div className="step controls">
-                        <h3 style={{
-                            display: "flex",
-                            alignItems: "center"
-                        }}>
+                        <h3 style={{ display: "flex", alignItems: "center" }}>
                             CONTROLS
                         </h3>
-
-                        <div style={{ marginTop: 20 }}>
-                            <label>SCALE</label>
-                        </div>
 
                         <div style={{
                             display: "grid",
@@ -533,7 +521,7 @@ const Tool = () => {
                         </div>
 
                         <div style={{ marginTop: 20 }}>
-                            <label>OUTPUT MODE</label>
+                            <label>INTERPOLATION MODE</label>
                         </div>
 
                         <div className="color-mode">
@@ -563,7 +551,9 @@ const Tool = () => {
                         <h3>SCORE</h3>
 
                         <div style={{ marginTop: 20 }}>
-                            <p>
+                            <p style={{ 
+                                marginTop: 10
+                            }}>
                                 <strong>SCORE:</strong>
                                 <span style={{ float: "right" }}>{score} / 100</span>
                             </p>

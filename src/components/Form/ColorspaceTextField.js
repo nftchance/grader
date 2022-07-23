@@ -3,13 +3,15 @@ import TextField from '@mui/material/TextField';
 
 import { alpha, styled } from '@mui/material/styles';
 
+import ColorspaceColorpickerBox from "@components/Form/ColorspaceColorpickerBox";
+
 import "./ColorspaceTextField.css";
 
 const ColorspaceTextField = styled((props) => {
-	const { colorspaceColor, onChange, ...textInputProps } = props;
+	const { colorspaceColor, colorIndex, onChange, ...textInputProps } = props;
 
 	return (
-		<Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+		<>
 			{/* Standard styled input for Colorspace */}
 			<TextField
 				InputProps={{ disableUnderline: true }}
@@ -18,11 +20,10 @@ const ColorspaceTextField = styled((props) => {
 				onChange={onChange}
 				{...textInputProps}
 			/>
-		</Box>
+		</>
 	)
 })(({ theme }) => ({
 	'&': {
-		marginTop: 10,
 		width: "100%",
 		"& .MuiInputLabel-root": { color: 'white' },
 		"& .MuiOutlinedInput-root": {
@@ -49,6 +50,9 @@ const ColorspaceTextField = styled((props) => {
 			borderColor: theme.palette.primary.main,
 		}
 	},
+	'&.color .MuiFilledInput-root': { 
+		borderRight: "none"
+	}
 }));
 
 export default ColorspaceTextField;
