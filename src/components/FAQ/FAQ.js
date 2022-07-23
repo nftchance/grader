@@ -7,8 +7,9 @@ import {
     AccordionSummary
 } from "@mui/material";
 
-import SEO_CONSTANTS from "../SEO/constants";
-import Page from "../Page/Page";
+import Page from "@components/Page/Page";
+
+import SEO_CONSTANTS from "@components/SEO/constants";
 
 const FAQ = () => {
     const faqs = [

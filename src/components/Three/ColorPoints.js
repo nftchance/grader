@@ -1,5 +1,5 @@
-import ColorPoint from "./ColorPoint"
-import ColorLine from "./ColorLine"
+import ColorPoint from "@components/Three/ColorPoint"
+import ColorLine from "@components/Three/ColorLine"
 
 function ColorPointAndLine({
     points,

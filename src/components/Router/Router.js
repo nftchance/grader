@@ -4,11 +4,11 @@ import loadable from "@loadable/component";
 
 import Loading from "../Loading/Loading";
 
-const LoadableTool = loadable(() => import("../Tool/Tool"), { fallback: <Loading /> })
-const LoadableFAQ = loadable(() => import("../FAQ/FAQ"), { fallback: <Loading /> })
-const LoadableOpenGraph = loadable(() => import("../OpenGraph/OpenGraph"), { fallback: <Loading /> })
-const LoadableEgg = loadable(() => import("../Egg/Egg"), { fallback: <Loading /> })
-const LoadableRanker = loadable(() => import("../Ranker/Ranker"), { fallback: <Loading /> })
+const LoadableTool = loadable(() => import("@components/Tool/Tool"), { fallback: <Loading /> })
+const LoadableFAQ = loadable(() => import("@components/FAQ/FAQ"), { fallback: <Loading /> })
+const LoadableOpenGraph = loadable(() => import("@components/OpenGraph/OpenGraph"), { fallback: <Loading /> })
+const LoadableEgg = loadable(() => import("@components/Egg/Egg"), { fallback: <Loading /> })
+const LoadableRanker = loadable(() => import("@components/Ranker/Ranker"), { fallback: <Loading /> })
 
 const Router = () => {
     return (

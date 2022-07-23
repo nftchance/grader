@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Tooltip } from "@mui/material";
 
-import ColorspaceColorpickerBox from "./ColorspaceColorpickerBox";
+import ColorspaceColorpickerBox from "@components/Form/ColorspaceColorpickerBox";
 
 import "./ColorspaceColor.css";
 

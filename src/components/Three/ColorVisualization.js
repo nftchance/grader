@@ -2,7 +2,7 @@ import { useLayoutEffect, useRef } from 'react';
 
 import * as THREE from 'three';
 
-import ColorMath from './ColorMath';
+import ColorMath from '@components/Three/ColorMath';
 
 export default function ColorVisualization(props) {
     const { mode, size: SIZE, segments: SEGMENTS } = props;

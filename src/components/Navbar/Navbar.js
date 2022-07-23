@@ -5,7 +5,7 @@ import { Button } from '@mui/material';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import logo from "../images/logo.png";
+import logo from "@images/logo.png";
 
 const Navbar = () => {
     const [navbarOpen, setNavbarOpen] = useState(false);

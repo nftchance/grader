@@ -3,10 +3,11 @@ import { Helmet } from "react-helmet-async"
 
 import { Button } from "@mui/material"
 
-import SEO_CONSTANTS from "../SEO/constants";
+import Page from "@components/Page/Page";
+
+import SEO_CONSTANTS from "@components/SEO/constants";
 
 import "./Ranker.css"
-import Page from "../Page/Page";
 
 const Ranker = () => {
     return (

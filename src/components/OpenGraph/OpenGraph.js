@@ -1,5 +1,5 @@
-import logo from "../images/logo.png"
-import hero from "../images/demo/colorspace.png";
+import logo from "@images/logo.png";
+import hero from "@images/demo/colorspace.png";
 
 import "./OpenGraph.css";
 

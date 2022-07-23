@@ -4,11 +4,11 @@ import { Canvas } from "@react-three/fiber"
 
 import chroma from "chroma-js";
 
-import ColorMath from "./ColorMath";
-import LightsAndCamera from "./LightsAndCamera";
-import Floor from "./Floor"
-import ColorVisualization from "./ColorVisualization"
-import ColorPoints from "./ColorPoints"
+import ColorMath from "@components/Three/ColorMath";
+import LightsAndCamera from "@components/Three/LightsAndCamera";
+import Floor from "@components/Three/Floor"
+import ColorVisualization from "@components/Three/ColorVisualization"
+import ColorPoints from "@components/Three/ColorPoints"
 
 const ThreeScene = ({ colors, colorMode: mode }) => {
     const SIZE = 10;

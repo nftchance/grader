@@ -1,7 +1,8 @@
 import { useLayoutEffect, useRef } from 'react';
 
 import * as THREE from 'three';
-import ColorMath from './ColorMath';
+
+import ColorMath from '@components/Three/ColorMath';
 
 const SEGMENT_FACTOR = 25;
 

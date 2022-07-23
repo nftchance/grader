@@ -6,7 +6,7 @@ import { LineMaterial } from "three/examples/jsm/lines/LineMaterial"
 import { LineGeometry } from "three/examples/jsm/lines/LineGeometry"
 import { Line2 } from "three/examples/jsm/lines/Line2"
 
-import ColorMath from "./ColorMath";
+import ColorMath from "@components/Three/ColorMath";
 
 extend({ LineMaterial, LineGeometry, Line2 })
 

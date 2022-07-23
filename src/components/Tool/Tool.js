@@ -3,7 +3,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { Button } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
 
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Helmet } from 'react-helmet-async';
 
@@ -11,20 +10,20 @@ import chroma from "chroma-js"
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import ToolIntro from "./ToolIntro";
-import ThreeScene from "../Three/ThreeScene";
+import Page from '@components/Page/Page';
 
-import Colorspace2DGradient from '../Two/Colorspace2DGradient';
-import ColorspaceTextField from '../Form/ColorspaceTextField';
-import ColorspaceToggleButtonGroup from '../Form/ColorspaceToggleButtonGroup';
-import ColorspaceColor from '../Form/ColorspaceColor';
-import CodeTheme from "../Code/ColorspaceCodeTheme";
-import ColorMath from '../Three/ColorMath';
+import ToolIntro from "@components/Tool/ToolIntro";
+import ThreeScene from "@components/Three/ThreeScene";
+
+import Colorspace2DGradient from '@components/Two/Colorspace2DGradient';
+import ColorspaceTextField from '@components/Form/ColorspaceTextField';
+import ColorspaceToggleButtonGroup from '@components/Form/ColorspaceToggleButtonGroup';
+import ColorspaceColor from '@components/Form/ColorspaceColor';
+import ColorMath from '@components/Three/ColorMath';
 
 import 'rc-slider/assets/index.css';
 
 import "./Tool.css";
-import Page from '../Page/Page';
 
 const Tool = () => {
     const fixedEncodeURIComponent = (str) => {
@@ -61,6 +60,7 @@ const Tool = () => {
     const [copied, setCopied] = useState([false, false])
 
     const [introEnabled, setIntroEnabled] = useState(false);
+    const [exportEnabled, setExportEnabled] = useState(false);
 
     const hasMadeChange = useMemo(() => !colors.every((color, idx) => {
         const defaultColor = DEFAULT_GRADIENT[idx]
@@ -118,6 +118,10 @@ const Tool = () => {
 
     const handleIntroExit = () => {
         setIntroEnabled(false)
+    }
+
+    const handleExportToggle = () => { 
+        setExportEnabled(!exportEnabled)
     }
 
     const handleURLUpdate = () => {
@@ -367,15 +371,21 @@ const Tool = () => {
             />
 
             <div className="container">
-                <div className="header">
+                {/* <div className="header">
                     <h1>BUILD THE PERFECT COLOR PALETTE. WITH EASE.</h1>
                     <p className="lead">Finding an objectively good digital palette is an actual science. Tired of having grey-filled color scales that look like they were chosen by a color-blind person? Scroll down and make that perfect combination.</p>
-                </div>
+                </div> */}
 
                 <div style={{ height: 60, width: "100%" }}>
                     <Tooltip title="Help">
                         <Button onClick={introEnabled ? handleIntroExit : handleIntroEnter} style={{ float: "right", border: "1px solid #fff" }}>
-                            HELP
+                            <FontAwesomeIcon icon={['fal', 'question']} /> 
+                        </Button>
+                    </Tooltip>
+
+                    <Tooltip title="Export">
+                        <Button onClick={handleExportToggle} style={{ float: "right", border: '1px solid #fff', marginRight: 10 }}>
+                            <FontAwesomeIcon icon={['fal', 'share']} />
                         </Button>
                     </Tooltip>
                 </div>
@@ -521,7 +531,7 @@ const Tool = () => {
                     </div>
 
                     {/* Formatted Code Output of Active Gradient */}
-                    <div className="step code">
+                    {/* <div className="step code">
                         <h3>
                             CODE
                             <span style={{ float: "right", alignContent: "center" }}>
@@ -549,7 +559,7 @@ const Tool = () => {
                                 children={code}
                             />
                         </pre>
-                    </div>
+                    </div> */}
 
                     <div className="scale">
                         {/* Gradient Color Mode Control */}
