@@ -1,9 +1,9 @@
 .tool {
     display: grid;
-    grid-template: 'cube cube input code'
-        'cube cube input code'
-        'cube cube input code'
-        'scale scale scale scale';
+    grid-template: 
+        'cube cube input controls'
+        'cube cube input controls'
+        'cube cube input score';
     grid-template-columns: 1fr 1fr 1fr 1fr;
     gap: 30px;
     margin-bottom: 80px;
@@ -35,15 +35,9 @@
     grid-area: score;
 }
 
-.code {
-    grid-area: code;
+.controls {
+    grid-area: controls;
     font-variant: tabular-nums;
-}
-
-.scale {
-    grid-column: 1 / span 4;
-    row-gap: 20px;
-    display: grid;
 }
 
 h2 {

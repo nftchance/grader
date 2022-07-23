@@ -120,7 +120,7 @@ const Tool = () => {
         setIntroEnabled(false)
     }
 
-    const handleExportToggle = () => { 
+    const handleExportToggle = () => {
         setExportEnabled(!exportEnabled)
     }
 
@@ -379,13 +379,13 @@ const Tool = () => {
                 <div style={{ height: 60, width: "100%" }}>
                     <Tooltip title="Help">
                         <Button onClick={introEnabled ? handleIntroExit : handleIntroEnter} style={{ float: "right", border: "1px solid #fff" }}>
-                            <FontAwesomeIcon icon={['fal', 'question']} /> 
+                            <FontAwesomeIcon icon={['fal', 'question']} />
                         </Button>
                     </Tooltip>
 
                     <Tooltip title="Export">
                         <Button onClick={handleExportToggle} style={{ float: "right", border: '1px solid #fff', marginRight: 10 }}>
-                            <FontAwesomeIcon icon={['fal', 'share']} />
+                            <FontAwesomeIcon icon={['fal', 'arrow-up-from-square']} />
                         </Button>
                     </Tooltip>
                 </div>
@@ -402,8 +402,36 @@ const Tool = () => {
                             display: "flex",
                             alignItems: "center"
                         }}>
-                            SETUP
-                            <span style={{ marginLeft: "auto" }}>
+                            COLORS
+
+                            <span style={{ marginLeft: "auto " }}>
+                                {colors.length < 10 && <Tooltip title="Add">
+                                    <Button onClick={handleColorAddition} style={{ float: "right" }}>
+                                        <FontAwesomeIcon icon={['fal', 'plus']} />
+                                    </Button>
+                                </Tooltip>}
+
+                                <Tooltip title="Shuffle">
+                                    <Button onClick={handleShuffle} style={{ float: "right" }}>
+                                        <FontAwesomeIcon icon={['fal', 'shuffle']} />
+                                    </Button>
+                                </Tooltip>
+
+                                {hasMadeChange && <Tooltip title="Clear">
+                                    <Button
+                                        onClick={handleColorClear}
+                                        style={{
+                                            float: "right",
+                                            color: "red",
+                                            fontWeight: 900
+                                        }}
+                                    >
+                                        <FontAwesomeIcon icon={['fal', 'trash']} />
+                                    </Button>
+                                </Tooltip>}
+                            </span>
+
+                            {/* <span style={{ marginLeft: "auto" }}>
                                 <CopyToClipboard text={chromaSaveURL} onCopy={() => { handleCopy(0) }} leaveDelay={copied[0] ? 1250 : 0}>
                                     <Tooltip title={copied[0] ? "Copied" : "Copy Input Link"}>
                                         <Button>
@@ -422,7 +450,7 @@ const Tool = () => {
                                         </Button>
                                     </a>
                                 </Tooltip>
-                            </span>
+                            </span> */}
                         </h3>
 
                         <div style={{ marginTop: 20 }}>
@@ -430,33 +458,9 @@ const Tool = () => {
                                 display: "inline-grid",
                                 marginTop: 5
                             }}>
-                                <label>COLORS</label>
                             </div>
 
-                            {colors.length < 10 && <Tooltip title="Add">
-                                <Button onClick={handleColorAddition} style={{ float: "right" }}>
-                                    <FontAwesomeIcon icon={['fal', 'plus']} />
-                                </Button>
-                            </Tooltip>}
 
-                            <Tooltip title="Shuffle">
-                                <Button onClick={handleShuffle} style={{ float: "right" }}>
-                                    <FontAwesomeIcon icon={['fal', 'shuffle']} />
-                                </Button>
-                            </Tooltip>
-
-                            {hasMadeChange && <Tooltip title="Clear">
-                                <Button
-                                    onClick={handleColorClear}
-                                    style={{
-                                        float: "right",
-                                        color: "red",
-                                        fontWeight: 900
-                                    }}
-                                >
-                                    <FontAwesomeIcon icon={['fal', 'trash']} />
-                                </Button>
-                            </Tooltip>}
                         </div>
 
                         <ColorspaceColor
@@ -465,6 +469,28 @@ const Tool = () => {
                             handleColorLock={handleColorLock}
                             handleColorRemove={handleColorRemove}
                         />
+
+                        <div className="scale">
+                            <div className="scale-gradient" style={{
+                                gridColumn: "1 / span 4"
+                            }}>
+                                {/* 2D Gradient Visualization */}
+                                <Colorspace2DGradient
+                                    colors={colors}
+                                    gradient={activeGradient}
+                                    onChange={handleDomainChange}
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="step controls">
+                        <h3 style={{
+                            display: "flex",
+                            alignItems: "center"
+                        }}>
+                            CONTROLS
+                        </h3>
 
                         <div style={{ marginTop: 20 }}>
                             <label>SCALE</label>
@@ -507,6 +533,20 @@ const Tool = () => {
                         </div>
 
                         <div style={{ marginTop: 20 }}>
+                            <label>OUTPUT MODE</label>
+                        </div>
+
+                        <div className="color-mode">
+                            <ColorspaceToggleButtonGroup
+                                value={gradientColorMode}
+                                values={SCALE_MODES}
+                                exclusive
+                                aria-label="gradient color scale mode"
+                                onChange={handleGradientColorModeChange}
+                            />
+                        </div>
+
+                        <div style={{ marginTop: 20 }}>
                             <label>VISUALIZATION MODE</label>
                         </div>
 
@@ -517,8 +557,12 @@ const Tool = () => {
                             aria-label="cube color mode"
                             onChange={handleColorModeChange}
                         />
+                    </div>
 
-                        <div style={{ marginTop: 20 }} className="score">
+                    <div className="step score">
+                        <h3>SCORE</h3>
+
+                        <div style={{ marginTop: 20 }}>
                             <p>
                                 <strong>SCORE:</strong>
                                 <span style={{ float: "right" }}>{score} / 100</span>
@@ -560,30 +604,6 @@ const Tool = () => {
                             />
                         </pre>
                     </div> */}
-
-                    <div className="scale">
-                        {/* Gradient Color Mode Control */}
-                        <div className="color-mode">
-                            <ColorspaceToggleButtonGroup
-                                value={gradientColorMode}
-                                values={SCALE_MODES}
-                                exclusive
-                                aria-label="gradient color scale mode"
-                                onChange={handleGradientColorModeChange}
-                            />
-                        </div>
-
-                        <div className="scale-gradient" style={{
-                            gridColumn: "1 / span 4"
-                        }}>
-                            {/* 2D Gradient Visualization */}
-                            <Colorspace2DGradient
-                                colors={colors}
-                                gradient={activeGradient}
-                                onChange={handleDomainChange}
-                            />
-                        </div>
-                    </div>
                 </div>
             </div>
         </Page>
