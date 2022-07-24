@@ -3,7 +3,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { Button } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
 
-import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { Helmet } from 'react-helmet-async';
 
 import chroma from "chroma-js"
@@ -12,7 +11,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Page from '@components/Page/Page';
 
-import ToolIntro from "@components/Tool/ToolIntro";
+import ToolIntro from "@components/Tool/Intro/ToolIntro";
+import Toolbar from './Toolbar/Toolbar';
 import ThreeScene from "@components/Three/ThreeScene";
 
 import Colorspace2DGradient from '@components/Two/Colorspace2DGradient';
@@ -56,8 +56,6 @@ const Tool = () => {
 
     const [gradientColorMode, setGradientColorMode] = useState(SCALE_MODES[0])
     const [activeGradient, setActiveGradient] = useState(DEFAULT_GRADIENT);
-
-    const [copied, setCopied] = useState([false, false])
 
     const [introEnabled, setIntroEnabled] = useState(false);
     const [exportEnabled, setExportEnabled] = useState(false);
@@ -108,7 +106,7 @@ const Tool = () => {
 
     const chromaSaveURL = `${URLHead}?` + URLTail
 
-    const shareMessage = `I just used @trycolorspace and made this${score > 81 ? " perfect " : " "}palette - what's your score ?%0A%0A${chromaSaveURL}`;
+    const shareMessage = `I just used @trycolorspace and made this${score > 81 ? " perfect " : " "}palette - what's your score?%0A%0A${chromaSaveURL}`;
 
     const chromaOGURL = `${URLHead}.netlify/functions/opengraph/?` + URLTail;
 
@@ -257,22 +255,6 @@ const Tool = () => {
         setPointsMode(Math.abs(pointsMode - 1))
     }
 
-    // Update when someone clicks the copy action
-    const handleCopy = (copyIndex) => {
-        // Flip the state of the active copy index
-        const copiedToggled = (copyIndex, val) => {
-            return copied.map((copy, idx) => {
-                if (idx === copyIndex) return val
-
-                return copy
-            })
-        }
-
-        setCopied(copiedToggled(copyIndex, true), setTimeout(() => {
-            setCopied(copiedToggled(copyIndex, false))
-        }, 2500))
-    }
-
     // Handle the query params on the first load
     useEffect(() => {
         const queryParams = new URLSearchParams(decodeURIComponent(window.location.search))
@@ -376,20 +358,15 @@ const Tool = () => {
                     <h1>BUILD THE PERFECT COLOR PALETTE. WITH EASE.</h1>
                     <p className="lead">Finding an objectively good digital palette is an actual science. Tired of having grey-filled color scales that look like they were chosen by a color-blind person? Scroll down and make that perfect combination.</p>
                 </div> */}
-
-                <div className="tool-bar">
-                    <Tooltip title="Help">
-                        <Button onClick={introEnabled ? handleIntroExit : handleIntroEnter} style={{ float: "right", border: "1px solid #fff" }}>
-                            <FontAwesomeIcon icon={['fal', 'question']} />
-                        </Button>
-                    </Tooltip>
-
-                    <Tooltip title="Export">
-                        <Button onClick={handleExportToggle} style={{ float: "right", border: '1px solid #fff', marginRight: 10 }}>
-                            <FontAwesomeIcon icon={['fal', 'arrow-up-from-square']} />
-                        </Button>
-                    </Tooltip>
-                </div>
+                <Toolbar 
+                    chromaSaveURL={chromaSaveURL}
+                    shareMessage={shareMessage}
+                    code={code}
+                    introEnabled={introEnabled}
+                    handleIntroEnter={handleIntroEnter}
+                    handleIntroExit={handleIntroExit}
+                    handleExportToggle={handleExportToggle}
+                />
 
                 <div className="tool">
                     <div className="step cube">
@@ -431,27 +408,6 @@ const Tool = () => {
                                     </Button>
                                 </Tooltip>}
                             </span>
-
-                            {/* <span style={{ marginLeft: "auto" }}>
-                                <CopyToClipboard text={chromaSaveURL} onCopy={() => { handleCopy(0) }} leaveDelay={copied[0] ? 1250 : 0}>
-                                    <Tooltip title={copied[0] ? "Copied" : "Copy Input Link"}>
-                                        <Button>
-                                            <FontAwesomeIcon icon={['fal', 'link']} />
-                                        </Button>
-                                    </Tooltip>
-                                </CopyToClipboard>
-
-                                <Tooltip title="Share on Twitter">
-                                    <a target="_blank" rel="noreferrer" href={`https://twitter.com/intent/tweet?text=${shareMessage}`} style={{
-                                        display: "inline",
-                                        justifySelf: "center"
-                                    }}>
-                                        <Button>
-                                            <FontAwesomeIcon icon={['fab', 'twitter']} />
-                                        </Button>
-                                    </a>
-                                </Tooltip>
-                            </span> */}
                         </h3>
 
                         <ColorspaceColor
@@ -551,7 +507,7 @@ const Tool = () => {
                         <h3>SCORE</h3>
 
                         <div style={{ marginTop: 20 }}>
-                            <p style={{ 
+                            <p style={{
                                 marginTop: 10
                             }}>
                                 <strong>SCORE:</strong>
@@ -564,24 +520,16 @@ const Tool = () => {
                         </div>
                     </div>
 
+                    <div className="step output">
+                        <h3>Output</h3>
+                    </div>
+
                     {/* Formatted Code Output of Active Gradient */}
                     {/* <div className="step code">
                         <h3>
                             CODE
                             <span style={{ float: "right", alignContent: "center" }}>
-                                <CopyToClipboard text={code} leaveDelay={copied[1] ? 1250 : 0} onCopy={() => { handleCopy(1) }}>
-                                    <Tooltip title={copied[1] ? "Copied" : "Copy Code"}>
-                                        <Button>
-                                            <FontAwesomeIcon icon={['fal', 'clipboard']} />
-                                        </Button>
-                                    </Tooltip>
-                                </CopyToClipboard>
 
-                                <Tooltip title={pointsMode === 0 ? 'Visualize Code' : 'Visualize Input'}>
-                                    <Button onClick={handlePointsModeChange}>
-                                        <FontAwesomeIcon icon={pointsMode === 0 ? ['fal', 'eye-dropper'] : ['fal', 'droplet']} />
-                                    </Button>
-                                </Tooltip>
                             </span>
                         </h3>
 

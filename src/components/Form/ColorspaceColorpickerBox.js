@@ -2,18 +2,12 @@ import { useState } from 'react';
 
 import { ChromePicker } from 'react-color';
 
-const ColorspaceColorpickerBox = (props) => {
-    const { color, handleColorChange, idx } = props;
-
+const ColorspaceColorpickerBox = ({ color, handleColorChange, idx }) => {
     const [displayColorPicker, setDisplayColorPicker] = useState(false);
 
-    const handleDisplayColorPickerChange = (event) => {
-        setDisplayColorPicker(!displayColorPicker)
-    }
+    const handleDisplayColorPickerChange = () => setDisplayColorPicker(!displayColorPicker)
 
-    const handleClose = (event) => {
-        setDisplayColorPicker(false);
-    }
+    const handleClose = () => setDisplayColorPicker(false);
 
     return (
         <>
