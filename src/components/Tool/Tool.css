@@ -15,7 +15,7 @@
         'cube input controls'
         'cube input score';
     grid-template-columns: 1fr .75fr 0.5fr;
-    grid-template-rows: 1fr 1fr 0.75fr;
+    grid-template-rows: 1fr 1fr 0.5fr;
     gap: 30px;
     margin-bottom: 80px;
     min-height: 780px;
