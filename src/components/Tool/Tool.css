@@ -10,11 +10,11 @@
 
 .tool {
     display: grid;
-    grid-template: 
+    grid-template:
         'cube input controls'
         'cube input controls'
-        'cube input score'
-        'output output output';
+        'cube input controls'
+        'output output score';
     grid-template-columns: 1fr .75fr 0.5fr;
     grid-template-rows: 1fr 0.5fr 0.5fr;
     gap: 30px;
@@ -53,7 +53,7 @@
 }
 
 .output {
-    grid-column: 1 / span 3;
+    grid-column: 1 / span 2;
 }
 
 h2 {

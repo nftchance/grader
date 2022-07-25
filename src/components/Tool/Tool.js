@@ -34,6 +34,7 @@ const Tool = () => {
 
     const VISUALIZATION_MODES = ['RGB', 'HSL']
     const SCALE_MODES = ['RGB', 'HSL', 'HSV', 'HCL', 'LAB'];
+    const POINTS_MODES = ['Input', 'Scale']
     const POINTS_SCALE_FACTOR = 3;
 
     const [colorMode, setColorMode] = useState(VISUALIZATION_MODES[0])
@@ -251,8 +252,9 @@ const Tool = () => {
     }
 
     // Allow the user to flip the point display mode
-    const handlePointsModeChange = () => {
-        setPointsMode(Math.abs(pointsMode - 1))
+    const handlePointsModeChange = (event) => {
+        console.log(event.target.value, )
+        setPointsMode(POINTS_MODES.indexOf(event.target.value))
     }
 
     // Handle the query params on the first load
@@ -354,11 +356,7 @@ const Tool = () => {
             />
 
             <div className="container">
-                {/* <div className="header">
-                    <h1>BUILD THE PERFECT COLOR PALETTE. WITH EASE.</h1>
-                    <p className="lead">Finding an objectively good digital palette is an actual science. Tired of having grey-filled color scales that look like they were chosen by a color-blind person? Scroll down and make that perfect combination.</p>
-                </div> */}
-                <Toolbar 
+                <Toolbar
                     chromaSaveURL={chromaSaveURL}
                     shareMessage={shareMessage}
                     code={code}
@@ -501,6 +499,20 @@ const Tool = () => {
                             aria-label="cube color mode"
                             onChange={handleColorModeChange}
                         />
+
+                        <div style={{ marginTop: 20 }}>
+                            <label>POINTS MODE</label>
+                        </div>
+
+                        <div className="color-mode">
+                            <ColorspaceToggleButtonGroup
+                                value={POINTS_MODES[pointsMode]}
+                                values={POINTS_MODES}
+                                exclusive
+                                aria-label="gradient color scale mode"
+                                onChange={handlePointsModeChange}
+                            />
+                        </div>
                     </div>
 
                     <div className="step score">
