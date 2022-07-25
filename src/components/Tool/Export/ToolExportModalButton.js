@@ -26,6 +26,10 @@ const innerButtonStyle = {
     justifyItems: 'center',
 }
 
+const iconStyle = {
+    fontSize: "18px"
+}
+
 export default function ToolExportModalButton({
     chromaSaveURL,
     shareMessage,
@@ -74,7 +78,7 @@ export default function ToolExportModalButton({
                         leaveDelay={copied[0] ? 1250 : 0}
                     >
                         <Button style={innerButtonStyle}>
-                            <FontAwesomeIcon icon={['fal', 'link']} style={{ fontSize: "18px" }} />
+                            <FontAwesomeIcon icon={['fal', 'link']} style={iconStyle} />
                             <p>{copied[0] ? 'Copied' : 'Copy Link'}</p>
                         </Button>
                     </CopyToClipboard>
@@ -85,7 +89,7 @@ export default function ToolExportModalButton({
                         onCopy={() => { handleCopy(1) }}
                     >
                         <Button style={innerButtonStyle}>
-                            <FontAwesomeIcon icon={['fal', 'clipboard']} style={{ fontSize: "18px" }} />
+                            <FontAwesomeIcon icon={['fal', 'clipboard']} style={iconStyle} />
                             <p>{copied[1] ? 'Copied' : 'Copy Code'}</p>
                         </Button>
                     </CopyToClipboard>
@@ -101,7 +105,7 @@ export default function ToolExportModalButton({
                         }}
                     >
                         <Button style={{ ...innerButtonStyle, width: "100%" }}>
-                            <FontAwesomeIcon icon={['fab', 'twitter']} style={{ fontSize: "18px" }} />
+                            <FontAwesomeIcon icon={['fab', 'twitter']} style={iconStyle} />
                             <p>Tweet</p>
                         </Button>
                     </a>

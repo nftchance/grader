@@ -537,11 +537,11 @@ const Tool = () => {
                             </p>
                         </div>
                     </div>
-
+{/* 
                     <div className="step output">
                         <h3>Output</h3>
                     </div>
-
+ */}
                     {/* Formatted Code Output of Active Gradient */}
                     {/* <div className="step code">
                         <h3>
