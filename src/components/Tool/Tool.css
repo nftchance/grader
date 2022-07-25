@@ -13,7 +13,7 @@
     grid-template:
         'cube input controls'
         'cube input controls'
-        'cube input score';
+        'cube score controls';
     grid-template-columns: 1fr .75fr 0.5fr;
     grid-template-rows: 1fr 1fr 0.5fr;
     gap: 30px;
