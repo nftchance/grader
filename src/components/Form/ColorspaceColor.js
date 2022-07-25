@@ -10,8 +10,7 @@ const ColorspaceColor = (props) => {
     const {
         colors,
         handleColorChange,
-        handleColorLock,
-        handleColorRemove,
+        handleColorLock
     } = props;
 
     return (

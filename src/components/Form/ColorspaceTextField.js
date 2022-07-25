@@ -1,15 +1,10 @@
-import { Box } from '@mui/material';
 import TextField from '@mui/material/TextField';
 
 import { alpha, styled } from '@mui/material/styles';
 
-import ColorspaceColorpickerBox from "@components/Form/ColorspaceColorpickerBox";
-
 import "./ColorspaceTextField.css";
 
-const ColorspaceTextField = styled((props) => {
-	const { colorspaceColor, colorIndex, onChange, ...textInputProps } = props;
-
+const ColorspaceTextField = styled(({ colorspaceColor, colorIndex, onChange, ...textInputProps }) => {
 	return (
 		<>
 			{/* Standard styled input for Colorspace */}

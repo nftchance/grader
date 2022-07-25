@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { Button } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
@@ -34,9 +34,9 @@ const Tool = () => {
 
     const randomRGBValue = () => { return Math.floor(Math.random() * 255) }
 
-    const randomColor = () => {
+    const randomColor = useCallback(() => {
         return chroma(`rgb(${randomRGBValue()}, ${randomRGBValue()}, ${randomRGBValue()})`).hex();
-    }
+    }, [])
 
     const VISUALIZATION_MODES = ['RGB', 'HSL']
     const SCALE_MODES = ['RGB', 'HSL', 'HSV', 'HCL', 'LAB'];
@@ -53,7 +53,7 @@ const Tool = () => {
         colorMath.c(randomColor(), 0.5, true, false),
         colorMath.c(randomColor(), 0.75, true, false),
         colorMath.c(randomColor(), 1, true, false)
-    ]), [colorMath]);
+    ]), [colorMath, randomColor]);
 
     const [points, setPoints] = useState(DEFAULT_GRADIENT.length * POINTS_SCALE_FACTOR)
     const [pointsMode, setPointsMode] = useState(0); // 0 = input | 1 = scale

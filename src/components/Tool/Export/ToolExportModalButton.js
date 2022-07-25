@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Box, Button, Modal, Tooltip } from '@mui/material';
+import { Box, Button, Modal } from '@mui/material';
 
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
