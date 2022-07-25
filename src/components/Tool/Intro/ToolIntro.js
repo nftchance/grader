@@ -12,16 +12,12 @@ const ToolIntro = ({ introEnabled, handleIntroExit }) => {
             position: 'right',
         }, {
             element: '.input',
-            intro: 'Customize the input and fine-tune all aspects of your palette to get it just right.',
+            intro: 'Fine tune the colors of your scale along with their positions within the gradient!',
             position: 'left',
         }, {
             element: '.controls',
-            intro: 'Once you have found your palette you can find the copy-paste ready code.',
+            intro: 'With your colors defined, you can then determine which output color mode is best for the palette you have created.',
             position: 'left',
-        }, {
-            element: '.output',
-            intro: 'Finally we have the 2D view of your scale in gradient form along with sliders to move a color to a different position.',
-            position: 'top',
         }, {
             element: '.score',
             intro: 'See how well the collor palette you have assembled performs in the digital colorspace!' 
