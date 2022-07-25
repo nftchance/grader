@@ -105,12 +105,6 @@ export default function ToolExportModalButton({
                             <p>Tweet</p>
                         </Button>
                     </a>
-
-                    {/* <Tooltip title={pointsMode === 0 ? 'Visualize Code' : 'Visualize Input'}>
-                        <Button onClick={handlePointsModeChange}>
-                            <FontAwesomeIcon icon={pointsMode === 0 ? ['fal', 'eye-dropper'] : ['fal', 'droplet']} />
-                        </Button>
-                    </Tooltip> */}
                 </Box>
             </Modal>
         </div>

@@ -15,28 +15,31 @@ const Navbar = () => {
     }
 
     return (
-        <div className="container">
-            <div className="navbar">
-                <Link to="/" className="brand"><img src={logo} alt="navbar logo" /></Link>
+        <div style={{ borderBottom: "1px solid #fff" }} >
 
-                <div className="sidebar-toggle">
-                    <Button sx={{ marginLeft: "auto" }} onClick={handleNavbarOpenChange}>
-                        <FontAwesomeIcon icon={['fal', 'bars']} />
-                    </Button>
+            <div className="container">
+                <div className="navbar">
+                    <Link to="/" className="brand"><img src={logo} alt="navbar logo" /></Link>
+
+                    <div className="sidebar-toggle">
+                        <Button sx={{ marginLeft: "auto" }} onClick={handleNavbarOpenChange}>
+                            <FontAwesomeIcon icon={['fal', 'bars']} />
+                        </Button>
+                    </div>
+
+                    <div className={navbarOpen ? 'sidebar open' : 'sidebar'}>
+                        <Button
+                            component={Link}
+                            to="faq/"
+                        >FAQ</Button>
+                        <Button
+                            component={Link}
+                            to="ranker/"
+                        >Ranker</Button>
+                    </div>
+
+                    {/* <div className={`theme-controls ${theme}`} /> */}
                 </div>
-
-                <div className={navbarOpen ? 'sidebar open' : 'sidebar'}>
-                    <Button
-                        component={Link}
-                        to="faq/"
-                    >FAQ</Button>
-                    <Button
-                        component={Link}
-                        to="ranker/"
-                    >Ranker</Button>
-                </div>
-
-                {/* <div className={`theme-controls ${theme}`} /> */}
             </div>
         </div>
     )

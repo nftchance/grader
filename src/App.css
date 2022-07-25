@@ -107,7 +107,7 @@ input {
 }
 
 .navbar {
-    margin-top: 20px;
+    margin-block: 10px;
     display: flex;
 }
 

@@ -32,6 +32,12 @@ const Tool = () => {
         });
     }
 
+    const randomRGBValue = () => { return Math.floor(Math.random() * 255) }
+
+    const randomColor = () => {
+        return chroma(`rgb(${randomRGBValue()}, ${randomRGBValue()}, ${randomRGBValue()})`).hex();
+    }
+
     const VISUALIZATION_MODES = ['RGB', 'HSL']
     const SCALE_MODES = ['RGB', 'HSL', 'HSV', 'HCL', 'LAB'];
     const POINTS_MODES = ['Input', 'Scale']
@@ -41,7 +47,13 @@ const Tool = () => {
 
     const colorMath = useMemo(() => new ColorMath(colorMode, 0, 0), [colorMode]);
 
-    const DEFAULT_GRADIENT = useMemo(() => ([colorMath.c('#ffffff', 0, true, false), colorMath.c("#000000", 1, true, false)]), [colorMath]);
+    const DEFAULT_GRADIENT = useMemo(() => ([
+        colorMath.c(randomColor(), 0, true, false),
+        colorMath.c(randomColor(), .25, true, false),
+        colorMath.c(randomColor(), 0.5, true, false),
+        colorMath.c(randomColor(), 0.75, true, false),
+        colorMath.c(randomColor(), 1, true, false)
+    ]), [colorMath]);
 
     const [points, setPoints] = useState(DEFAULT_GRADIENT.length * POINTS_SCALE_FACTOR)
     const [pointsMode, setPointsMode] = useState(0); // 0 = input | 1 = scale
@@ -223,12 +235,6 @@ const Tool = () => {
 
     // Generate a random and new palette based on scaled anchors points
     const handleShuffle = () => {
-        const randomRGBValue = () => { return Math.floor(Math.random() * 255) }
-
-        const randomColor = () => {
-            return chroma(`rgb(${randomRGBValue()}, ${randomRGBValue()}, ${randomRGBValue()})`).hex();
-        }
-
         const shuffledColors = () => {
             return chroma.scale([
                 randomColor(),
@@ -253,7 +259,7 @@ const Tool = () => {
 
     // Allow the user to flip the point display mode
     const handlePointsModeChange = (event) => {
-        console.log(event.target.value, )
+        console.log(event.target.value,)
         setPointsMode(POINTS_MODES.indexOf(event.target.value))
     }
 
