@@ -18,12 +18,19 @@ import ThreeScene from "@components/Three/ThreeScene";
 import Colorspace2DGradient from '@components/Two/Colorspace2DGradient';
 import ColorspaceTextField from '@components/Form/ColorspaceTextField';
 import ColorspaceToggleButtonGroup from '@components/Form/ColorspaceToggleButtonGroup';
-import ColorspaceColor from '@components/Form/ColorspaceColor';
+import ColorspaceColors from '@components/Form/ColorspaceColors';
 import ColorMath from '@components/Three/ColorMath';
 
 import 'rc-slider/assets/index.css';
 
 import "./Tool.css";
+
+const VISUALIZATION_MODES = ['RGB', 'HSL']
+const SCALE_MODES = ['RGB', 'HSL', 'HSV', 'HCL', 'LAB'];
+const POINTS_MODES = ['Input', 'Scale']
+
+const POINTS_SCALE_FACTOR = 3;
+const MAX_COLORS = 8;
 
 const Tool = () => {
     const fixedEncodeURIComponent = (str) => {
@@ -38,10 +45,7 @@ const Tool = () => {
         return chroma(`rgb(${randomRGBValue()}, ${randomRGBValue()}, ${randomRGBValue()})`).hex();
     }, [])
 
-    const VISUALIZATION_MODES = ['RGB', 'HSL']
-    const SCALE_MODES = ['RGB', 'HSL', 'HSV', 'HCL', 'LAB'];
-    const POINTS_MODES = ['Input', 'Scale']
-    const POINTS_SCALE_FACTOR = 3;
+
 
     const [colorMode, setColorMode] = useState(VISUALIZATION_MODES[0])
 
@@ -49,9 +53,7 @@ const Tool = () => {
 
     const DEFAULT_GRADIENT = useMemo(() => ([
         colorMath.c(randomColor(), 0, true, false),
-        colorMath.c(randomColor(), .25, true, false),
         colorMath.c(randomColor(), 0.5, true, false),
-        colorMath.c(randomColor(), 0.75, true, false),
         colorMath.c(randomColor(), 1, true, false)
     ]), [colorMath, randomColor]);
 
@@ -179,7 +181,7 @@ const Tool = () => {
 
     // Handle everything when a new color is added to the mix
     const handleColorAddition = () => {
-        if (colors.length >= 5) return
+        if (colors.length >= MAX_COLORS) return
 
         // if the default points value is being used, continue using it
         if (points === (colorAddedColors.length - 1) * POINTS_SCALE_FACTOR)
@@ -202,6 +204,10 @@ const Tool = () => {
 
     // Remove a color from the list
     const handleColorRemove = (colorId) => {
+        // if the default points value is being used, continue using it
+        if (points === (colorAddedColors.length - 1) * POINTS_SCALE_FACTOR)
+            setPoints(colorAddedColors.length - 1 * POINTS_SCALE_FACTOR)
+
         setColors(colors.filter((color, idx) => idx !== colorId))
     }
 
@@ -387,7 +393,7 @@ const Tool = () => {
                             COLORS
 
                             <span style={{ marginLeft: "auto " }}>
-                                {colors.length < 5 && <Tooltip title="Add">
+                                {colors.length < MAX_COLORS && <Tooltip title="Add">
                                     <Button onClick={handleColorAddition} style={{ float: "right" }}>
                                         <FontAwesomeIcon icon={['fal', 'plus']} />
                                     </Button>
@@ -414,7 +420,7 @@ const Tool = () => {
                             </span>
                         </h3>
 
-                        <ColorspaceColor
+                        <ColorspaceColors
                             colors={colors}
                             handleColorChange={handleColorChange}
                             handleColorLock={handleColorLock}
@@ -537,7 +543,7 @@ const Tool = () => {
                             </p>
                         </div>
                     </div>
-{/* 
+                    {/* 
                     <div className="step output">
                         <h3>Output</h3>
                     </div>
