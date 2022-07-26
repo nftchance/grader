@@ -30,7 +30,7 @@ const SCALE_MODES = ['RGB', 'HSL', 'HSV', 'HCL', 'LAB'];
 const POINTS_MODES = ['Input', 'Scale']
 
 const POINTS_SCALE_FACTOR = 3;
-const MAX_COLORS = 8;
+const MAX_COLORS = 5;
 
 const Tool = () => {
     const fixedEncodeURIComponent = (str) => {
