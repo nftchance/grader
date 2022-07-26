@@ -6,7 +6,7 @@
 
 .color-input {
     display: grid;
-    grid-template: 8fr 2fr 2fr;
+    grid-template-columns: 8fr 2fr 2fr;
     align-items: center;
     border-left: none;
 }

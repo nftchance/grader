@@ -6,13 +6,6 @@ import ColorspaceColorpickerBox from "@components/Form/ColorspaceColorpickerBox"
 
 import "./ColorspaceColors.css";
 
-const colorStyle = {
-    display: "grid",
-    gridTemplateColumns: "8fr 2fr 2fr",
-    alignItems: "center",
-    borderLeft: "none"
-}
-
 export default function ColorspaceColors({
     colors,
     handleColorChange,
@@ -21,7 +14,7 @@ export default function ColorspaceColors({
     return (
         <div className="color-container">
             {colors.map((color, idx) => (
-                <div key={`color:${idx}`} style={colorStyle}>
+                <div key={`color:${idx}`} className="color-input">
                     <ColorspaceTextField
                         colorspaceColor={color}
                         onChange={handleColorChange}
