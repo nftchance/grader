@@ -4,8 +4,8 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import { fal } from '@fortawesome/pro-light-svg-icons'
 
-import Router from "./Router/Router";
-import SEO_CONSTANTS from "./SEO/constants";
+import Router from "@components/Router/Router";
+import SEO_CONSTANTS from "@components/SEO/constants";
 
 import './App.css';
 
