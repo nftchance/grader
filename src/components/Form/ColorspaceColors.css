@@ -1,0 +1,21 @@
+.color-input-container {
+    display: grid;
+    row-gap: 10px;
+    overflow-y: scroll;
+}
+
+.color-input {
+    display: grid;
+    grid-template: 8fr 2fr 2fr;
+    align-items: center;
+    border-left: none;
+}
+
+.color-input-picker { 
+    border: 1px solid #fff;
+    border-left: none;
+    height: 100%;
+    width: 100%;
+    display: grid;
+    align-items: center;
+}
