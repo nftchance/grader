@@ -170,7 +170,6 @@ const Tool = () => {
 
     // Update the color when the user changes it 
     const handleColorChange = (event, colorId) => {
-        console.log('updating')
         setColors(colors.map((color, idx) => (
             idx !== colorId ? color : {
                 ...color, // keep all the fields the same but color

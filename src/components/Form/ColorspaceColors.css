@@ -1,3 +1,10 @@
+.color-container {
+    grid-template-rows: 1fr 1fr;
+    padding: 0px;
+    row-gap: 10px;
+    display: grid;
+}
+
 .color-input-container {
     display: grid;
     row-gap: 10px;

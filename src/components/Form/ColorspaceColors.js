@@ -17,7 +17,7 @@ export default function ColorspaceColors({
                 <div key={`color:${idx}`} className="color-input">
                     <ColorspaceTextField
                         colorspaceColor={color}
-                        onChange={handleColorChange}
+                        onChange={(event) => { handleColorChange(event, idx)}}
                         label={`Color #${idx}`}
                         className="color"
                     />
