@@ -75,7 +75,6 @@ export default function ToolExportModalButton({
                     <CopyToClipboard
                         text={chromaSaveURL}
                         onCopy={() => { handleCopy(0) }}
-                        leaveDelay={copied[0] ? 1250 : 0}
                     >
                         <Button style={innerButtonStyle}>
                             <FontAwesomeIcon icon={['fal', 'link']} style={iconStyle} />
@@ -85,7 +84,6 @@ export default function ToolExportModalButton({
 
                     <CopyToClipboard
                         text={code}
-                        leaveDelay={copied[1] ? 1250 : 0}
                         onCopy={() => { handleCopy(1) }}
                     >
                         <Button style={innerButtonStyle}>
