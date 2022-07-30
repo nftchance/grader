@@ -16,14 +16,14 @@ const ToolIntro = ({ introEnabled, handleIntroExit }) => {
             position: 'left',
         }, {
             element: '.controls',
-            intro: 'With your colors defined, you can then determine which output color mode is best for the palette you have created.',
+            intro: 'With your colors defined, you can control every little detail of the final scale.',
             position: 'left',
         }, {
             element: '.score',
             intro: 'See how well the collor palette you have assembled performs in the digital colorspace!' 
         }, { 
             element: '.tool',
-            intro: <p>That's it! Now get out there and create the palette of your dreams.</p>
+            intro: "That's it! Now get out there and create the palette of your dreams."
         }
     ];
 
