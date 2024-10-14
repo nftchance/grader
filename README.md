@@ -4,15 +4,15 @@ For the last few hundred years brands have been primarily consumed through real-
 
 In the same way that we do not mimic the methods used to create newspapers for digital content, a designer can get a massive helping by utilizing a colorspace that is defined around the thought of digital consumption.
 
-Even the largest companies in the industry have been teaching and leading a method that is essentially as effective as *guess and check.* -- The general workflow of a designer looking for brand colors will go as:
+Even the largest companies in the industry have been teaching and leading a method that is essentially as effective as _guess and check._ -- The general workflow of a designer looking for brand colors will go as:
 
-* Define a general idea.
+- Define a general idea.
 
-* Get close within the desired palette.
+- Get close within the desired palette.
 
-* Adjust the hue of the color slowing meshing around to find a color that "works".
+- Adjust the hue of the color slowing meshing around to find a color that "works".
 
-The process is, and has been backwards this entire time. With the help of a 3D visualization we can see the colors with our scale (the key distinction here). 
+The process is, and has been backwards this entire time. With the help of a 3D visualization we can see the colors with our scale (the key distinction here).
 
 ![Preview of Colorspace](src/images/demo/demo.png)
 
@@ -50,8 +50,8 @@ You may also see any lint errors in the console. \
 Running the project any other way will prevent OpenGraph images from working.
 
 ### `npm start`
-Runs the app in the production mode.
 
+Runs the app in the production mode.
 
 ### `npm run build`
 

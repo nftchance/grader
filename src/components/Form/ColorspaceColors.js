@@ -1,5 +1,6 @@
 import { Button, Tooltip } from "@mui/material";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import { Lock, LockOpen } from "lucide-react";
 
 import ColorspaceTextField from "@components/Form/ColorspaceTextField";
 import ColorspaceColorpickerBox from "@components/Form/ColorspaceColorpickerBox";
@@ -9,7 +10,7 @@ import "./ColorspaceColors.css";
 export default function ColorspaceColors({
     colors,
     handleColorChange,
-    handleColorLock
+    handleColorLock,
 }) {
     return (
         <div className="color-container">
@@ -17,7 +18,9 @@ export default function ColorspaceColors({
                 <div key={`color:${idx}`} className="color-input">
                     <ColorspaceTextField
                         colorspaceColor={color}
-                        onChange={(event) => { handleColorChange(event, idx)}}
+                        onChange={(event) => {
+                            handleColorChange(event, idx);
+                        }}
                         label={`Color #${idx}`}
                         className="color"
                     />
@@ -32,16 +35,17 @@ export default function ColorspaceColors({
 
                     <div style={{ marginLeft: 10 }}>
                         <Tooltip title="Lock">
-                            <Button onClick={() => { handleColorLock(idx) }}>
-                                {color.locked
-                                    ? <FontAwesomeIcon icon={['fal', 'lock']} />
-                                    : <FontAwesomeIcon icon={['fal', 'lock-open']} />
-                                }
+                            <Button
+                                onClick={() => {
+                                    handleColorLock(idx);
+                                }}
+                            >
+                                {color.locked ? <Lock /> : <LockOpen />}
                             </Button>
                         </Tooltip>
                     </div>
                 </div>
             ))}
         </div>
-    )
+    );
 }
